@@ -10,7 +10,7 @@
   "scripts": {
     "prisma-deploy": "prisma deploy -e .env",
     "compose": "dotenv -e .env docker-compose up -d",
-    "start": "dotenv -e .env ts-node index.ts"
+    "dev": "dotenv -e .env ts-node index.ts"
   },
   "devDependencies": {
     "dotenv-cli": "^3.1.0",
