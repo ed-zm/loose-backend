@@ -7,6 +7,10 @@
   "author": "Eduardo Zarraga <eduardoandres8391@hotmail.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "prisma-deploy": "prisma deploy -e .env",
+    "compose": "dotenv -e .env docker-compose up -d"
+  },
   "devDependencies": {
     "dotenv-cli": "^3.1.0",
     "graphql-cli": "^3.0.14",

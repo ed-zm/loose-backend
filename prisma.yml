@@ -1,0 +1,9 @@
+endpoint: http://${env:PRISMA_HOST}:${env:PRISMA_PORT}/${env:PRISMA_SERVICE}/${env:STAGE}
+secret: ${env:PRISMA_SECRET}
+datamodel:
+  - datamodel/models/User.graphql
+
+hooks:
+  post-deploy:
+    - graphql get-schema -p prisma
+    - graphql codegen
