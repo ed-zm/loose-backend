@@ -9,7 +9,8 @@
   "private": true,
   "scripts": {
     "prisma-deploy": "prisma deploy -e .env",
-    "compose": "dotenv -e .env docker-compose up -d"
+    "compose": "dotenv -e .env docker-compose up -d",
+    "start": "dotenv -e .env ts-node index.ts"
   },
   "devDependencies": {
     "dotenv-cli": "^3.1.0",
@@ -19,11 +20,13 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
+    "@types/node": "^13.7.1",
     "bcrypt": "^3.0.8",
     "graphql": "^14.6.0",
     "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",
     "merge-graphql-schemas": "^1.7.6",
-    "prisma-client-lib": "^1.34.10"
+    "prisma-client-lib": "^1.34.10",
+    "ts-node": "^8.6.2"
   }
 }

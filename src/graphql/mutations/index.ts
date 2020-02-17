@@ -1,6 +1,15 @@
-import { Prisma } from '../generated/prisma'
+import prisma from '../../prisma'
+import signIn from './signIn'
+import signUp from './signUp'
 
-export default new Prisma({
-    endpoint: `http://${process.env.PRISMA_HOST}:${process.env.PRISMA_PORT}/${process.env.PRISMA_SERVICE}/${process.env.STAGE}`,
-    secret: process.env.secret
-  })
+const Mutation = {
+  signIn,
+  signUp
+}
+const mutationResolvers = Object.keys(prisma.mutation)
+
+mutationResolvers.forEach(key => {
+  Mutation[key] = (_, args, ctx, info) => prisma.mutation[key](args, info)
+})
+
+export default Mutation
