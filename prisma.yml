@@ -1,6 +1,9 @@
 endpoint: http://${env:PRISMA_HOST}:${env:PRISMA_PORT}/${env:PRISMA_SERVICE}/${env:STAGE}
 secret: ${env:PRISMA_SECRET}
 datamodel:
+  - datamodel/models/Organization.graphql
+  - datamodel/models/Task.graphql
+  - datamodel/models/Team.graphql
   - datamodel/models/User.graphql
 
 hooks:

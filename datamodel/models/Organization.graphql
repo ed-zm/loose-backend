@@ -1,0 +1,8 @@
+type Organization {
+  id: ID! @id
+  name: String!
+  owner: User! @relation(name: "UserOrganizations", onDelete: SET_NULL)
+  teams: [Team!]! @relation(name: "OrganizationTeams", onDelete: CASCADE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}

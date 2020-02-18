@@ -5,6 +5,10 @@ type User {
   lastName: String
   email: String! @unique
   hash: String!
+  tasksCreated: [Task!]! @relation(name: "TasksCreatedBy", onDelete: "CASCADE")
+  tasksAssigned: [Task!]! @relation(name: "TasksAssignedTo", onDelete: "SET_NULL")
+  teams: [Team!]! @relation(name: "UserTeams" onDelete: "CASCADE")
+  ownOrganizations: [Organization!]! @relation(name: "UserOrganizations", onDelete: "CASCADE") 
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
