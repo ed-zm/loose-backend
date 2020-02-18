@@ -20,7 +20,8 @@ const server = new GraphQLServer({
   resolvers: {
     Query,
     Mutation
-  }
+  },
+  context: req => req
 })
 
 server.start({

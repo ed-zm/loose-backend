@@ -1,0 +1,15 @@
+enum PermissionEnum {
+  READ,
+  WRITE,
+  UPDATE,
+  DELETE
+}
+
+type Role {
+  id: ID! @id
+  role: String! @unique
+  permissions: [PermissionEnum!]! @scalarList(strategy:RELATION)
+  users: [User!]! @relation(name: "UserRoles", onDelete: "SET_NULL")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
