@@ -1,24 +1,20 @@
 import prisma from '../../prisma'
-import publicResolvers from '../../publicResolvers'
-import authenticate from '../../authenticate'
+import createResolver from '../../helpers/createResolver'
+import tasks from './Task/tasks'
 
-const Query = {}
-const queryResolvers = Object.keys(prisma.query)
+let Query = {}
+const queryResolvers = [...Object.keys(prisma.query)]
 
 queryResolvers.forEach(key => {
   Query[key] = async (_, args, ctx, info) => {
-    const isPublic = publicResolvers.find(p => p ===  key)
-    if(isPublic) {
-      return prisma.query[key](args, info)
-    } else {
-      const authenticated = await authenticate(ctx)
-      if(authenticated) {
-        return prisma.query[key](args, info)
-      } else {
-        throw new Error("Unauthenticated")
-      }
-    }
+    const callback = () => prisma.query[key](args, info)
+    return createResolver(key, ctx, callback)
   }
 })
+
+Query = {
+  ...Query,
+  tasks
+}
 
 export default Query

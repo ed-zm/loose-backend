@@ -2,6 +2,7 @@ type Team {
   id: ID! @id
   name: String!
   users: [User!]! @relation(name: "UserTeams", onDelete: "SET_NULL")
+  tasks: [Task!]! @relation(name: "TeamTasks", onDelete: "SET_NULL")
   organization: Organization! @relation(name: "OrganizationTeams", onDelete: "SET_NULL")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt

@@ -1,14 +1,14 @@
 import jwt from 'jsonwebtoken'
 
 export default async ctx => {
-  let isValid = false
+  let user = null
   const token = ctx.request.get('Authorization')
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if(err) {
       return
     } else {
-      isValid = true
+      user = decoded
     }
   })
-  return isValid
+  return user
 }

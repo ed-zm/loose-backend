@@ -1,8 +1,8 @@
 import prisma from '../../prisma'
 import signIn from './signIn'
 import signUp from './signUp'
-import publicResolvers from '../../publicResolvers'
-import authenticate from '../../authenticate'
+import publicResolvers from '../../helpers/publicResolvers'
+import authenticate from '../../helpers/authenticate'
 
 const Mutation = {
   signIn,
