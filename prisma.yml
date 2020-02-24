@@ -9,5 +9,11 @@ datamodel:
 
 hooks:
   post-deploy:
-    - graphql get-schema -p prisma
-    - graphql codegen
+    - prisma generate
+    - yarn nexus-prisma-generate --output ./generated/nexus-prisma --client ./generated/prisma-client
+
+generate:
+  - generator: typescript-client
+    output: ./generated/prisma-client
+  - generator: graphql-schema
+    output: ./generated/prisma-client/prisma.graphql
