@@ -1,32 +1,10 @@
-import { prismaObjectType, makePrismaSchema } from "nexus-prisma";
+import { makePrismaSchema } from "nexus-prisma";
 import * as path from 'path'
-// import { idArg } from "nexus";
 import { GraphQLServer } from "graphql-yoga";
 import { prisma } from "./generated/prisma-client";
 import datamodelInfo from "./generated/nexus-prisma/datamodel-info";
-
-const Query = prismaObjectType({
-  name: "Query",
-  definition: (t) => t.prismaFields(["*"]),
-});
-
-const Mutation = prismaObjectType({
-  name: "Mutation",
-  definition(t) {
-    t.prismaFields(["createTask"]);
-    // t.field("markAsDone", {
-    //   type: "Todo",
-    //   args: { id: idArg() },
-    //   nullable: true,
-    //   resolve: (_, { id }, ctx) => {
-    //     return ctx.prisma.updateTodo({
-    //       where: { id },
-    //       data: { done: true },
-    //     });
-    //   },
-    // });
-  },
-});
+import Mutation from './src/graphql/mutations'
+import Query from './src/graphql/queries'
 
 const schema = makePrismaSchema({
   types: [Query, Mutation],
