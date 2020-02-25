@@ -4,6 +4,7 @@ import { prismaObjectType } from "nexus-prisma";
 export default prismaObjectType({
   name: "Query",
   definition: (t) => t.prismaFields([
+    "organizations",
     "task",
     "tasks",
     "user"
