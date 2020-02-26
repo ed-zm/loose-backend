@@ -7,6 +7,7 @@ export default prismaObjectType({
   name: "Mutation",
   definition(t) {
     t.prismaFields([
+      "createOrganization",
       "createTask"
     ]);
     //@ts-ignore

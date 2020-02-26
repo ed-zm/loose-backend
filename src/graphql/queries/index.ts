@@ -1,14 +1,18 @@
 import { prismaObjectType } from "nexus-prisma";
+import organizations from './Organization/organizations'
 
 // Use "*" to use all fields
 export default prismaObjectType({
   name: "Query",
-  definition: (t) => t.prismaFields([
-    "organizations",
-    "task",
-    "tasks",
-    "user"
-  ]),
+  definition(t) {
+    t.prismaFields([
+      "organization",
+      "task",
+      "tasks",
+      "user"
+    ]);
+    t.field('organizations', organizations)
+  }
 })
 // import prisma from '../../prisma'
 // import createResolver from '../../helpers/createResolver'

@@ -20,7 +20,7 @@ const schema = makePrismaSchema({
 
 const server = new GraphQLServer({
   schema,
-  context: { prisma },
+  context: ctx => ({ ...ctx, prisma }),
 });
 
 server.start({
