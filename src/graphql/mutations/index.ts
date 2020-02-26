@@ -13,7 +13,7 @@ export default prismaObjectType({
     //@ts-ignore
     t.field("signIn", signIn);
     //@ts-ignore
-    t.field("signUp", signUp)
+    t.field("signUp", signUp);
   },
 });
 
