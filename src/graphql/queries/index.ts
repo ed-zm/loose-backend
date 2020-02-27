@@ -1,6 +1,7 @@
 import { prismaObjectType } from "nexus-prisma";
 import organizations from './Organization/organizations'
 import loggedIn from './auth/loggedIn'
+import tasks from './Task/tasks'
 
 // Use "*" to use all fields
 export default prismaObjectType({
@@ -9,7 +10,6 @@ export default prismaObjectType({
     t.prismaFields([
       "organization",
       "task",
-      "tasks",
       "user",
       "users"
     ]);
@@ -17,6 +17,8 @@ export default prismaObjectType({
     t.field("loggedIn", loggedIn)
     //@ts-ignore
     t.field('organizations', organizations)
+    //@ts-ignore
+    t.field('tasks', tasks)
   }
 })
 // import prisma from '../../prisma'

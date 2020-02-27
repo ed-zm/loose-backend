@@ -3,7 +3,11 @@ import authenticate from '../../../helpers/authenticate'
 
 const resolve = async (_, { data }, ctx, info) => {
   const user = await authenticate(ctx)
-  return ctx.prisma.mutation.createOrganization({
+  if(!user) throw new Error('Not Logged In')
+  if(data.owner && data.owner.connect && data.owner.connect.id && data.owner.connect.id !== user.id) {
+    throw new Error(`You can't create an organization for other users`)
+  }
+  return ctx.prisma.createOrganization({
     ...data,
     owner: {
       //@ts-ignore
