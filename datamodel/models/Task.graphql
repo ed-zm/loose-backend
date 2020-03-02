@@ -1,6 +1,6 @@
 type Task {
   id: ID! @id
-  code: String
+  code: String @unique
   title: String!
   description: String!
   createdBy: User! @relation(name: "TasksCreatedBy", onDelete: "SET_NULL")

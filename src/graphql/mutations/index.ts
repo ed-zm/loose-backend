@@ -1,4 +1,5 @@
 import { prismaObjectType } from "nexus-prisma";
+import createTask from './Task/createTask'
 import signIn from './auth/signIn'
 import signUp from './auth/signUp'
 
@@ -8,9 +9,10 @@ export default prismaObjectType({
   definition(t) {
     t.prismaFields([
       "createOrganization",
-      "createTask",
       "deleteTask"
     ]);
+    //@ts-ignore
+    t.field("createTask", createTask);
     //@ts-ignore
     t.field("signIn", signIn);
     //@ts-ignore

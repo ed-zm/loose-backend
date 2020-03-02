@@ -10,5 +10,6 @@ export default async ctx => {
       user = decoded
     }
   })
+  if(!user) throw new Error('Unauthenticated')
   return user
 }

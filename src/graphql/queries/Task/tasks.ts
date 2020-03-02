@@ -5,16 +5,26 @@ import authenticate from '../../../helpers/authenticate'
 const resolve = async (_, { where, ...args }, ctx, info) => {
   const user: any = await authenticate(ctx)
   if(user) {
-    const organizationWhere = {
-      OR: [
-        { owner: { id: user.id } },
-        { users_some: { id: user.id }}
-      ]
-    }
-    const organizations = await prisma.organizations({ where: organizationWhere }, `{ id }`)
-    //@ts-ignore
-    const organizationIds = organizations.map(organization => organization.id) || []
-    const tasks = await prisma.tasks({where: { ...where, organization: { id_in: organizationIds }}, ...args })
+    // const organizationWhere = {
+    //   OR: [
+    //     { owner: { id: user.id } },
+    //     { users_some: { id: user.id }}
+    //   ]
+    // }
+    // const organizations = await prisma.organizations({ where: organizationWhere }, `{ id }`)
+    // //@ts-ignore
+    // const organizationIds = organizations.map(organization => organization.id) || []
+    // const tasks = await prisma.tasks({where: { ...where, organization: { id_in: organizationIds }}, ...args })
+    const tasks = await prisma.tasks({
+      where: {
+        ...where,
+        OR: [
+          { createdBy: { id: user.id } },
+          { assignedTo: {id: user.id } }
+        ]
+      },
+      ...args
+    })
     return tasks
   } else {
     return []
