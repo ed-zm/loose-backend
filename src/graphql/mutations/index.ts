@@ -8,7 +8,8 @@ export default prismaObjectType({
   definition(t) {
     t.prismaFields([
       "createOrganization",
-      "createTask"
+      "createTask",
+      "deleteTask"
     ]);
     //@ts-ignore
     t.field("signIn", signIn);

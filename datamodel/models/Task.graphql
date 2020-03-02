@@ -1,10 +1,11 @@
 type Task {
   id: ID! @id
+  code: String
   title: String!
   description: String!
   createdBy: User! @relation(name: "TasksCreatedBy", onDelete: "SET_NULL")
   assignedTo: User @relation(name: "TasksAssignedTo", onDelete: "SET_NULL")
-  organization: Organization! @relation(name: "OrganizationTasks", onDelate: "CASCADE")
+  organization: Organization @relation(name: "OrganizationTasks", onDelate: "CASCADE")
   team: Team @relation(name: "TeamTasks", onDelete: "SET_NULL")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
