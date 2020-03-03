@@ -3,6 +3,7 @@ type Task {
   code: String @unique
   title: String!
   description: String!
+  state: Int @default(value: 0)
   createdBy: User! @relation(name: "TasksCreatedBy", onDelete: "SET_NULL")
   assignedTo: User @relation(name: "TasksAssignedTo", onDelete: "SET_NULL")
   organization: Organization @relation(name: "OrganizationTasks", onDelate: "CASCADE")

@@ -2,6 +2,8 @@ import { prismaObjectType } from "nexus-prisma";
 import createTask from './Task/createTask'
 import signIn from './auth/signIn'
 import signUp from './auth/signUp'
+import resetPassword from './auth/resetPassword'
+import confirmResetPassword from './auth/confirmResetPassword'
 
 // Use "*" to use all fields
 export default prismaObjectType({
@@ -13,6 +15,10 @@ export default prismaObjectType({
     ]);
     //@ts-ignore
     t.field("createTask", createTask);
+    //@ts-ignore
+    t.field("confirmResetPassword", confirmResetPassword);
+    //@ts-ignore
+    t.field("resetPassword", resetPassword);
     //@ts-ignore
     t.field("signIn", signIn);
     //@ts-ignore
