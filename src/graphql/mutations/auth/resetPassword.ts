@@ -9,9 +9,9 @@ const resolve = async (_, { email }, ctx) => {
     const updatedUser = await ctx.prisma.updateUser({where: { email }, data: { resetPasswordCode, resetPasswordCodeIssuedAt: new Date() } }, `{ id, resetPasswordCode }`)
     if(updatedUser && updatedUser.resetPasswordCode) {
       //@ts-ignore
-      const ses = await sendEmail([email], 'Reset Password', `Go to http://localhost:3000/reset-password/${resetPasswordCode} to reset your password`)
+      const ses = await sendEmail([email], 'Reset Password', `Go to http://localhost:3000/confirm-reset-password/${resetPasswordCode} to reset your password`)
       if(ses.sent && !ses.error) {
-        return true 
+        return true
       } else {
         throw new Error('We could not reset your password')
       }

@@ -3,6 +3,7 @@ import createTask from './Task/createTask'
 import signIn from './auth/signIn'
 import signUp from './auth/signUp'
 import resetPassword from './auth/resetPassword'
+import confirmEmail from './auth/confirmEmail'
 import confirmResetPassword from './auth/confirmResetPassword'
 
 // Use "*" to use all fields
@@ -15,6 +16,8 @@ export default prismaObjectType({
     ]);
     //@ts-ignore
     t.field("createTask", createTask);
+    //@ts-ignore
+    t.field("confirmEmail", confirmEmail);
     //@ts-ignore
     t.field("confirmResetPassword", confirmResetPassword);
     //@ts-ignore

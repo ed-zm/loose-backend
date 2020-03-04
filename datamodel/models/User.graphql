@@ -5,7 +5,7 @@ type User {
   lastName: String
   email: String! @unique
   emailVerifiedAt: DateTime
-  emailVerificationCode: String!
+  emailVerificationCode: String
   emailVerificationCodeIssuedAt: DateTime
   hash: String!
   resetPasswordCode: String
@@ -13,7 +13,7 @@ type User {
   tasksCreated: [Task!]! @relation(name: "TasksCreatedBy", onDelete: "CASCADE")
   tasksAssigned: [Task!]! @relation(name: "TasksAssignedTo", onDelete: "SET_NULL")
   teams: [Team!]! @relation(name: "UserTeams" onDelete: "CASCADE")
-  ownOrganizations: [Organization!]! @relation(name: "UserOrganizations", onDelete: "CASCADE") 
+  ownOrganizations: [Organization!]! @relation(name: "UserOrganizations", onDelete: "CASCADE")
   organizations: [Organization!]! @relation(name: "OrganizationUsers", onDelete: "SET_NULL")
   roles: [Role!]! @relation(name: "UserRoles", onDelete: "SET_NULL")
   createdAt: DateTime! @createdAt
