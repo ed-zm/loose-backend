@@ -10,6 +10,8 @@ export default prismaObjectType({
     t.prismaFields([
       "organization",
       "task",
+      "team",
+      "teams",
       "user",
       "users"
     ]);

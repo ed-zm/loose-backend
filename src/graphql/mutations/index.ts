@@ -13,7 +13,9 @@ export default prismaObjectType({
     t.prismaFields([
       "createOrganization",
       "updateTask",
-      "deleteTask"
+      "deleteTask",
+      "createTeam",
+      "updateTeam"
     ]);
     //@ts-ignore
     t.field("createTask", createTask);

@@ -1,0 +1,8 @@
+type Label {
+  id: ID! @id
+  text: String! @unique
+  color: String!
+  # tasks: [Task!]! @relation(name: "TaskLabels", onDelete: "SET_NULL")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}

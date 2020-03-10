@@ -2,6 +2,7 @@ endpoint: http://${env:PRISMA_HOST}:${env:PRISMA_PORT}/${env:PRISMA_SERVICE}/${e
 secret: ${env:PRISMA_SECRET}
 datamodel:
   - datamodel/models/Organization.graphql
+  - datamodel/models/Label.graphql
   - datamodel/models/Role.graphql
   - datamodel/models/Task.graphql
   - datamodel/models/Team.graphql
