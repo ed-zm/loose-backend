@@ -1,0 +1,8 @@
+type Comment {
+  id: ID! @id
+  text: String!
+  user: User! @relation(name: "UserComments", onDelete: "SET_NULL")
+  task: Task! @relation(name: "TaskComments" onDelete: "SET_NULL")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}

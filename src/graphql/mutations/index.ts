@@ -1,5 +1,6 @@
 import { prismaObjectType } from "nexus-prisma";
 import createTask from './Task/createTask'
+import createLabel from './Label/createLabel'
 import signIn from './auth/signIn'
 import signUp from './auth/signUp'
 import resetPassword from './auth/resetPassword'
@@ -11,12 +12,15 @@ export default prismaObjectType({
   name: "Mutation",
   definition(t) {
     t.prismaFields([
+      "createComment",
       "createOrganization",
       "updateTask",
       "deleteTask",
       "createTeam",
       "updateTeam"
     ]);
+    //@ts-ignore
+    t.field("createLabel", createLabel);
     //@ts-ignore
     t.field("createTask", createTask);
     //@ts-ignore

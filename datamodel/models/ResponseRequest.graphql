@@ -1,0 +1,10 @@
+type ResponseRequest {
+  id: ID! @id
+  taskCode: String!
+  title: String!
+  description: String!
+  createdBy: User! @relation(name: "UserResponseRequest", onDelete: "SET_NULL")
+  assignedTo: User! @relation(name: "UserAssignedResponseRequest", onDelete: "SET_NULL") 
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}

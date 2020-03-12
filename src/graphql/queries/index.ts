@@ -8,6 +8,8 @@ export default prismaObjectType({
   name: "Query",
   definition(t) {
     t.prismaFields([
+      "comments",
+      "labels",
       "organization",
       "task",
       "team",
