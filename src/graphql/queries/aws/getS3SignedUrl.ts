@@ -1,5 +1,5 @@
 import { S3 } from 'aws-sdk'
-import { stringArg } from 'nexus'
+import { stringArg, idArg } from 'nexus'
 
 const resolve = async (_, { fileType, id, operation }, ctx, info) => {
   const s3 = new S3({
@@ -23,7 +23,7 @@ const resolve = async (_, { fileType, id, operation }, ctx, info) => {
     type: "String",
     args: {
       fileType: stringArg({ nullable: false }),
-      id: stringArg({ nullable: false }),
+      id: idArg({ nullable: false }),
       operation: stringArg({ nullable: false })
     },
     nullable: false,

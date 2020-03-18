@@ -49,6 +49,25 @@ services:
             user: ${DB_USER}
             password: ${DB_PASSWORD}
             migrations: true
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8001:8001
+    environment:
+      PRISMA_HOST: ${PRISMA_HOST}
+      PRISMA_PORT: ${PRISMA_PORT}
+      PRISMA_SERVICE: ${PRISMA_SERVICE}
+      STAGE: ${STAGE}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+
+    volumes:
+      - .:/app
+      - /app/node_modules
 
 volumes:
   postgres:

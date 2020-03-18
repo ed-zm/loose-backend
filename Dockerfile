@@ -2,7 +2,8 @@ FROM node:10.16.0
 
 RUN mkdir /app
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+COPY package.json ./
+RUN npm install -g yarn
+RUN yarn
 
-CMD ["npm", "run", "dev" ]
+CMD ["yarn", "dev" ]

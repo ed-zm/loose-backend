@@ -3,7 +3,7 @@ import authenticate from '../../../helpers/authenticate'
 import randomString from '../../../helpers/randomString'
 
 const resolve = async (_, { data: args }, ctx, info) => {
-  const user = await authenticate(ctx)
+  const user: any = await authenticate(ctx)
   let isCreatorOwner = false
   let isCreatorMember = false
   if(args.organization) {

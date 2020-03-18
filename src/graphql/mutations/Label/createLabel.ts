@@ -1,9 +1,7 @@
 import { arg } from 'nexus'
-import authenticate from '../../../helpers/authenticate'
 
 const resolve = async (_, { data }, ctx, info) => {
   const label = await ctx.prisma.label({ text: data.text })
-  console.log('-------------------LAAAAAAAAAAABEL', label)
   if(label) {
     return ctx.prisma.updateLabel({
       where: { id: label.id },
@@ -12,7 +10,6 @@ const resolve = async (_, { data }, ctx, info) => {
       }
     })
   }
-  console.log('-----------DATA', data )
   return ctx.prisma.createLabel({ ...data })
 }
 
