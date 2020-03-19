@@ -15,7 +15,7 @@ const resolve = async (_, { where, ...args }, ctx, info) => {
     // //@ts-ignore
     // const organizationIds = organizations.map(organization => organization.id) || []
     // const tasks = await prisma.tasks({where: { ...where, organization: { id_in: organizationIds }}, ...args })
-    const tasks = await prisma.tasks({
+    const tasks = await ctx.prisma.tasks({
       where: {
         ...where,
         OR: [

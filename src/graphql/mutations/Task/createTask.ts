@@ -6,27 +6,30 @@ const resolve = async (_, { data: args }, ctx, info) => {
   const user: any = await authenticate(ctx)
   let isCreatorOwner = false
   let isCreatorMember = false
+  console.log('ARGS', args)
   if(args.organization) {
     const organization = await ctx.prisma.organization(
-      { id: args.organization.connect.id },
-      `{
-        id
-        owner {
+      { id: args.organization.connect.id }).$fragment(
+        `fragment Organization on Organization {
           id
-        }
-        users(where: {
-          OR: [
-            { id: ${args.createdBy.id}},
-            ${args.assignedTo ?
-              `
-              { id: ${args.assignedTo.id}}
-              ` :
-              '' }
-          ]
-        }) {
-          id
-        }
-      }`)
+          owner {
+            id
+          }
+          users(where: {
+            OR: [
+              { id: "${args.createdBy.connect.id}"},
+              ${args.assignedTo ?
+                `
+                { id: "${args.assignedTo.connect.id}"}
+                ` :
+                '' }
+            ]
+          }) {
+            id
+          }
+        }`
+      )
+      console.log('-----------------ORGANIZATION', organization)
     isCreatorOwner = organization.owner.id === user.id
     isCreatorMember = organization.users.find(member => member.id === user.id)
     if(!isCreatorOwner && !isCreatorMember) throw new Error('You are not part of this organization')
@@ -43,7 +46,7 @@ const resolve = async (_, { data: args }, ctx, info) => {
 
 export default {
   type: "Task",
-  args: { 
+  args: {
     data: arg({ type: 'TaskCreateInput', required: true })
   },
   nullable: false,
