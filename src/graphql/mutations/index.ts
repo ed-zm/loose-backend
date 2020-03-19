@@ -17,7 +17,8 @@ export default prismaObjectType({
       "updateTask",
       "deleteTask",
       "createTeam",
-      "updateTeam"
+      "updateTeam",
+      "updateUser"
     ]);
     //@ts-ignore
     t.field("createLabel", createLabel);

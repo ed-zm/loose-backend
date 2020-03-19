@@ -10,9 +10,9 @@ const resolve = async (_, { fileType, id, operation }, ctx, info) => {
   const extension = fileType.split('/')
   const key = `${id}.${extension[1]}`
   const params = {
-    Bucket: `loose`,
+    Bucket: `dev.loose.www.avatars`,
     Key: key,
-    Expires: 60,
+    Expires: 600,
     ContentType: fileType
   }
   const url = await s3.getSignedUrl(operation, params)
