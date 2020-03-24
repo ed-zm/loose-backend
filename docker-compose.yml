@@ -13,25 +13,26 @@ services:
         POSTGRES_USER: ${DB_USER}
         POSTGRES_DB: ${PRISMA_SERVICE}
         PGDATA: /data/postgres
-  pgadmin:
-    depends_on:
-      - loose-db
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    volumes:
-      - pgadmin:/root/.pgadmin
-    ports:
-      - "${PGADMIN_PORT:-5051}:80"
-    restart: unless-stopped
+  # pgadmin:
+  #   depends_on:
+  #     - loose-db
+  #   container_name: pgadmin
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+  #   volumes:
+  #     - pgadmin:/root/.pgadmin
+  #   ports:
+  #     - "${PGADMIN_PORT:-5051}:80"
+  #   restart: unless-stopped
 
   prisma:
     image: prismagraphql/prisma:1.34
     restart: always
-    links:
-      - loose-db
+    # network_mode: host
+    # links:
+    #   - loose-db
     depends_on:
       - loose-db
     ports:
@@ -51,13 +52,14 @@ services:
             migrations: true
   backend:
     container_name: backend
+    # network_mode: host
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - 8001:8001
     environment:
-      PRISMA_HOST: ${PRISMA_HOST}
+      PRISMA_HOST: prisma
       PRISMA_PORT: ${PRISMA_PORT}
       PRISMA_SERVICE: ${PRISMA_SERVICE}
       STAGE: ${STAGE}
