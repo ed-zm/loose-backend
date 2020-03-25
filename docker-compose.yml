@@ -57,7 +57,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 8001:8001
+      - ${PORT}:${PORT}
     environment:
       PRISMA_HOST: prisma
       PRISMA_PORT: ${PRISMA_PORT}
