@@ -50,26 +50,26 @@ services:
             user: ${DB_USER}
             password: ${DB_PASSWORD}
             migrations: true
-  backend:
-    container_name: backend
-    # network_mode: host
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - ${PORT}:${PORT}
-    environment:
-      PRISMA_HOST: prisma
-      PRISMA_PORT: ${PRISMA_PORT}
-      PRISMA_SERVICE: ${PRISMA_SERVICE}
-      STAGE: ${STAGE}
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      AWS_REGION: ${AWS_REGION}
-
-    volumes:
-      - .:/app
-      - /app/node_modules
+  # backend:
+  #   container_name: backend
+  #   # network_mode: host
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - ${PORT}:${PORT}
+  #   environment:
+  #     PRISMA_HOST: prisma
+  #     PRISMA_PORT: ${PRISMA_PORT}
+  #     PRISMA_SERVICE: ${PRISMA_SERVICE}
+  #     STAGE: ${STAGE}
+  #     AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  #     AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+  #     AWS_REGION: ${AWS_REGION}
+  #
+  #   volumes:
+  #     - .:/app
+  #     - /app/node_modules
 
 volumes:
   postgres:
