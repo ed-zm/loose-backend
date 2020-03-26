@@ -9,7 +9,6 @@
   "private": true,
   "scripts": {
     "prisma-deploy": "prisma deploy -e .env",
-    "compose": "dotenv -e .env docker-compose up -d",
     "dev": "dotenv -e .env ts-node-dev index.ts"
   },
   "devDependencies": {
