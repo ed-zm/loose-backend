@@ -23,7 +23,7 @@ export const sendEmail = async (to: string[] = [], subject: string, message: str
                 },
             }
         },
-        Source: `<info@brosvc.cz>`
+        Source: `<no-reply@loose.dev>`
     };
     await new Promise(resolve => {
       ses.sendEmail(eParams, function(err, data){
