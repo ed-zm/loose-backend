@@ -20,7 +20,7 @@ const resolve = async (_, { email, password, firstName, lastName, username }, ct
       emailVerificationCodeIssuedAt: moment()
     })
   if(user) {
-    await sendEmail([email], 'confirm email', `Go to ${endpoint}/confirm-email/${emailVerificationCode}`)
+    await sendEmail([email], 'confirm email', `Go to ${endpoint()}/confirm-email/${emailVerificationCode}`)
     return true
   }
   else return false
