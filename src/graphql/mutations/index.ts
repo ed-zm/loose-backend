@@ -3,6 +3,7 @@ import createTask from './Task/createTask'
 import createLabel from './Label/createLabel'
 import signIn from './auth/signIn'
 import signUp from './auth/signUp'
+import resendVerificationEmail from './auth/resendVerificationEmail'
 import resetPassword from './auth/resetPassword'
 import confirmEmail from './auth/confirmEmail'
 import confirmResetPassword from './auth/confirmResetPassword'
@@ -28,6 +29,8 @@ export default prismaObjectType({
     t.field("confirmEmail", confirmEmail);
     //@ts-ignore
     t.field("confirmResetPassword", confirmResetPassword);
+    //@ts-ignore
+    t.field("resendVerificationEmail", resendVerificationEmail)
     //@ts-ignore
     t.field("resetPassword", resetPassword);
     //@ts-ignore

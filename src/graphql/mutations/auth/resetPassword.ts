@@ -1,6 +1,7 @@
 import uid from 'uid'
 import { stringArg } from 'nexus'
 import { sendEmail } from '../../../helpers/email'
+import endpoint from '../../../helpers/endpoint'
 
 const resolve = async (_, { email }, ctx) => {
   const user = await ctx.prisma.user({ email }, '{ id }')
@@ -9,7 +10,7 @@ const resolve = async (_, { email }, ctx) => {
     const updatedUser = await ctx.prisma.updateUser({where: { email }, data: { resetPasswordCode, resetPasswordCodeIssuedAt: new Date() } }, `{ id, resetPasswordCode }`)
     if(updatedUser && updatedUser.resetPasswordCode) {
       //@ts-ignore
-      const ses = await sendEmail([email], 'Reset Password', `Go to http://localhost:3000/confirm-reset-password/${resetPasswordCode} to reset your password`)
+      const ses = await sendEmail([email], 'Reset Password', `Go to ${endpoint()}:3000/confirm-reset-password/${resetPasswordCode} to reset your password`)
       if(ses.sent && !ses.error) {
         return true
       } else {

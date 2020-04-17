@@ -2,6 +2,7 @@ import { hashSync } from 'bcrypt'
 import moment from 'moment'
 import { stringArg } from 'nexus'
 import { sendEmail } from '../../../helpers/email'
+import endpoint from '../../../helpers/endpoint'
 import uid from 'uid'
 
 const resolve = async (_, { email, password, firstName, lastName, username }, ctx) => {
@@ -17,9 +18,9 @@ const resolve = async (_, { email, password, firstName, lastName, username }, ct
       lastName,
       emailVerificationCode,
       emailVerificationCodeIssuedAt: moment()
-    }) 
+    })
   if(user) {
-    await sendEmail([email], 'confirm email', `Go to http://localhost:3000/confirm-email/${emailVerificationCode}`)
+    await sendEmail([email], 'confirm email', `Go to ${endpoint}/confirm-email/${emailVerificationCode}`)
     return true
   }
   else return false
