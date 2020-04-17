@@ -5250,9 +5250,9 @@ lolex@^5.0.0:
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"loose-components@git+ssh://git@github.com:loose-dev/loose-components.git#1.0.1":
+"loose-components@git+ssh://git@github.com:loose-dev/loose-components.git#1.0.4":
   version "1.0.0"
-  resolved "git+ssh://git@github.com:loose-dev/loose-components.git#eb21ee65f0af64cd7cd0c766c8633391ed63c663"
+  resolved "git+ssh://git@github.com:loose-dev/loose-components.git#84eba427db9a73f90c14c5959d0b47a532299ea3"
 
 loud-rejection@^1.0.0:
   version "1.6.0"
