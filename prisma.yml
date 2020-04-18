@@ -13,7 +13,7 @@ datamodel:
 hooks:
   post-deploy:
     - prisma generate
-    - yarn nexus-prisma-generate --output ./generated/nexus-prisma --client ./generated/prisma-client
+    - nexus-prisma-generate --output ./generated/nexus-prisma --client ./generated/prisma-client
 
 generate:
   - generator: typescript-client
