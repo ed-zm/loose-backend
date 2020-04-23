@@ -11,6 +11,7 @@ type Task {
   team: Team @relation(name: "TeamTasks", onDelete: "SET_NULL")
   labels: Label @relation(name: "TaskLabels", onDelete: "SET_NULL")
   comments: [Comment!]! @relation(name: "TaskComments", onDelete: "CASCADE")
+  responseRequests: [ResponseRequest!]! @relation(name: "TaskResponseRequests", onDelete: "SET_NULL")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

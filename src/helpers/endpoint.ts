@@ -1,1 +1,1 @@
-export default () => process.env.NODE_ENV === 'production' ? 'http://loose.dev/api' : 'http://alpha.loose.dev/api'
+export default () => process.env.NODE_ENV === 'production' ? 'https://alpha.loose.dev' : 'https://alpha.loose.dev'

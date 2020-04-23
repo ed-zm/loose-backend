@@ -29,16 +29,15 @@ const resolve = async (_, { data: args }, ctx, info) => {
           }
         }`
       )
-      console.log('-----------------ORGANIZATION', organization)
     isCreatorOwner = organization.owner.id === user.id
     isCreatorMember = organization.users.find(member => member.id === user.id)
     if(!isCreatorOwner && !isCreatorMember) throw new Error('You are not part of this organization')
   }
   if(user.id !== args.createdBy.connect.id) throw new Error(`You can't create tasks for other users`)
-  let code = randomString(4)
+  let code = randomString(4).toLowerCase()
   let taskExists = await ctx.prisma.task({ code })
   while(taskExists) {
-    code = randomString(4)
+    code = randomString(4).toLowerCase()
     taskExists = await ctx.prisma.task({ code })
   }
   return ctx.prisma.createTask({...args, code })
