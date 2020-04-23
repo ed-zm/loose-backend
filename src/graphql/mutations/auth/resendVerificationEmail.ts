@@ -5,7 +5,7 @@ import { stringArg } from 'nexus'
 const resolve = async (_, { email }, ctx) => {
   const user = await ctx.prisma.user({ email })
   if(user) {
-    await sendEmail([email], 'confirm email', `Go to ${endpoint()}/confirm-email/${user.emailVerificationCode}`)
+    await sendEmail([email], 'confirm email', `Go to ${process.env.ENDPOINT}/confirm-email/${user.emailVerificationCode}`)
     return true
   }
   throw new Error('Invalid Email')
