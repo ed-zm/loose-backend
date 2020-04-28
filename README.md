@@ -2,9 +2,9 @@
 
 This is the repo for Backend Development
 
-For Frontend Check [Loose Frontend](https://github.com/loose-dev/loose-frontend)
-For Components Check [Loose Components](https://github.com/loose-dev/loose-components)
-For Mobile App Check [Loose Expo](https://github.com/loose-dev/loose-expo)
+* For Frontend Check [Loose Frontend](https://github.com/loose-dev/loose-frontend)
+* For Components Check [Loose Components](https://github.com/loose-dev/loose-components)
+* For Mobile App Check [Loose Expo](https://github.com/loose-dev/loose-expo)
 
 ## App ToolSet
 
