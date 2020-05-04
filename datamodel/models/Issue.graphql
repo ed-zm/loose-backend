@@ -1,0 +1,12 @@
+type Issue {
+  id: ID! @id
+  title: String!
+  state: String
+  number: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+  closedAt: DateTime
+  url: String
+  body: String
+  comments: Int
+}

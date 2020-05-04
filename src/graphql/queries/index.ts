@@ -3,6 +3,8 @@ import getS3SignedUrl from './aws/getS3SignedUrl'
 import organizations from './Organization/organizations'
 import loggedIn from './auth/loggedIn'
 import tasks from './Task/tasks'
+import repositories from './github/repositories'
+import issues from './github/issues'
 
 // Use "*" to use all fields
 export default prismaObjectType({
@@ -24,6 +26,10 @@ export default prismaObjectType({
     t.field("loggedIn", loggedIn)
     //@ts-ignore
     t.field('organizations', organizations)
+    //@ts-ignore
+    t.field('repositories', repositories)
+    //@ts-ignore
+    t.field('issues', issues)
     //@ts-ignore
     t.field('tasks', tasks)
   }

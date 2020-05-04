@@ -2,6 +2,7 @@ import { prismaObjectType } from "nexus-prisma";
 import createTask from './Task/createTask'
 import createLabel from './Label/createLabel'
 import signIn from './auth/signIn'
+import githubLogin from './auth/githubLogin'
 import signUp from './auth/signUp'
 import resendVerificationEmail from './auth/resendVerificationEmail'
 import resetPassword from './auth/resetPassword'
@@ -35,6 +36,8 @@ export default prismaObjectType({
     t.field("resetPassword", resetPassword);
     //@ts-ignore
     t.field("signIn", signIn);
+    //@ts-ignore
+    t.field("githubLogin", githubLogin);
     //@ts-ignore
     t.field("signUp", signUp);
   },

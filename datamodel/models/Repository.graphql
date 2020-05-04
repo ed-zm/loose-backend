@@ -1,0 +1,12 @@
+type Repository {
+  id: ID! @id
+  name: String!
+  fullName: String!
+  private: Boolean
+  updatedAt: DateTime
+  language: String
+  openIssuesCount: Int
+  description: String
+  stargazersCount: Int
+  forksCount: Int
+}
