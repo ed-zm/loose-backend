@@ -1,4 +1,4 @@
-type Issue {
+type GithubIssue {
   id: ID! @id
   title: String!
   state: String

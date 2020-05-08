@@ -2,7 +2,7 @@ import axios from 'axios'
 import { idArg, stringArg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async (_, { organizationId, repository }, ctx, info) => {
+const resolve = async (_, { organizationId, projectId }, ctx, info) => {
   const user = await authenticate(ctx)
   if(!user) throw new Error('Invalid Token')
   const organizations = await ctx.prisma.organizations({
@@ -15,38 +15,32 @@ const resolve = async (_, { organizationId, repository }, ctx, info) => {
   const organization = organizations.length ? organizations[0] : null
   if(!organization) throw new Error("Invalid Organization")
   const response = await axios.get(
-    `https://api.github.com/repos/${repository}/issues`,
+    `https://api.github.com/projects/${projectId}/columns`,
     {
       headers: {
+        Accept: 'application/vnd.github.inertia-preview+json',
         Authorization: `token ${organization.githubToken}`
       }
     }
   )
   if(response && response.status === 200) {
-    const issues = response.data.map(issue => ({
-      id: issue.id,
-      title: issue.title,
-      state: issue.state,
-      number: issue.number,
-      updatedAt: issue.updated_at,
-      createdAt: issue.created_at,
-      closedAt: issue.closed_at,
-      url: issue.url,
-      body: issue.body,
-      comments: issue.comments
+    const projects = response.data.map(project => ({
+      id: project.id,
+      updatedAt: project.updated_at,
+      createdAt: project.created_at
     }))
-    return issues
+    return projects
   } else {
-    throw new Error("An Error Ocurring fetching Issues")
+    throw new Error("An Error Ocurring fetching Columns")
   }
 }
 
 export default {
-  type: "GithubIssue",
+  type: "GithubColumn",
   list: true,
   args: {
     organizationId: idArg({ nullable: false }),
-    repository: stringArg({ nullable: false })
+    projectId: stringArg({ nullable: false })
   },
   nullable: false,
   resolve

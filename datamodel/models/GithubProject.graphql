@@ -1,0 +1,9 @@
+type GithubProject {
+  id: ID! @id
+  name: String!
+  body: String
+  url: String
+  number: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+}

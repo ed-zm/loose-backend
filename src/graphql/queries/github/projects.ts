@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { idArg, stringArg } from 'nexus'
+import { idArg, stringArg, booleanArg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async (_, { organizationId, repository }, ctx, info) => {
@@ -15,38 +15,39 @@ const resolve = async (_, { organizationId, repository }, ctx, info) => {
   const organization = organizations.length ? organizations[0] : null
   if(!organization) throw new Error("Invalid Organization")
   const response = await axios.get(
-    `https://api.github.com/repos/${repository}/issues`,
+    `https://api.github.com/orgs/loose_dev/projects?state=all`,
     {
       headers: {
+        'Accept': 'application/vnd.github.inertia-preview+json',
         Authorization: `token ${organization.githubToken}`
       }
     }
   )
+  console.log('--------------------after', response)
   if(response && response.status === 200) {
-    const issues = response.data.map(issue => ({
-      id: issue.id,
-      title: issue.title,
-      state: issue.state,
-      number: issue.number,
-      updatedAt: issue.updated_at,
-      createdAt: issue.created_at,
-      closedAt: issue.closed_at,
-      url: issue.url,
-      body: issue.body,
-      comments: issue.comments
+    console.log(response)
+    const projects = response.data.map(project => ({
+      id: project.id,
+      name: project.name,
+      number: project.number,
+      updatedAt: project.updated_at,
+      createdAt: project.created_at,
+      url: project.url,
+      body: project.body,
     }))
-    return issues
+    return projects
   } else {
-    throw new Error("An Error Ocurring fetching Issues")
+    throw new Error("An Error Ocurring fetching Projects")
   }
 }
 
 export default {
-  type: "GithubIssue",
+  type: "GithubProject",
   list: true,
   args: {
     organizationId: idArg({ nullable: false }),
-    repository: stringArg({ nullable: false })
+    isOrganization: booleanArg({ nullable: true }),
+    username: stringArg({ nullable: true })
   },
   nullable: false,
   resolve

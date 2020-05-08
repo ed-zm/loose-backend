@@ -1,4 +1,4 @@
-type Repository {
+type GithubRepository {
   id: ID! @id
   name: String!
   fullName: String!

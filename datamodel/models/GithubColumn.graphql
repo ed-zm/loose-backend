@@ -1,0 +1,5 @@
+type GithubColumn {
+  id: ID! @id
+  createdAt: DateTime
+  updatedAt: DateTime
+}

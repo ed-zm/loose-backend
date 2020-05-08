@@ -14,6 +14,14 @@ const resolve = async (_, { organizationId }, ctx, info) => {
     }})
   const organization = organizations.length ? organizations[0] : null
   if(!organization) throw new Error("Invalid Organization")
+  // const githubUser = await axios.get(
+  //   'https://api.github.com/user/repos',
+  //   {
+  //     headers: {
+  //       Authorization: `token ${organization.githubToken}`
+  //     }
+  //   }
+  // )
   const response = await axios.get(
     'https://api.github.com/user/repos',
     {
@@ -42,7 +50,7 @@ const resolve = async (_, { organizationId }, ctx, info) => {
 }
 
 export default {
-  type: "Repository",
+  type: "GithubRepository",
   list: true,
   args: {
     organizationId: idArg({ nullable: false })
