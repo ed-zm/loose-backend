@@ -3,7 +3,7 @@ secret: ${env:PRISMA_SECRET}
 datamodel:
   - datamodel/models/Comment.graphql
   - datamodel/models/GithubCard.graphql
-  - datamodel/models/githubColumn.graphql
+  - datamodel/models/GithubColumn.graphql
   - datamodel/models/GithubIssue.graphql
   - datamodel/models/GithubProject.graphql
   - datamodel/models/GithubRepository.graphql
