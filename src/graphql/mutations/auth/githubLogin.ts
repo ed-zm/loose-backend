@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { stringArg, booleanArg, idArg } from 'nexus'
+import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { organizationId, code }, ctx, user }) => {
   const response = await axios.post('https://github.com/login/oauth/access_token', {

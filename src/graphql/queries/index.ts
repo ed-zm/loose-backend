@@ -35,7 +35,7 @@ export default prismaObjectType({
     //@ts-ignore
     t.field('githubColumns', githubColumns)
     //@ts-ignore
-    t.field('GithubOrganizations', githubOrganizations)
+    t.field('githubOrganizations', githubOrganizations)
     //@ts-ignore
     t.field('githubProjects', githubProjects)
     //@ts-ignore
