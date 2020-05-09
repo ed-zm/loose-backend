@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { stringArg, booleanArg, idArg } from 'nexus'
 
-const resolve = async (_, { organizationId, code }, ctx, info) => {
+const resolve = async ({ args: { organizationId, code }, ctx, user }) => {
   const response = await axios.post('https://github.com/login/oauth/access_token', {
     client_id: process.env.GITHUB_CLIENT_ID,
     client_secret: process.env.GITHUB_CLIENT_SECRET,
@@ -23,5 +23,5 @@ export default {
     code: stringArg({ nullable: false })
   },
   nullable: false,
-  resolve
+  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
 }

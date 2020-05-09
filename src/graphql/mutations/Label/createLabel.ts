@@ -1,6 +1,6 @@
 import { arg } from 'nexus'
 
-const resolve = async (_, { data }, ctx, info) => {
+const resolve = async ({ args: { data }, ctx, user }) => {
   const label = await ctx.prisma.label({ text: data.text })
   if(label) {
     return ctx.prisma.updateLabel({
@@ -19,5 +19,5 @@ export default {
     data: arg({ type: 'LabelCreateInput', required: true })
   },
   nullable: false,
-  resolve
+  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
 }

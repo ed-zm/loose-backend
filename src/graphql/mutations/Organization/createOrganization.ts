@@ -1,9 +1,7 @@
 import { arg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async (_, { data }, ctx, info) => {
-  const user = await authenticate(ctx)
-  if(!user) throw new Error('Not Logged In')
+const resolve = async ({ args: { data }, ctx, user }) => {
   if(data.owner && data.owner.connect && data.owner.connect.id && data.owner.connect.id !== user.id) {
     throw new Error(`You can't create an organization for other users`)
   }
@@ -13,12 +11,12 @@ const resolve = async (_, { data }, ctx, info) => {
       //@ts-ignore
       connect: { id: user ? user.id : '' }
     }
-  }, info)
+  })
 }
 
 export default {
   type: "Organization",
   args: arg({ type: 'OrganizationCreateInput' }),
   nullable: false,
-  resolve
+  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
 }

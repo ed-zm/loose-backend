@@ -2,9 +2,7 @@ import axios from 'axios'
 import { idArg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async (_, { organizationId }, ctx, info) => {
-  const user = await authenticate(ctx)
-  if(!user) throw new Error('Invalid Token')
+const resolve = async ({ args: { organizationId }, ctx, user }) => {
   const organizations = await ctx.prisma.organizations({
     where: {
       id: organizationId,
@@ -14,14 +12,6 @@ const resolve = async (_, { organizationId }, ctx, info) => {
     }})
   const organization = organizations.length ? organizations[0] : null
   if(!organization) throw new Error("Invalid Organization")
-  // const githubUser = await axios.get(
-  //   'https://api.github.com/user/repos',
-  //   {
-  //     headers: {
-  //       Authorization: `token ${organization.githubToken}`
-  //     }
-  //   }
-  // )
   const response = await axios.get(
     'https://api.github.com/user/repos',
     {
@@ -53,8 +43,9 @@ export default {
   type: "GithubRepository",
   list: true,
   args: {
-    organizationId: idArg({ nullable: false })
+    organizationId: idArg({ nullable: false }),
+    // organization: stringArg({ nullable: false })
   },
   nullable: false,
-  resolve
+  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
 }

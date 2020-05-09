@@ -5,6 +5,7 @@ import loggedIn from './auth/loggedIn'
 import tasks from './Task/tasks'
 import githubCards from './github/cards'
 import githubColumns from './github/columns'
+import githubOrganizations from './github/organizations'
 import githubProjects from './github/projects'
 import githubRepositories from './github/repositories'
 import githubIssues from './github/issues'
@@ -33,6 +34,8 @@ export default prismaObjectType({
     t.field('githubCards', githubCards)
     //@ts-ignore
     t.field('githubColumns', githubColumns)
+    //@ts-ignore
+    t.field('GithubOrganizations', githubOrganizations)
     //@ts-ignore
     t.field('githubProjects', githubProjects)
     //@ts-ignore

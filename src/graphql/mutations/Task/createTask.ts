@@ -2,11 +2,9 @@ import { arg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 import randomString from '../../../helpers/randomString'
 
-const resolve = async (_, { data: args }, ctx, info) => {
-  const user: any = await authenticate(ctx)
+const resolve = async ({ args: { data: args }, ctx, user}) => {
   let isCreatorOwner = false
   let isCreatorMember = false
-  console.log('ARGS', args)
   if(args.organization) {
     const organization = await ctx.prisma.organization(
       { id: args.organization.connect.id }).$fragment(
@@ -49,5 +47,5 @@ export default {
     data: arg({ type: 'TaskCreateInput', required: true })
   },
   nullable: false,
-  resolve
+  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
 }

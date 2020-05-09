@@ -2,8 +2,7 @@ import { arg, intArg, stringArg } from 'nexus'
 import prisma from '../../../prisma'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async (_, { where, ...args }, ctx, info) => {
-  const user: any = await authenticate(ctx)
+const resolve = async ({ args: { where, ...args }, ctx, user }) => {
   if(user) {
     // const organizationWhere = {
     //   OR: [
@@ -45,5 +44,5 @@ export default {
     last: intArg()
   },
   nullable: false,
-  resolve
+  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
 }

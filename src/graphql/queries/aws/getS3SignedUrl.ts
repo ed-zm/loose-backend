@@ -2,7 +2,7 @@ import { S3 } from 'aws-sdk'
 import { stringArg, idArg, booleanArg } from 'nexus'
 import uid from 'uid'
 
-const resolve = async (_, { fileType, id, operation, random }, ctx, info) => {
+const resolve = async ({ args: { fileType, id, operation, random }, ctx, user }) => {
   const s3 = new S3({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -29,5 +29,5 @@ const resolve = async (_, { fileType, id, operation, random }, ctx, info) => {
       random: booleanArg({ nullable: true })
     },
     nullable: false,
-    resolve
+    resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
   }

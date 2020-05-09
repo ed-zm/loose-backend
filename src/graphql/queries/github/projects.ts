@@ -2,9 +2,7 @@ import axios from 'axios'
 import { idArg, stringArg, booleanArg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async (_, { organizationId, repository }, ctx, info) => {
-  const user = await authenticate(ctx)
-  if(!user) throw new Error('Invalid Token')
+const resolve = async ({ args: { organizationId, repository }, ctx, user }) => {
   const organizations = await ctx.prisma.organizations({
     where: {
       id: organizationId,
@@ -23,7 +21,6 @@ const resolve = async (_, { organizationId, repository }, ctx, info) => {
       }
     }
   )
-  console.log('--------------------after', response)
   if(response && response.status === 200) {
     console.log(response)
     const projects = response.data.map(project => ({
@@ -50,5 +47,5 @@ export default {
     username: stringArg({ nullable: true })
   },
   nullable: false,
-  resolve
+  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
 }

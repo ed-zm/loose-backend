@@ -1,8 +1,7 @@
 import { arg, intArg, stringArg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async (_, { where = {}, ...rest }, ctx, info) => {
-  const user = await authenticate(ctx)
+const resolve = async ({ args: { where = {}, ...rest }, ctx, user }) => {
   return ctx.prisma.organizations({
     where: {
       ...where,
@@ -11,7 +10,7 @@ const resolve = async (_, { where = {}, ...rest }, ctx, info) => {
       }
     },
     ...rest
-  }, info)
+  })
 }
 
 export default {
@@ -27,5 +26,5 @@ export default {
     last: intArg()
   },
   nullable: false,
-  resolve
+  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
 }

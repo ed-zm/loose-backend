@@ -2,6 +2,7 @@ type Organization {
   id: ID! @id
   name: String!
   githubToken: String
+  githubOrganization: String
   owner: User! @relation(name: "UserOrganizations", onDelete: "SET_NULL")
   teams: [Team!]! @relation(name: "OrganizationTeams", onDelete: "CASCADE")
   users: [User!]! @relation(name: "OrganizationUsers", onDelete: "SET_NULL")

@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken'
 
-export default async ctx => {
+export default async ({ args, resolve, ctx })=> {
   let user = null
-  const token = ctx.request.get('Authorization')
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+  const token = await ctx.request.get('Authorization')
+  await jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if(err) {
       return
     } else {
@@ -11,5 +11,5 @@ export default async ctx => {
     }
   })
   if(!user) throw new Error('Unauthenticated')
-  return user
+  return await resolve({ args, ctx, user })
 }
