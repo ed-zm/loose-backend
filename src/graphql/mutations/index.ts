@@ -16,6 +16,7 @@ export default prismaObjectType({
     t.prismaFields([
       "createComment",
       "createOrganization",
+      "updateOrganization",
       "updateTask",
       "deleteTask",
       "createTeam",

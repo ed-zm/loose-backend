@@ -12,8 +12,9 @@ const resolve = async ({ args: { organizationId, repository }, ctx, user }) => {
     }})
   const organization = organizations.length ? organizations[0] : null
   if(!organization) throw new Error("Invalid Organization")
+  if(!organization.githubOrganization) throw new Error("There is not a linked Organization")
   const response = await axios.get(
-    `https://api.github.com/orgs/loose_dev/projects?state=all`,
+    `https://api.github.com/orgs/${organization.githubOrganization}/projects`,
     {
       headers: {
         'Accept': 'application/vnd.github.inertia-preview+json',
@@ -42,9 +43,7 @@ export default {
   type: "GithubProject",
   list: true,
   args: {
-    organizationId: idArg({ nullable: false }),
-    isOrganization: booleanArg({ nullable: true }),
-    username: stringArg({ nullable: true })
+    organizationId: idArg({ nullable: false })
   },
   nullable: false,
   resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })

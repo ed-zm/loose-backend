@@ -2,7 +2,7 @@ import axios from 'axios'
 import { idArg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { organizationId }, ctx, user }) => {
+const resolve = async ({ args: { organizationId, githubOrg }, ctx, user }) => {
   const organizations = await ctx.prisma.organizations({
     where: {
       id: organizationId,
@@ -12,8 +12,9 @@ const resolve = async ({ args: { organizationId }, ctx, user }) => {
     }})
   const organization = organizations.length ? organizations[0] : null
   if(!organization) throw new Error("Invalid Organization")
+  if(!organization.githubOrganization) throw new Error("There is not a linked Organization")
   const response = await axios.get(
-    'https://api.github.com/user/repos',
+    `https://api.github.com/orgs/${organization.githubOrganization}/repos`,
     {
       headers: {
         Authorization: `token ${organization.githubToken}`
@@ -43,8 +44,7 @@ export default {
   type: "GithubRepository",
   list: true,
   args: {
-    organizationId: idArg({ nullable: false }),
-    // organization: stringArg({ nullable: false })
+    organizationId: idArg({ nullable: false })
   },
   nullable: false,
   resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
