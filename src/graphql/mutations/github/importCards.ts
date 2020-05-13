@@ -30,6 +30,8 @@ const resolve = async ({ args: { organizationId, columnId, projectId }, ctx, use
       }
     })
     const cards = await Promise.all(response.data.map(async card => {
+      const exists = tasksCreated.find(task => task.id === `card-${card.id}`)
+      if(exists) return null
       if(card.content_url) {
         const issuesResponse = await axios.get(
           card.content_url,
@@ -47,7 +49,7 @@ const resolve = async ({ args: { organizationId, columnId, projectId }, ctx, use
             body: issuesResponse.data.body
           })
         } else {
-          throw new Error('Could not fetch Issue')
+          return null
         }
       } else {
         return ({
@@ -58,7 +60,10 @@ const resolve = async ({ args: { organizationId, columnId, projectId }, ctx, use
         })
       }
     }))
-    const cardsToCreate = cards.filter(card => !tasksCreated.find(task => task.id === card.id))
+    const cardsToCreate = cards.filter(card => {
+      if(!card) return false
+      return !tasksCreated.find(task => task.id === card.id)
+    })
     const promises = await Promise.all(
       cardsToCreate.map(card => {
         return ctx.prisma.createTask({
