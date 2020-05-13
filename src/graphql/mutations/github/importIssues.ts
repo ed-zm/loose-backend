@@ -23,7 +23,7 @@ const resolve = async ({ args: { organizationId, repository, open }, ctx, user }
   )
   if(response && response.status === 200) {
     const issues = response.data.map(issue => ({
-      id: issue.id.toString(),
+      id: `issue-${issue.id.toString()}`,
       title: issue.title,
       state: issue.state,
       body: issue.body

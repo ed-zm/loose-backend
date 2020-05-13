@@ -24,7 +24,7 @@ const resolve = async ({ args: { organizationId, columnId, projectId }, ctx, use
   )
   if(response && response.status === 200) {
     const cards = response.data.map(card => ({
-      id: card.id.toString(),
+      id: `card-${card.id.toString()}`,
       title: card.node_id,
       state: 0,
       body: card.node_id
