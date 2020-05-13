@@ -10,6 +10,7 @@ import githubProjects from './github/projects'
 import githubRepositories from './github/repositories'
 import githubIssues from './github/issues'
 
+
 // Use "*" to use all fields
 export default prismaObjectType({
   name: "Query",

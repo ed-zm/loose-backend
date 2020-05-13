@@ -8,6 +8,8 @@ import resendVerificationEmail from './auth/resendVerificationEmail'
 import resetPassword from './auth/resetPassword'
 import confirmEmail from './auth/confirmEmail'
 import confirmResetPassword from './auth/confirmResetPassword'
+import importGithubIssues from './github/importIssues'
+import importGithubCards from './github/importCards'
 
 // Use "*" to use all fields
 export default prismaObjectType({
@@ -31,6 +33,10 @@ export default prismaObjectType({
     t.field("confirmEmail", confirmEmail);
     //@ts-ignore
     t.field("confirmResetPassword", confirmResetPassword);
+    //@ts-ignore
+    t.field('importGithubCards', importGithubCards)
+    //@ts-ignore
+    t.field('importGithubIssues', importGithubIssues)
     //@ts-ignore
     t.field("resendVerificationEmail", resendVerificationEmail)
     //@ts-ignore
