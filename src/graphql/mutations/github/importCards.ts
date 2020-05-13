@@ -23,18 +23,41 @@ const resolve = async ({ args: { organizationId, columnId, projectId }, ctx, use
     }
   )
   if(response && response.status === 200) {
-    const cards = response.data.map(card => ({
-      id: `card-${card.id.toString()}`,
-      title: card.node_id,
-      state: 0,
-      body: card.node_id
-    }))
-    const cardsIds = cards.map(card => card.id)
+    const cardsIds = response.data.map(card => `card-${card.id}`)
     const tasksCreated = await ctx.prisma.tasks({
       where: {
         id_in: cardsIds
       }
     })
+    const cards = await Promise.all(response.data.map(async card => {
+      if(card.content_url) {
+        const issuesResponse = await axios.get(
+          card.content_url,
+          {
+            headers: {
+              Authorization: `token ${organization.githubToken}`
+            }
+          }
+        )
+        if(issuesResponse && issuesResponse.status === 200) {
+          return ({
+            id: `card-${card.id.toString()}`,
+            title: issuesResponse.data.title,
+            state: issuesResponse.data.state === 'open' ? 0 : 1,
+            body: issuesResponse.data.body
+          })
+        } else {
+          throw new Error('Could not fetch Issue')
+        }
+      } else {
+        return ({
+          id: `card-${card.id.toString()}`,
+          title: card.note,
+          state: 0,
+          body: ''
+        })
+      }
+    }))
     const cardsToCreate = cards.filter(card => !tasksCreated.find(task => task.id === card.id))
     const promises = await Promise.all(
       cardsToCreate.map(card => {

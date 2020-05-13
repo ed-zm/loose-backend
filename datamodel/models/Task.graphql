@@ -2,7 +2,7 @@ type Task {
   id: ID! @id
   code: String @unique
   title: String!
-  description: String!
+  description: String
   estimated: Int! @default(value: 0)
   state: Int @default(value: 0)
   createdBy: User! @relation(name: "TasksCreatedBy", onDelete: "SET_NULL")
