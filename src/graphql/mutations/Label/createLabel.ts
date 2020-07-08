@@ -1,4 +1,5 @@
 import { arg } from 'nexus'
+import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { data }, ctx, user }) => {
   const label = await ctx.prisma.label({ text: data.text })
