@@ -19,6 +19,7 @@ export default prismaObjectType({
       "createComment",
       "createOrganization",
       "updateOrganization",
+      "deleteOrganization",
       "updateTask",
       "deleteTask",
       "createTeam",

@@ -23,7 +23,6 @@ const resolve = async ({ args: { organizationId, repository }, ctx, user }) => {
     }
   )
   if(response && response.status === 200) {
-    console.log(response)
     const projects = response.data.map(project => ({
       id: project.id,
       name: project.name,
