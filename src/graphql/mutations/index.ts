@@ -24,6 +24,7 @@ export default prismaObjectType({
       "deleteTask",
       "createTeam",
       "updateTeam",
+      "deleteTeam",
       "updateUser"
     ]);
     //@ts-ignore
