@@ -2,12 +2,12 @@ import { arg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { data }, ctx, user }) => {
-  if(data.owner && data.owner.connect && data.owner.connect.id && data.owner.connect.id !== user.id) {
-    throw new Error(`You can't create an organization for other users`)
+  if(data.user && data.user.connect && data.user.connect.id && data.user.connect.id !== user.id) {
+    throw new Error(`You can't create a comment for other users`)
   }
-  return ctx.prisma.createOrganization({
+  return ctx.prisma.createComment({
     ...data,
-    owner: {
+    user: {
       //@ts-ignore
       connect: { id: user ? user.id : '' }
     }
@@ -15,9 +15,9 @@ const resolve = async ({ args: { data }, ctx, user }) => {
 }
 
 export default {
-  type: "Organization",
+  type: "Comment",
   args: {
-    data: arg({ type: 'OrganizationCreateInput' })
+    data: arg({ type: 'CommentCreateInput' })
   },
   nullable: false,
   resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })

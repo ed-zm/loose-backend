@@ -1,6 +1,16 @@
 import { prismaObjectType } from "nexus-prisma";
+import createOrganization from './Organization/createOrganization'
+import updateOrganization from './Organization/updateOrganization'
+import deleteOrganization from './Organization/deleteOrganization'
+import updateUser from './User/updateUser'
+import deleteUser from './User/deleteUser'
+import updateTeam from './Team/updateTeam'
+import deleteTeam from './Team/deleteTeam'
 import createTask from './Task/createTask'
+import updateTask from './Task/updateTask'
+import deleteTask from './Task/deleteTask'
 import createLabel from './Label/createLabel'
+import createComment from './Comment/createComment'
 import signIn from './auth/signIn'
 import githubLogin from './auth/githubLogin'
 import signUp from './auth/signUp'
@@ -16,21 +26,47 @@ export default prismaObjectType({
   name: "Mutation",
   definition(t) {
     t.prismaFields([
-      "createComment",
-      "createOrganization",
-      "updateOrganization",
-      "deleteOrganization",
-      "updateTask",
-      "deleteTask",
-      "createTeam",
-      "updateTeam",
-      "deleteTeam",
-      "updateUser"
     ]);
+
+    /* ------------------ USER ------------------ */
     //@ts-ignore
-    t.field("createLabel", createLabel);
+    t.field("updateUser", updateUser);
+    //@ts-ignore
+    t.field("deleteUser", deleteUser);
+
+    /* ------------------ ORGANIZATION ------------------ */
+    //@ts-ignore
+    t.field("createOrganization", createOrganization);
+    //@ts-ignore
+    t.field("updateOrganization", updateOrganization);
+    //@ts-ignore
+    t.field("deleteOrganization", deleteOrganization);
+
+    /* ------------------ TASK ------------------ */
     //@ts-ignore
     t.field("createTask", createTask);
+    //@ts-ignore
+    t.field("updateTask", updateTask);
+    //@ts-ignore
+    t.field("deleteTask", deleteTask);
+
+    /* ------------------ TEAM ------------------ */
+    //@ts-ignore
+    t.field("createTeam", createTeam);
+    //@ts-ignore
+    t.field("updateTeam", updateTeam);
+    //@ts-ignore
+    t.field("deleteTeam", deleteTeam);
+
+    /* ------------------ LABEL ------------------ */
+    //@ts-ignore
+    t.field("createLabel", createLabel);
+
+    /* ------------------ COMMENT ------------------ */
+    //@ts-ignore
+    t.field("createComment", createComment);
+
+    /* ------------------ CUSTOM ------------------ */
     //@ts-ignore
     t.field("confirmEmail", confirmEmail);
     //@ts-ignore
