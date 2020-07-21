@@ -11,6 +11,7 @@ import createTask from './Task/createTask'
 import updateTask from './Task/updateTask'
 import deleteTask from './Task/deleteTask'
 import createLabel from './Label/createLabel'
+import updateLabel from './Label/updateLabel'
 import createComment from './Comment/createComment'
 import updateComment from './Comment/updateComment'
 import deleteComment from './Comment/deleteComment'
@@ -63,6 +64,8 @@ export default prismaObjectType({
     /* ------------------ LABEL ------------------ */
     //@ts-ignore
     t.field("createLabel", createLabel);
+    //@ts-ignore
+    t.field("updateLabel", updateLabel);
 
     /* ------------------ COMMENT ------------------ */
     //@ts-ignore
