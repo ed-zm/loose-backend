@@ -17,9 +17,10 @@ const resolve = async ({ args: { data }, ctx, user }) => {
   if(isOrganizationMember) {
     return ctx.prisma.createTeam({
       ...data,
-      owner: {
-        //@ts-ignore
-        connect: { id: user ? user.id : '' }
+      users: {
+        connect: [
+          { id: user.id }
+        ]
       }
     })
   }

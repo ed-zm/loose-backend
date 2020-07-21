@@ -4,6 +4,7 @@ import updateOrganization from './Organization/updateOrganization'
 import deleteOrganization from './Organization/deleteOrganization'
 import updateUser from './User/updateUser'
 import deleteUser from './User/deleteUser'
+import createTeam from './Team/createTeam'
 import updateTeam from './Team/updateTeam'
 import deleteTeam from './Team/deleteTeam'
 import createTask from './Task/createTask'
@@ -11,6 +12,8 @@ import updateTask from './Task/updateTask'
 import deleteTask from './Task/deleteTask'
 import createLabel from './Label/createLabel'
 import createComment from './Comment/createComment'
+import updateComment from './Comment/updateComment'
+import deleteComment from './Comment/deleteComment'
 import signIn from './auth/signIn'
 import githubLogin from './auth/githubLogin'
 import signUp from './auth/signUp'
@@ -25,8 +28,7 @@ import importGithubCards from './github/importCards'
 export default prismaObjectType({
   name: "Mutation",
   definition(t) {
-    t.prismaFields([
-    ]);
+    t.prismaFields([]);
 
     /* ------------------ USER ------------------ */
     //@ts-ignore
@@ -65,6 +67,10 @@ export default prismaObjectType({
     /* ------------------ COMMENT ------------------ */
     //@ts-ignore
     t.field("createComment", createComment);
+    //@ts-ignore
+    t.field("updateComment", updateComment);
+    // //@ts-ignore
+    t.field("deleteComment", deleteComment);
 
     /* ------------------ CUSTOM ------------------ */
     //@ts-ignore
