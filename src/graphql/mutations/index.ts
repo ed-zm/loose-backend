@@ -24,6 +24,7 @@ import confirmEmail from './auth/confirmEmail'
 import confirmResetPassword from './auth/confirmResetPassword'
 import importGithubIssues from './github/importIssues'
 import importGithubCards from './github/importCards'
+import inviteToOrganization from './invite/inviteToOrganization'
 
 // Use "*" to use all fields
 export default prismaObjectType({
@@ -94,6 +95,8 @@ export default prismaObjectType({
     t.field("githubLogin", githubLogin);
     //@ts-ignore
     t.field("signUp", signUp);
+    //@ts-ignore
+    t.field("inviteToOrganization", inviteToOrganization);
   },
 });
 

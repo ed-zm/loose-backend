@@ -8,6 +8,7 @@ datamodel:
   - datamodel/models/GithubProject.graphql
   - datamodel/models/GithubOrganization.graphql
   - datamodel/models/GithubRepository.graphql
+  - datamodel/models/Invite.graphql
   - datamodel/models/Label.graphql
   - datamodel/models/Organization.graphql
   - datamodel/models/ResponseRequest.graphql

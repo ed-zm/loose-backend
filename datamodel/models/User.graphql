@@ -18,6 +18,8 @@ type User {
   ownOrganizations: [Organization!]! @relation(name: "UserOrganizations", onDelete: "CASCADE")
   organizations: [Organization!]! @relation(name: "OrganizationUsers", onDelete: "SET_NULL")
   roles: [Role!]! @relation(name: "UserRoles", onDelete: "SET_NULL")
+  sentInvites: [Invite!]! @relation(name: "UserSentInvites", onDelete: "CASCADE")
+  receivedInvites: [Invite!]! @relation(name: "UserReceivedInvites", onDelete: "CASCADE")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
