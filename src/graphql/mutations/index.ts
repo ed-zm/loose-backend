@@ -24,7 +24,7 @@ import confirmEmail from './auth/confirmEmail'
 import confirmResetPassword from './auth/confirmResetPassword'
 import importGithubIssues from './github/importIssues'
 import importGithubCards from './github/importCards'
-import inviteToOrganization from './invite/inviteToOrganization'
+import inviteToOrganization from './Invite/inviteToOrganization'
 
 // Use "*" to use all fields
 export default prismaObjectType({
