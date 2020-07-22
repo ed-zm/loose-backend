@@ -22,9 +22,8 @@ const resolve = async ({ args: { data }, ctx, user }) => {
     ${currentUser.firstName} ${currentUser.lastName} has invited you to join ${organization.name}`,
     const text = `Hi ${invitedUser.firstName} ${invitedUser.lastName},
     ${currentUser.firstName} ${currentUser.lastName} has invited you to join the ${organization.name} Organization.
-    Please go to https://alpha.loose.dev/dashboard/organization/${organization.id} to join.
+    Please go to https://alpha.loose.dev/dashboard/invite/${code} to join.
     `
-    console.log('CODE', organization)
     const response = await ctx.prisma.createInvite({
       ...data,
       type: 'ORGANIZATION',

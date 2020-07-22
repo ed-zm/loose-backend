@@ -6,7 +6,7 @@ type Invite {
   title: String
   text: String
   type: InviteType!
-  typeId: String!
+  typeId: ID!
   expireAt: DateTime
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt

@@ -9,7 +9,7 @@ import githubOrganizations from './github/organizations'
 import githubProjects from './github/projects'
 import githubRepositories from './github/repositories'
 import githubIssues from './github/issues'
-
+import invite from './Invite/invite'
 
 // Use "*" to use all fields
 export default prismaObjectType({
@@ -25,6 +25,8 @@ export default prismaObjectType({
       "user",
       "users"
     ]);
+    //@ts-ignore
+    t.field("invite", invite)
     //@ts-ignore
     t.field("getS3SignedUrl", getS3SignedUrl)
     //@ts-ignore
@@ -47,23 +49,3 @@ export default prismaObjectType({
     t.field('tasks', tasks)
   }
 })
-// import prisma from '../../prisma'
-// import createResolver from '../../helpers/createResolver'
-// import tasks from './Task/tasks'
-
-// let Query = {}
-// const queryResolvers = [...Object.keys(prisma.query)]
-
-// queryResolvers.forEach(key => {
-//   Query[key] = async (_, args, ctx, info) => {
-//     const callback = () => prisma.query[key](args, info)
-//     return createResolver(key, ctx, callback)
-//   }
-// })
-
-// Query = {
-//   ...Query,
-//   tasks
-// }
-
-// export default Query

@@ -5,9 +5,18 @@ const resolve = async ({ args: { where = {}, ...rest }, ctx, user }) => {
   return ctx.prisma.organizations({
     where: {
       ...where,
-      owner: {
-        id: user ? user.id : ''
-      }
+      OR: [
+        {
+          owner: {
+            id: user.id
+          }
+        },
+        {
+          users_some: {
+            id: user.id
+          }
+        }
+      ]
     },
     ...rest
   })
