@@ -2,7 +2,7 @@ import { arg, intArg, stringArg } from 'nexus'
 import prisma from '../../../prisma'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { where, ...args }, ctx, user }) => {
+const resolve = async ({ args: { where, ...args }, ctx, info, user }) => {
   if(user) {
     // const organizationWhere = {
     //   OR: [
@@ -14,7 +14,7 @@ const resolve = async ({ args: { where, ...args }, ctx, user }) => {
     // //@ts-ignore
     // const organizationIds = organizations.map(organization => organization.id) || []
     // const tasks = await prisma.tasks({where: { ...where, organization: { id_in: organizationIds }}, ...args })
-    const tasks = await ctx.prisma.tasks({
+    const tasks = await ctx.prisma.tasksConnection({
       where: {
         ...where,
         OR: [
@@ -23,7 +23,7 @@ const resolve = async ({ args: { where, ...args }, ctx, user }) => {
         ]
       },
       ...args
-    })
+    }, info)
     return tasks
   } else {
     return []
@@ -32,8 +32,7 @@ const resolve = async ({ args: { where, ...args }, ctx, user }) => {
 
 
 export default {
-  type: "Task",
-  list: true,
+  type: "TaskConnection",
   args: {
     where: arg({ type: 'TaskWhereInput' }),
     orderBy: arg({ type: 'TaskOrderByInput' }),

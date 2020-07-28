@@ -2,7 +2,7 @@ import { arg, intArg, stringArg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { where = {}, ...rest }, ctx, user }) => {
-  return ctx.prisma.organizations({
+  return ctx.prisma.organizationsConnection({
     where: {
       ...where,
       OR: [
@@ -23,8 +23,7 @@ const resolve = async ({ args: { where = {}, ...rest }, ctx, user }) => {
 }
 
 export default {
-  type: "Organization",
-  list: true,
+  type: "OrganizationConnection",
   args: {
     where: arg({ type: 'OrganizationWhereInput' }),
     orderBy: arg({ type: 'OrganizationOrderByInput' }),
