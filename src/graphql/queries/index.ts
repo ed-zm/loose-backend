@@ -4,6 +4,8 @@ import organizations from './Organization/organizations'
 import loggedIn from './auth/loggedIn'
 import tasks from './Task/tasks'
 import teams from './Team/teams'
+import comments from './Comment/comments'
+import users from './User/users'
 import githubCards from './github/cards'
 import githubColumns from './github/columns'
 import githubOrganizations from './github/organizations'
@@ -17,13 +19,11 @@ export default prismaObjectType({
   name: "Query",
   definition(t) {
     t.prismaFields([
-      "comments",
       "labels",
       "organization",
       "task",
       "team",
       "user",
-      "users"
     ]);
     //@ts-ignore
     t.field("invite", invite)
@@ -35,6 +35,10 @@ export default prismaObjectType({
     t.field('organizations', organizations)
     //@ts-ignore
     t.field('teams', teams)
+    //@ts-ignore
+    t.field('comments', comments)
+    //@ts-ignore
+    t.field('users', users)
     //@ts-ignore
     t.field('githubCards', githubCards)
     //@ts-ignore
