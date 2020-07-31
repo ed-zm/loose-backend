@@ -4,7 +4,10 @@ import authenticate from '../../../helpers/authenticate'
 const resolve = async ({ args, ctx, user }) => {
   return ctx.prisma.usersConnection({
     ...args,
-    emailVerifiedAt_not: null
+    where: {
+      ...args.where,
+      emailVerifiedAt_not: null
+    }
   })
 }
 
