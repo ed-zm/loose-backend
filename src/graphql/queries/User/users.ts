@@ -2,7 +2,10 @@ import { arg, intArg, stringArg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args, ctx, user }) => {
-  return ctx.prisma.usersConnection(args)
+  return ctx.prisma.usersConnection({
+    ...args,
+    emailVerifiedAt_not: null
+  })
 }
 
 export default {
