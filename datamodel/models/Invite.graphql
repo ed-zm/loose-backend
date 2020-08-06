@@ -2,7 +2,8 @@ type Invite {
   id: ID! @id
   code: String! @unique
   from: User! @relation(name: "UserSentInvites", onDelete: "SET_NULL")
-  to: User! @relation(name: "UserReceivedInvites", onDelete: "SET_NULL")
+  to: User @relation(name: "UserReceivedInvites", onDelete: "SET_NULL")
+  email: String
   title: String
   text: String
   type: InviteType!

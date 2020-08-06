@@ -5,27 +5,35 @@ import { sendEmail } from '../../../helpers/email'
 import uid from 'uid'
 
 const resolve = async ({ args: { data }, ctx, user }) => {
-  const isOwner = await ctx.prisma.$exists.organization({
-    id: data.typeId,
-    owner: {
-      id: user.id
-    }
-  })
-  const invitedUser = await ctx.prisma.user({ id: data.to.connect.id }, '{ id, email, firstName, lastName }')
-  if(!!isOwner && !!invitedUser) {
+  const to = data.to.connect.id
+  let isOwner = null
+  if(data.type === 'ORGANIZATION') {
+    isOwner = await ctx.prisma.$exists.organization({
+      id: data.typeId,
+      owner: {
+        id: user.id
+      }
+    })
+  }
+  console.log("1", to)
+  const invitedUser = await ctx.prisma.user({ id: to || '' }, '{ id, email, firstName, lastName }')
+  if(!!isOwner && (!!invitedUser || data.email)) {
     const organization = await ctx.prisma.organization({
       id: data.typeId
     })
     const currentUser = await ctx.prisma.user({ id: user.id }, '{ id, firstName, lastName }')
     const code = uid(16)
+    let url = `https://alpha.loose.dev/sign-up?inviteCode=${code}`
+    if(invitedUser) url = `https://alpha.loose.dev/dashboard/invite/${code}`
     const title = `
     ${currentUser.firstName} ${currentUser.lastName} has invited you to join ${organization.name}`,
-    const text = `Hi ${invitedUser.firstName} ${invitedUser.lastName},
+    const text = `Hi ${!!invitedUser ? invitedUser.firstName : ''} ${!!invitedUser ? invitedUser.lastName : ''},
     ${currentUser.firstName} ${currentUser.lastName} has invited you to join the ${organization.name} Organization.
-    Please go to https://alpha.loose.dev/dashboard/invite/${code} to join.
+    Please go to ${url} to join.
     `
     const response = await ctx.prisma.createInvite({
       ...data,
+      to: to ? to : null,
       type: 'ORGANIZATION',
       code,
       title,
@@ -35,7 +43,11 @@ const resolve = async ({ args: { data }, ctx, user }) => {
         connect: { id: user.id }
       }
     })
-    const ses = await sendEmail([invitedUser.email], title, text)
+    let ses = {}
+    if(invitedUser) ses = await sendEmail([invitedUser.email], title, text)
+    if(!invitedUser && data.email) {
+      ses = await sendEmail([data.email], title, text)
+    }
     if(ses.sent && !ses.error) {
       return response
     } else {

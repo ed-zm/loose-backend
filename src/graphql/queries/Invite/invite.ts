@@ -4,12 +4,20 @@ import prisma from '../../../prisma'
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { where }, ctx, user }) => {
+  const currentUser = await ctx.prisma.user({ id: user.id })
   const exists = await ctx.prisma.$exists.invite({
     code: where.code,
     expireAt_gt: moment(),
-    to: {
-      id: user.id
-    }
+    OR: [
+      {
+        to: {
+          id: currentUser.id
+        }
+      },
+      {
+        email: currentUser.email
+      }
+    ]
   })
   if(exists) {
     const invite = await ctx.prisma.invite(where, '{ id, type, typeId }')

@@ -27,7 +27,6 @@ export const sendEmail = async (to: string[] = [], subject: string, message: str
     };
     await new Promise(resolve => {
       ses.sendEmail(eParams, function(err, data){
-        console.log('SES ERROR', err, 'SES DATA', data)
         if(err) {
           error = err
         } else {
