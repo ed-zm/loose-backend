@@ -2,28 +2,29 @@ import { arg } from 'nexus'
 import prisma from '../../../prisma'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { where, ...args }, ctx, user }) => {
-  if(user) {
-  const tasks = await ctx.prisma.tasks({
-      where: {
-        ...where,
-        OR: [
-          { createdBy: { id: user.id } },
-          { assignedTo: {id: user.id } }
-        ]
-      },
-      ...args
-    })
-    return tasks
-  } else {
-    return []
+const resolve = async ({ args: { where }, ctx, user }) => {
+  const canView = ctx.prisma.$exists.task({
+    ...where,
+    OR: [
+      { createdBy: { id: user.id } },
+      { assignedTo: {id: user.id } },
+      { organization: {
+        users_some: {
+          id: user.id
+        }
+      }}
+    ]
+  })
+  if(canView) {
+    const task = await ctx.prisma.task({ ...where })
+    return task
   }
+  throw new Error('Unauthorized')
 }
 
 
 export default {
   type: "Task",
-  list: true,
   args: {
     where: arg({ type: 'TaskWhereUniqueInput' })
   },
