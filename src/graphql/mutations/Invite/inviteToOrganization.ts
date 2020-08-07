@@ -15,7 +15,6 @@ const resolve = async ({ args: { data }, ctx, user }) => {
       }
     })
   }
-  console.log("1", to)
   const invitedUser = await ctx.prisma.user({ id: to || '' }, '{ id, email, firstName, lastName }')
   if(!!isOwner && (!!invitedUser || data.email)) {
     const organization = await ctx.prisma.organization({
