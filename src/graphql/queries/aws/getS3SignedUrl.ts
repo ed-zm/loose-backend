@@ -1,6 +1,7 @@
 import { S3 } from 'aws-sdk'
 import { stringArg, idArg, booleanArg } from 'nexus'
 import uid from 'uid'
+import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { fileType, id, operation, random }, ctx, user }) => {
   const s3 = new S3({
