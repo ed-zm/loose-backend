@@ -4,6 +4,7 @@ import organizations from './Organization/organizations'
 import loggedIn from './auth/loggedIn'
 import tasks from './Task/tasks'
 import task from './Task/task'
+import responseRequests from './ResponseRequest/responseRequests'
 import teams from './Team/teams'
 import comments from './Comment/comments'
 import users from './User/users'
@@ -52,6 +53,8 @@ export default prismaObjectType({
     t.field('githubRepositories', githubRepositories)
     //@ts-ignore
     t.field('githubIssues', githubIssues)
+    //@ts-ignore
+    t.field('responseRequests', responseRequests)
     //@ts-ignore
     t.field('tasks', tasks)
     //@ts-ignore

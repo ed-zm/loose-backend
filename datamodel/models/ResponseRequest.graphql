@@ -4,8 +4,9 @@ type ResponseRequest {
   task: Task! @relation(name: "TaskResponseRequests", onDelete: "CASCADE")
   title: String!
   description: String!
+  state: Int
   createdBy: User! @relation(name: "UserResponseRequest", onDelete: "SET_NULL")
   assignedTo: User! @relation(name: "UserAssignedResponseRequest", onDelete: "SET_NULL")
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  createdAt: DateTime @cnreatedAt
+  updatedAt: DateTime @updatedAt
 }
