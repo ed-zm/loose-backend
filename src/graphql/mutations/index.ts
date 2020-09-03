@@ -10,6 +10,7 @@ import deleteTeam from './Team/deleteTeam'
 import createTask from './Task/createTask'
 import updateTask from './Task/updateTask'
 import deleteTask from './Task/deleteTask'
+import updateResponseRequest from './ResponseRequest/updateResponseRequest'
 import createLabel from './Label/createLabel'
 import updateLabel from './Label/updateLabel'
 import createComment from './Comment/createComment'
@@ -53,6 +54,11 @@ export default prismaObjectType({
     t.field("updateTask", updateTask);
     //@ts-ignore
     t.field("deleteTask", deleteTask);
+
+    /* ------------------ RESPONSE REQUEST ------------------ */
+
+    //@ts-ignore
+    t.field("updateResponseRequest", updateResponseRequest);
 
     /* ------------------ TEAM ------------------ */
     //@ts-ignore
