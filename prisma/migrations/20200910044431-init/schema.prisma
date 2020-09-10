@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+model Organization {
+  id String @default(cuid()) @id
+  name String
+  githubToken String?
+  githubOrganization String?
+  owner User @relation("UserOrganizations", fields: [ownerId], references: [id])
+  ownerId String
+  users User[] @relation("OrganizationUsers")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id String @default(cuid()) @id
+  username String @unique
+  firstName String
+  lastName String?
+  avatar String?
+  biography String?
+  email String @unique
+  emailVerifiedAt DateTime?
+  emailVerificationCode String?
+  emailVerificationCodeIssuedAt DateTime?
+  hash String
+  resetPasswordCode String?
+  resetPasswordCodeIssuedAt DateTime?
+  ownOrganizations Organization[] @relation("UserOrganizations")
+  organizations Organization[] @relation("OrganizationUsers")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  }
+
+enum PermissionEnum {
+  DELETE
+  READ
+  UPDATE
+  WRITE
+}

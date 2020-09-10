@@ -1,7 +1,7 @@
 import { hashSync } from 'bcrypt'
 import moment from 'moment'
 import { sign } from 'jsonwebtoken'
-import { stringArg } from 'nexus'
+import { stringArg } from '@nexus/schema'
 import { sendEmail } from '../../../helpers/email'
 import endpoint from '../../../helpers/endpoint'
 import uid from 'uid'

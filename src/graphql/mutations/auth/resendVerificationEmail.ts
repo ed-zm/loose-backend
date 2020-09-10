@@ -1,6 +1,6 @@
 import { sendEmail } from '../../../helpers/email'
 import endpoint from '../../../helpers/endpoint'
-import { stringArg } from 'nexus'
+import { stringArg } from '@nexus/schema'
 
 const resolve = async (_, { email }, ctx) => {
   const user = await ctx.prisma.user({ email })

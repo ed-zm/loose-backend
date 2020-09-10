@@ -1,4 +1,4 @@
-import { arg, intArg, stringArg } from 'nexus'
+import { arg, intArg, stringArg } from '@nexus/schema'
 import prisma from '../../../prisma'
 import authenticate from '../../../helpers/authenticate'
 

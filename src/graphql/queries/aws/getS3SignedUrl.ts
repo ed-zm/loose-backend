@@ -1,5 +1,5 @@
 import { S3, Endpoint } from 'aws-sdk'
-import { stringArg, idArg, booleanArg } from 'nexus'
+import { stringArg, idArg, booleanArg } from '@nexus/schema'
 import uid from 'uid'
 import authenticate from '../../../helpers/authenticate'
 

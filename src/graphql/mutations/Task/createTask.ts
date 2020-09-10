@@ -1,4 +1,4 @@
-import { arg } from 'nexus'
+import { arg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 import randomString from '../../../helpers/randomString'
 

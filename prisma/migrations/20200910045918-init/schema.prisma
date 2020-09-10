@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+model Comment {
+  id String @default(cuid()) @id
+  text String
+  user User @relation("UserComments", fields: [userId], references: [id])
+  userId String
+  task Task @relation("TaskComments", fields: [taskId], references: [id])
+  taskId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Organization {
+  id String @default(cuid()) @id
+  name String
+  githubToken String?
+  githubOrganization String?
+  owner User @relation("UserOrganizations", fields: [ownerId], references: [id])
+  ownerId String
+  users User[] @relation("OrganizationUsers")
+  tasks Task[] @relation("OrganizationTasks")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id String @default(cuid()) @id
+  code String? @unique
+  title String
+  description String?
+  estimated Int @default(0)
+  state Int? @default(value: 0)
+  createdBy User @relation("TasksCreatedBy", fields: [createdById], references: [id])
+  createdById String
+  assignedTo User? @relation("TasksAssignedTo", fields: [assignedToId], references: [id])
+  assignedToId String?
+  organization Organization? @relation("OrganizationTasks", fields: [organizationId], references: [id])
+  organizationId String?
+  comments Comment[] @relation("TaskComments")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model User {
+  id String @default(cuid()) @id
+  username String @unique
+  firstName String
+  lastName String?
+  avatar String?
+  biography String?
+  email String @unique
+  emailVerifiedAt DateTime?
+  emailVerificationCode String?
+  emailVerificationCodeIssuedAt DateTime?
+  hash String
+  resetPasswordCode String?
+  resetPasswordCodeIssuedAt DateTime?
+  ownOrganizations Organization[] @relation("UserOrganizations")
+  organizations Organization[] @relation("OrganizationUsers")
+  tasksCreated Task[] @relation("TasksCreatedBy")
+  tasksAssigned Task[] @relation("TasksAssignedTo")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  }
+
+enum PermissionEnum {
+  DELETE
+  READ
+  UPDATE
+  WRITE
+}

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { stringArg, booleanArg, idArg } from 'nexus'
+import { stringArg, booleanArg, idArg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { organizationId, code }, ctx, user }) => {

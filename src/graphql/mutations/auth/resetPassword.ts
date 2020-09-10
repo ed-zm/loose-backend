@@ -1,5 +1,5 @@
 import uid from 'uid'
-import { stringArg } from 'nexus'
+import { stringArg } from '@nexus/schema'
 import { sendEmail } from '../../../helpers/email'
 import endpoint from '../../../helpers/endpoint'
 

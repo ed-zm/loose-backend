@@ -1,4 +1,4 @@
-import { prismaObjectType } from "nexus-prisma";
+import { schema } from 'nexus'
 import getS3SignedUrl from './aws/getS3SignedUrl'
 import organizations from './Organization/organizations'
 import loggedIn from './auth/loggedIn'
@@ -17,8 +17,8 @@ import githubIssues from './github/issues'
 import invite from './Invite/invite'
 
 // Use "*" to use all fields
-export default prismaObjectType({
-  name: "Query",
+schema.extendType({
+  type: "Query",
   definition(t) {
     t.prismaFields([
       "labels",

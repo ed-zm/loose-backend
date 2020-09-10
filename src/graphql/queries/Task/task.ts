@@ -1,4 +1,4 @@
-import { arg } from 'nexus'
+import { arg } from '@nexus/schema'
 import prisma from '../../../prisma'
 import authenticate from '../../../helpers/authenticate'
 

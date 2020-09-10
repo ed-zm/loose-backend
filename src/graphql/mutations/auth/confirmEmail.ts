@@ -1,4 +1,4 @@
-import { stringArg } from 'nexus'
+import { stringArg } from '@nexus/schema'
 import moment from 'moment'
 
 const resolve = async (_, { emailVerificationCode, password }, ctx) => {

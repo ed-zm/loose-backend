@@ -1,6 +1,6 @@
 import { compareSync } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
-import { stringArg, booleanArg } from 'nexus'
+import { stringArg, booleanArg } from '@nexus/schema'
 
 const resolve = async (_, { email, password, staySignedIn }, ctx, info) => {
   const user = await ctx.prisma.user({ email }, '{ id, hash, emailVerifiedAt }')

@@ -1,0 +1,211 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Comment {
+  id        String   @default(cuid()) @id
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String?
+  taskId    String?
+  task      Task?    @relation(fields: [taskId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+model GithubCard {
+  id        String    @default(cuid()) @id
+  note      String?
+  archived  Boolean?
+  createdAt DateTime?
+  updatedAt DateTime?
+}
+
+model GithubColumn {
+  id        String    @default(cuid()) @id
+  createdAt DateTime?
+  updatedAt DateTime?
+  name      String
+}
+
+model GithubIssue {
+  id        String    @default(cuid()) @id
+  title     String
+  state     String?
+  number    Int?
+  createdAt DateTime?
+  updatedAt DateTime?
+  closedAt  DateTime?
+  url       String?
+  body      String?
+  comments  Int?
+}
+
+model GithubOrganization {
+  id          String  @default(cuid()) @id
+  login       String
+  description String?
+}
+
+model GithubProject {
+  id        String    @default(cuid()) @id
+  name      String
+  body      String?
+  url       String?
+  number    Int?
+  createdAt DateTime?
+  updatedAt DateTime?
+}
+
+model GithubRepository {
+  id              String    @default(cuid()) @id
+  name            String
+  fullName        String
+  private         Boolean?
+  updatedAt       DateTime?
+  language        String?
+  openIssuesCount Int?
+  description     String?
+  stargazersCount Int?
+  forksCount      Int?
+}
+
+model Invite {
+  id        String    @default(cuid()) @id
+  code      String    @unique
+  text      String?
+  type      String
+  expireAt  DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  fromId    String?
+  toId      String?
+  title     String?
+  typeId    String    @default(cuid())
+  email     String?
+  from     User?     @relation("UserSentInvites", fields: [fromId], references: [id])
+  to        User?     @relation("UserReceivedInvites", fields: [toId], references: [id])
+}
+
+model Label {
+  id             String        @default(cuid()) @id
+  text           String        @unique
+  color          String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  organization   Organization? @relation("OrganizationLabels", fields: [labelId], references: [id])
+  tasks          Task[]        @relation("TaskLabels", fields: [taskId], references: [id])
+}
+
+model Organization {
+  id                 String   @default(cuid()) @id
+  name               String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  ownerId            String?
+  githubToken        String?
+  githubOrganization String?
+  usersId           User?    @relation("OrganizationUsers", fields: [userId], references: [id])
+  labels             Label[]  @relation("OrganizationLabels")
+  tasks              Task[]   @relation("OrganizationTasks", fields: [organizationId] references: [id])
+  teams              Team[]   @map("teams")
+  users              User[]   @map("users") @relation("OrganizationUsers")
+}
+
+model ResponseRequest {
+  id           String    @default(cuid()) @id
+  title        String
+  description  String
+  createdAt    DateTime?
+  updatedAt    DateTime? @updatedAt
+  createdById  String?   @map("createdBy")
+  assignedToId String?   @map("assignedTo")
+  taskId       String?   @map("task")
+  state        Int?
+  assignedTo User?     @map("assignedTo") @relation("ResponseRequest_assignedToToUser", fields: [assignedToId], references: [id])
+  createdBy   User?     @map("createdBy") @relation("ResponseRequest_createdByToUser", fields: [createdById], references: [id])
+  task         Task?     @map("task") @relation(fields: [taskId], references: [id])
+}
+
+model Role {
+  id          String           @default(cuid()) @id
+  role        String           @unique
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  permissions PermissionEnum[] @map("permissions")
+  users       User[]           @map("users") @relation("UserRoles")
+}
+
+model Task {
+  id               String            @default(cuid()) @id
+  code             String?           @unique
+  title            String
+  description      String?
+  estimated        Int               @default(0)
+  state            Int?              @default(0)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  createdById      String?
+  assignedToId     String?
+  teamId           String?
+  assignedTo     User?             @relation("Task_assignedToToUser", fields: [assignedToId], references: [id])
+  createdBy       User?             @relation("Task_createdByToUser", fields: [createdById], references: [id])
+  organization     Organization?     @relation("OrganizationTasks") # Organization Tasks
+  organizationId   String?
+  team             Team?             @relation(fields: [teamId], references: [id])
+  comments         Comment[]
+  responseRequests ResponseRequest[]
+  labels           Label[]
+}
+
+model Team {
+  id             String        @default(cuid()) @id
+  name           String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  organizationId String?       @map("organization")
+  organization   Organization? @map("organization") @relation(fields: [organizationId], references: [id])
+  tasks          Task[]        @map("tasks")
+  users          User[]        @map("users") @relation("UserTeams")
+}
+
+model User {
+  id                                               String            @default(cuid()) @id
+  username                                         String            @unique
+  firstName                                        String
+  lastName                                         String?
+  email                                            String            @unique
+  emailVerifiedAt                                  DateTime?
+  emailVerificationCode                            String?
+  emailVerificationCodeIssuedAt                    DateTime?
+  hash                                             String
+  resetPasswordCode                                String?
+  resetPasswordCodeIssuedAt                        DateTime?
+  createdAt                                        DateTime          @default(now())
+  updatedAt                                        DateTime          @updatedAt
+  avatar                                           String?
+  biography                                        String?
+  Comment                                          Comment[]
+  receivedInvitesId                                Invite[]          @map("receivedInvites") @relation("UserSentInvites")
+  receivedInvites                                  Invite[]          @map("receivedInvites") @relation("UserReceivedInvites")
+  organizationsId                                  Organization[]    @map("organizations")
+  ResponseRequest_ResponseRequest_assignedToToUser ResponseRequest[] @relation("ResponseRequest_assignedToToUser")
+  ResponseRequest_ResponseRequest_createdByToUser  ResponseRequest[] @relation("ResponseRequest_createdByToUser")
+  tasksAssignedId                                  Task[]            @map("tasksAssigned") @relation("Task_assignedToToUser")
+  tasksAssigned                                    Task[]            @map("tasksAssigned") @relation("Task_createdByToUser")
+  organizations                                    Organization[]    @map("organizations") @relation("OrganizationUsers")
+  roles                                            Role[]            @map("roles") @relation("UserRoles")
+  teams                                            Team[]            @map("teams") @relation("UserTeams")
+}
+
+enum PermissionEnum {
+  DELETE
+  READ
+  UPDATE
+  WRITE
+}
