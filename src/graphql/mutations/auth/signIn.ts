@@ -2,12 +2,14 @@ import { compareSync } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
 import { stringArg, booleanArg } from '@nexus/schema'
 
-const resolve = async (_, { email, password, staySignedIn }, ctx, info) => {
+//@ts-ignore
+const resolve = async (_, { email, password, staySignedIn }, ctx) => {
   const user = await ctx.prisma.user({ email }, '{ id, hash, emailVerifiedAt }')
   if(!user) throw new Error("Email not found")
   if(!user.hash) throw new Error("No Password set")
   if(!user.emailVerifiedAt) throw new Error("'You have to confirm your Email")
   if(!compareSync(password, user.hash)) throw new Error("Invalid Credentials")
+  //@ts-ignore
   const token = sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: staySignedIn ? '1y':'30d' })
   return token
 }

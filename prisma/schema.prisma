@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  // output = "./generated"
 }
 
 datasource db {
@@ -65,6 +66,23 @@ model Organization {
   updatedAt DateTime @updatedAt
 }
 
+
+model ResponseRequest {
+  id String @default(cuid()) @id
+  // taskCode: String!
+  task Task @relation("TaskResponseRequests", fields: [taskId], references: [id])
+  taskId String
+  title String
+  description String
+  state Int?
+  createdBy User @relation("UserResponseRequests", fields: [createdById], references: [id])
+  createdById String
+  assignedTo User @relation("UserAssignedResponseRequests", fields: [assignedToId], references: [id])
+  assignedToId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Task {
   id String @default(cuid()) @id
   code String? @unique
@@ -118,6 +136,8 @@ model User {
   teams Team[] @relation("UserTeams")
   sentInvites Invite[] @relation("UserSentInvites")
   receivedInvites Invite[] @relation("UserReceivedInvites")
+  createdResponseRequest ResponseRequest[] @relation("UserResponseRequests")
+  assignedResponseRequest ResponseRequest[] @relation("UserAssignedResponseRequests")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   }

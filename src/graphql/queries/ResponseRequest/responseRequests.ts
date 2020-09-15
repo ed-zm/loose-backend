@@ -1,16 +1,14 @@
-import { arg, intArg, stringArg } from '@nexus/schema'
-import prisma from '../../../prisma'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { where, ...args }, ctx, info, user }) => {
+const resolve = async ({ args: { where, ...args }, ctx, user }: any) => {
   if(user) {
-    const responseRequests = await ctx.prisma.responseRequestsConnection({
+    const responseRequests = await ctx.prisma.responseRequests({
       where: {
         ...where,
         assignedTo: {id: user.id }
       },
       ...args
-    }, info)
+    })
     return responseRequests
   } else {
     return []
@@ -19,16 +17,9 @@ const resolve = async ({ args: { where, ...args }, ctx, info, user }) => {
 
 
 export default {
-  type: "ResponseRequestConnection",
-  args: {
-    where: arg({ type: 'ResponseRequestWhereInput' }),
-    orderBy: arg({ type: 'ResponseRequestOrderByInput' }),
-    skip: intArg(),
-    after: stringArg(),
-    before: stringArg(),
-    first: intArg(),
-    last: intArg()
-  },
+  filtering: true,
+  ordering: true,
+  paginating: true,
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

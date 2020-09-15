@@ -1,8 +1,7 @@
-import { arg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 import randomString from '../../../helpers/randomString'
 
-const resolve = async ({ args: { data: args }, ctx, user}) => {
+const resolve = async ({ args: { data: args }, ctx, user}: any) => {
   let isCreatorOwner = false
   let isCreatorMember = false
   if(args.organization) {
@@ -28,6 +27,7 @@ const resolve = async ({ args: { data: args }, ctx, user}) => {
         }`
       )
     isCreatorOwner = organization.owner.id === user.id
+    //@ts-ignore
     isCreatorMember = organization.users.find(member => member.id === user.id)
     if(!isCreatorOwner && !isCreatorMember) throw new Error('You are not part of this organization')
   }
@@ -42,10 +42,6 @@ const resolve = async ({ args: { data: args }, ctx, user}) => {
 }
 
 export default {
-  type: "Task",
-  args: {
-    data: arg({ type: 'TaskCreateInput', required: true })
-  },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

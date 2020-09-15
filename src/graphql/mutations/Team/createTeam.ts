@@ -1,7 +1,7 @@
 import { arg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { data }, ctx, user }) => {
+const resolve = async ({ args: { data }, ctx, user }: any) => {
   const isOrganizationMember = ctx.prisma.$exists.organization({
     OR: [
       {
@@ -28,10 +28,6 @@ const resolve = async ({ args: { data }, ctx, user }) => {
 }
 
 export default {
-  type: "Team",
-  args: {
-    data: arg({ type: 'TeamCreateInput' })
-  },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

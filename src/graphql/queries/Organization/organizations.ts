@@ -1,8 +1,8 @@
 import { arg, intArg, stringArg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { where = {}, ...rest }, ctx, user }) => {
-  return ctx.prisma.organizationsConnection({
+const resolve = async ({ args: { where = {}, ...rest }, ctx, user }: any) => {
+  return ctx.prisma.organizations({
     where: {
       ...where,
       OR: [
@@ -23,16 +23,9 @@ const resolve = async ({ args: { where = {}, ...rest }, ctx, user }) => {
 }
 
 export default {
-  type: "OrganizationConnection",
-  args: {
-    where: arg({ type: 'OrganizationWhereInput' }),
-    orderBy: arg({ type: 'OrganizationOrderByInput' }),
-    skip: intArg(),
-    after: stringArg(),
-    before: stringArg(),
-    first: intArg(),
-    last: intArg()
-  },
+  filtering: true,
+  ordering: true,
+  paginating: true,
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

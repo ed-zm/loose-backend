@@ -1,10 +1,9 @@
-import { arg } from '@nexus/schema'
 import moment from 'moment'
 import authenticate from '../../../helpers/authenticate'
 import { sendEmail } from '../../../helpers/email'
 import uid from 'uid'
 
-const resolve = async ({ args: { data }, ctx, user }) => {
+const resolve = async ({ args: { data }, ctx, user }: any) => {
   const to = data.to.connect.id
   let isOwner = null
   if(data.type === 'ORGANIZATION') {
@@ -25,7 +24,7 @@ const resolve = async ({ args: { data }, ctx, user }) => {
     let url = `https://alpha.loose.dev/sign-up?inviteCode=${code}`
     if(invitedUser) url = `https://alpha.loose.dev/dashboard/invite/${code}`
     const title = `
-    ${currentUser.firstName} ${currentUser.lastName} has invited you to join ${organization.name}`,
+    ${currentUser.firstName} ${currentUser.lastName} has invited you to join ${organization.name}`
     const text = `Hi ${!!invitedUser ? invitedUser.firstName : ''} ${!!invitedUser ? invitedUser.lastName : ''},
     ${currentUser.firstName} ${currentUser.lastName} has invited you to join the ${organization.name} Organization.
     Please go to ${url} to join.
@@ -47,6 +46,7 @@ const resolve = async ({ args: { data }, ctx, user }) => {
     if(!invitedUser && data.email) {
       ses = await sendEmail([data.email], title, text)
     }
+    //@ts-ignore
     if(ses.sent && !ses.error) {
       return response
     } else {
@@ -57,10 +57,6 @@ const resolve = async ({ args: { data }, ctx, user }) => {
 }
 
 export default {
-  type: "Invite",
-  args: {
-    data: arg({ type: 'InviteCreateInput', required: true })
-  },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

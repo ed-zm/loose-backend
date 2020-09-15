@@ -1,7 +1,6 @@
-import { arg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { data }, ctx, user }) => {
+const resolve = async ({ args: { data }, ctx, user }: any) => {
   if(data.user && data.user.connect && data.user.connect.id && data.user.connect.id !== user.id) {
     throw new Error(`You can't create a comment for other users`)
   }
@@ -15,10 +14,6 @@ const resolve = async ({ args: { data }, ctx, user }) => {
 }
 
 export default {
-  type: "Comment",
-  args: {
-    data: arg({ type: 'CommentCreateInput' })
-  },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

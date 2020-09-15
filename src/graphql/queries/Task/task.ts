@@ -1,8 +1,7 @@
 import { arg } from '@nexus/schema'
-import prisma from '../../../prisma'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { where }, ctx, user }) => {
+const resolve = async ({ args: { where }, ctx, user }: any) => {
   const canView = ctx.prisma.$exists.task({
     ...where,
     OR: [
@@ -24,10 +23,6 @@ const resolve = async ({ args: { where }, ctx, user }) => {
 
 
 export default {
-  type: "Task",
-  args: {
-    where: arg({ type: 'TaskWhereUniqueInput' })
-  },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

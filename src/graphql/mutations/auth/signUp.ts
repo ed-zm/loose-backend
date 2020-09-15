@@ -3,10 +3,9 @@ import moment from 'moment'
 import { sign } from 'jsonwebtoken'
 import { stringArg } from '@nexus/schema'
 import { sendEmail } from '../../../helpers/email'
-import endpoint from '../../../helpers/endpoint'
 import uid from 'uid'
 
-const resolve = async (_, { email, password, firstName, lastName, username, inviteCode }, ctx) => {
+const resolve = async (_: any, { email, password, firstName, lastName, username, inviteCode }: any, ctx: any) => {
     const exists = await ctx.prisma.$exists.user({ email })
     if(exists) throw new Error('Email Already Exists')
     const isInvited = await ctx.prisma.$exists.invite({
@@ -27,6 +26,7 @@ const resolve = async (_, { email, password, firstName, lastName, username, invi
     })
   if(user) {
     await sendEmail([email], 'confirm email', `Go to ${process.env.ENDPOINT}/confirm-email/${emailVerificationCode}`)
+    //@ts-ignore
     return isInvited ? sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30d'}) : 'created'
   }
   else return ''

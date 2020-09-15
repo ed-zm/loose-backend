@@ -1,9 +1,8 @@
 import { arg } from '@nexus/schema'
 import moment from 'moment'
-import prisma from '../../../prisma'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { where }, ctx, user }) => {
+const resolve = async ({ args: { where }, ctx, user }: any) => {
   const currentUser = await ctx.prisma.user({ id: user.id })
   const exists = await ctx.prisma.$exists.invite({
     code: where.code,
@@ -54,10 +53,6 @@ const resolve = async ({ args: { where }, ctx, user }) => {
 
 
 export default {
-  type: "String",
-  args: {
-    where: arg({ type: 'InviteWhereUniqueInput' })
-  },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

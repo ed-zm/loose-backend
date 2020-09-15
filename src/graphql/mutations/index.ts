@@ -1,4 +1,4 @@
-import { schema } from 'nexus'
+import { mutationType } from '@nexus/schema'
 import createOrganization from './Organization/createOrganization'
 import updateOrganization from './Organization/updateOrganization'
 import deleteOrganization from './Organization/deleteOrganization'
@@ -27,81 +27,60 @@ import importGithubIssues from './github/importIssues'
 import importGithubCards from './github/importCards'
 import inviteToOrganization from './Invite/inviteToOrganization'
 
-// Use "*" to use all fields
-schema.extendType({
-  type: "Mutation",
+export default mutationType({
   definition(t) {
-    // t.prismaFields([]);
-
     /* ------------------ USER ------------------ */
-    //@ts-ignore
-    t.field("updateUser", updateUser);
-    //@ts-ignore
-    t.field("deleteUser", deleteUser);
+    t.crud.updateOneUser(updateUser);
+    t.crud.deleteOneUser(deleteUser);
 
     /* ------------------ ORGANIZATION ------------------ */
-    //@ts-ignore
-    t.field("createOrganization", createOrganization);
-    //@ts-ignore
-    t.field("updateOrganization", updateOrganization);
-    //@ts-ignore
-    t.field("deleteOrganization", deleteOrganization);
+    t.crud.createOneOrganization(createOrganization);
+    t.crud.updateOneOrganization(updateOrganization);
+    t.crud.deleteOneOrganization(deleteOrganization);
 
     /* ------------------ TASK ------------------ */
-    //@ts-ignore
-    t.field("createTask", createTask);
-    //@ts-ignore
-    t.field("updateTask", updateTask);
-    //@ts-ignore
-    t.field("deleteTask", deleteTask);
+    t.crud.createOneTask(createTask);
+    t.crud.updateOneTask(updateTask);
+    t.crud.deleteOneTask(deleteTask);
 
     /* ------------------ RESPONSE REQUEST ------------------ */
 
-    //@ts-ignore
-    t.field("updateResponseRequest", updateResponseRequest);
+    t.crud.updateOneResponseRequest(updateResponseRequest);
 
     /* ------------------ TEAM ------------------ */
-    //@ts-ignore
-    t.field("createTeam", createTeam);
-    //@ts-ignore
-    t.field("updateTeam", updateTeam);
-    //@ts-ignore
-    t.field("deleteTeam", deleteTeam);
+    t.crud.createOneTeam(createTeam);
+    t.crud.updateOneTeam(updateTeam);
+    t.crud.deleteOneTeam(deleteTeam);
 
     /* ------------------ LABEL ------------------ */
-    //@ts-ignore
-    t.field("createLabel", createLabel);
-    //@ts-ignore
-    t.field("updateLabel", updateLabel);
+    t.crud.createOneLabel(createLabel);
+    t.crud.updateOneLabel(updateLabel);
 
     /* ------------------ COMMENT ------------------ */
-    //@ts-ignore
-    t.field("createComment", createComment);
-    //@ts-ignore
-    t.field("updateComment", updateComment);
-    // //@ts-ignore
-    t.field("deleteComment", deleteComment);
+    t.crud.createOneComment(createComment);
+    t.crud.updateOneComment(updateComment);
+    t.crud.deleteOneComment(deleteComment);
 
     /* ------------------ CUSTOM ------------------ */
-    //@ts-ignore
+    // @ts-ignore
     t.field("confirmEmail", confirmEmail);
-    //@ts-ignore
+    // @ts-ignore
     t.field("confirmResetPassword", confirmResetPassword);
-    //@ts-ignore
+    // @ts-ignore
     t.field('importGithubCards', importGithubCards)
-    //@ts-ignore
+    // @ts-ignore
     t.field('importGithubIssues', importGithubIssues)
-    //@ts-ignore
+    // @ts-ignore
     t.field("resendVerificationEmail", resendVerificationEmail)
-    //@ts-ignore
+    // @ts-ignore
     t.field("resetPassword", resetPassword);
-    //@ts-ignore
+    // @ts-ignore
     t.field("signIn", signIn);
-    //@ts-ignore
+    // @ts-ignore
     t.field("githubLogin", githubLogin);
-    //@ts-ignore
+    // @ts-ignore
     t.field("signUp", signUp);
-    //@ts-ignore
-    t.field("inviteToOrganization", inviteToOrganization);
+    // @ts-ignore
+    // t.field("inviteToOrganization", inviteToOrganization);
   },
 });
