@@ -5,8 +5,8 @@ const resolve = async ({ args: { data: args }, ctx, user}: any) => {
   let isCreatorOwner = false
   let isCreatorMember = false
   if(args.organization) {
-    const organization = await ctx.prisma.organization(
-      { id: args.organization.connect.id }).$fragment(
+    const organization = await ctx.prisma.organization.findOne(
+      { where: { id: args.organization.connect.id } }).$fragment(
         `fragment Organization on Organization {
           id
           owner {
@@ -33,12 +33,20 @@ const resolve = async ({ args: { data: args }, ctx, user}: any) => {
   }
   if(user.id !== args.createdBy.connect.id) throw new Error(`You can't create tasks for other users`)
   let code = randomString(4).toLowerCase()
-  let taskExists = await ctx.prisma.task({ code })
+  let taskExists = await ctx.prisma.task.findOne({
+    where: {
+      code
+    }
+  })
   while(taskExists) {
     code = randomString(4).toLowerCase()
-    taskExists = await ctx.prisma.task({ code })
+    taskExists = await ctx.prisma.task.findOne({ code })
   }
-  return ctx.prisma.createTask({...args, code })
+  return ctx.prisma.task.create({
+    data: {
+      ...args, code
+    }
+  })
 }
 
 export default {

@@ -7,19 +7,41 @@ const resolve = async ({ args: { data }, ctx, user }: any) => {
   const to = data.to.connect.id
   let isOwner = null
   if(data.type === 'ORGANIZATION') {
-    isOwner = await ctx.prisma.$exists.organization({
-      id: data.typeId,
-      owner: {
-        id: user.id
+    isOwner = await ctx.prisma.organization.findMany({
+      where: {
+        id: data.typeId,
+        owner: {
+          id: user.id
+        }
+      },
+      select: {
+        id: true
       }
     })
   }
-  const invitedUser = await ctx.prisma.user({ id: to || '' }, '{ id, email, firstName, lastName }')
-  if(!!isOwner && (!!invitedUser || data.email)) {
-    const organization = await ctx.prisma.organization({
-      id: data.typeId
+  const invitedUser = await ctx.prisma.user.findOne({
+    where: { id: to || '' },
+    select: {
+      id: true,
+      email: true,
+      firstName: true,
+      lastName: true
+    }
+  })
+  if(!!isOwner.length && (!!invitedUser || data.email)) {
+    const organization = await ctx.prisma.organization.findOne({
+      where: { id: data.typeId }
     })
-    const currentUser = await ctx.prisma.user({ id: user.id }, '{ id, firstName, lastName }')
+    const currentUser = await ctx.prisma.user.findOne({
+      where: {
+        id: user.id
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true
+      }
+    })
     const code = uid(16)
     let url = `https://alpha.loose.dev/sign-up?inviteCode=${code}`
     if(invitedUser) url = `https://alpha.loose.dev/dashboard/invite/${code}`
@@ -29,16 +51,18 @@ const resolve = async ({ args: { data }, ctx, user }: any) => {
     ${currentUser.firstName} ${currentUser.lastName} has invited you to join the ${organization.name} Organization.
     Please go to ${url} to join.
     `
-    const response = await ctx.prisma.createInvite({
-      ...data,
-      to: to ? to : null,
-      type: 'ORGANIZATION',
-      code,
-      title,
-      text,
-      expireAt: moment().add(1, 'day'),
-      from: {
-        connect: { id: user.id }
+    const response = await ctx.prisma.invite.create({
+      data: {
+        ...data,
+        to: to ? to : null,
+        type: 'ORGANIZATION',
+        code,
+        title,
+        text,
+        expireAt: moment().add(1, 'day'),
+        from: {
+          connect: { id: user.id }
+        }
       }
     })
     let ses = {}
@@ -57,6 +81,7 @@ const resolve = async ({ args: { data }, ctx, user }: any) => {
 }
 
 export default {
+  type: 'Invite',
   nullable: false,
   resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

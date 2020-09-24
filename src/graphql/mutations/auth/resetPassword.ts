@@ -4,10 +4,16 @@ import { sendEmail } from '../../../helpers/email'
 import endpoint from '../../../helpers/endpoint'
 
 const resolve = async (_, { email }, ctx) => {
-  const user = await ctx.prisma.user({ email }, '{ id }')
+  const user = await ctx.prisma.user.findOne({ where: { email }, select: { id: true } })
   if(user) {
     const resetPasswordCode = uid(10)
-    const updatedUser = await ctx.prisma.updateUser({where: { email }, data: { resetPasswordCode, resetPasswordCodeIssuedAt: new Date() } }, `{ id, resetPasswordCode }`)
+    const updatedUser = await ctx.prisma.user.update({
+      where: { email },
+      data: {
+        resetPasswordCode,
+        resetPasswordCodeIssuedAt: new Date().toISOString()
+      },
+      select: { id: true, resetPasswordCode: true } })
     if(updatedUser && updatedUser.resetPasswordCode) {
       //@ts-ignore
       const ses = await sendEmail([email], 'Reset Password', `Go to ${process.env.ENDPOINT}/confirm-reset-password/${resetPasswordCode} to reset your password`)

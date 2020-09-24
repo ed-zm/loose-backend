@@ -62,25 +62,15 @@ export default mutationType({
     t.crud.deleteOneComment(deleteComment);
 
     /* ------------------ CUSTOM ------------------ */
-    // @ts-ignore
+    t.field("inviteToOrganization", inviteToOrganization);
     t.field("confirmEmail", confirmEmail);
-    // @ts-ignore
     t.field("confirmResetPassword", confirmResetPassword);
-    // @ts-ignore
     t.field('importGithubCards', importGithubCards)
-    // @ts-ignore
     t.field('importGithubIssues', importGithubIssues)
-    // @ts-ignore
     t.field("resendVerificationEmail", resendVerificationEmail)
-    // @ts-ignore
     t.field("resetPassword", resetPassword);
-    // @ts-ignore
     t.field("signIn", signIn);
-    // @ts-ignore
     t.field("githubLogin", githubLogin);
-    // @ts-ignore
     t.field("signUp", signUp);
-    // @ts-ignore
-    // t.field("inviteToOrganization", inviteToOrganization);
   },
 });

@@ -1,12 +1,17 @@
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { where }, ctx, user }: any) => {
-  const isCreator = await ctx.prisma.$exists.task({
-    createdBy: {
-      id: user.id
+  const isCreator = await ctx.prisma.task.findMany({
+    where: {
+      createdBy: {
+        id: user.id
+      }
+    },
+    select: {
+      id: true
     }
   })
-  if(isCreator) return ctx.prisma.deleteTask(where)
+  if(!!isCreator.length) return ctx.prisma.task.delete({where})
   else throw new Error("You are not the task creator");
 }
 

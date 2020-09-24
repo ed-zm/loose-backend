@@ -3,7 +3,11 @@ import authenticate from '../../../helpers/authenticate'
 const resolve = async ({ user, args, ctx }: any) => {
   if(!user) throw new Error('Invalid Token')
 
-  return ctx.prisma.user({ id: user.id })
+  return ctx.prisma.user.findOne({
+    where: {
+      id: user.id
+    }
+  })
 }
 
 export default {

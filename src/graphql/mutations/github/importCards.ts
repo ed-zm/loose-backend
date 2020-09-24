@@ -4,7 +4,7 @@ import authenticate from '../../../helpers/authenticate'
 import randomString from '../../../helpers/randomString'
 
 const resolve = async ({ args: { organizationId, columnId, projectId }, ctx, user }) => {
-  const organizations = await ctx.prisma.organizations({
+  const organizations = await ctx.prisma.organization.findMany({
     where: {
       id: organizationId,
       owner: {
@@ -24,7 +24,7 @@ const resolve = async ({ args: { organizationId, columnId, projectId }, ctx, use
   )
   if(response && response.status === 200) {
     const cardsIds = response.data.map(card => `card-${card.id}`)
-    const tasksCreated = await ctx.prisma.tasks({
+    const tasksCreated = await ctx.prisma.task.findMany({
       where: {
         id_in: cardsIds
       }
@@ -66,15 +66,17 @@ const resolve = async ({ args: { organizationId, columnId, projectId }, ctx, use
     })
     const promises = await Promise.all(
       cardsToCreate.map(card => {
-        return ctx.prisma.createTask({
-          id: card.id,
-          title: card.title,
-          state: card.state === 'open' ? 0 : 1,
-          description: card.body,
-          code: randomString(4).toLowerCase(),
-          createdBy: {
-            connect: {
-              id: user.id
+        return ctx.prisma.task.create({
+          data: {
+            id: card.id,
+            title: card.title,
+            state: card.state === 'open' ? 0 : 1,
+            description: card.body,
+            code: randomString(4).toLowerCase(),
+            createdBy: {
+              connect: {
+                id: user.id
+              }
             }
           }
         })

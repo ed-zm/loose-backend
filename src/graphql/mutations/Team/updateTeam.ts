@@ -1,12 +1,16 @@
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { data, where }, ctx, user }: any) => {
-  const isMember = await ctx.prisma.$exists.team({
-    users_some: {
-      id: user.id
+  const isMember = await ctx.prisma.team.findMany({
+    where: {
+      users: {
+        some: {
+          id: user.id
+        }
+      }
     }
   })
-  if(isMember) return ctx.prisma.updateTeam({ data, where })
+  if(!!isMember.length) return ctx.prisma.team.update({ data, where })
   else throw new Error("You are not a team member");
 }
 

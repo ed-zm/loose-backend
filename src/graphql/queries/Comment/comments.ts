@@ -1,8 +1,13 @@
 import { arg, intArg, stringArg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args, ctx, user }: any) => {
-  return ctx.prisma.comments(args)
+const resolve = async ({ args: { first: take, after: cursor, ...args }, ctx, user }: any) => {
+  return ctx.prisma.comment.findMany({
+    ...args,
+    take,
+    cursor,
+    skip: (!!cursor && !!cursor.id) ? 1 : 0
+  })
 }
 
 export default {

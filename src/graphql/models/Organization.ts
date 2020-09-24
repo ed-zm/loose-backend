@@ -8,7 +8,9 @@ export default objectType({
     t.model.githubToken()
     t.model.githubOrganization()
     t.model.owner()
-    t.model.users()
+    t.model.users({
+      filtering: true
+    })
     t.model.tasks()
     t.model.teams()
     t.model.labels()

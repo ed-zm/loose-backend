@@ -1,12 +1,15 @@
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args, ctx, user }: any) => {
-  return ctx.prisma.users({
+const resolve = async ({ args: { first: take, after: cursor, ...args }, ctx, user }: any) => {
+  return ctx.prisma.user.findMany({
     ...args,
     where: {
       ...args.where,
-      emailVerifiedAt_not: null
-    }
+      emailVerifiedAt: { not: null }
+    },
+    take,
+    cursor,
+    skip: (!!cursor && !!cursor.id) ? 1 : 0
   })
 }
 

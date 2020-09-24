@@ -1,12 +1,17 @@
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { data, where }, ctx, user }: any) => {
-  const isOwner = await ctx.prisma.$exists.responseRequest({
-    assignedTo: {
-      id: user.id
+  const isOwner = await ctx.prisma.responseRequest.findMany({
+    where: {
+      assignedTo: {
+        id: user.id
+      }
+    },
+    select: {
+      id: true
     }
   })
-  if(isOwner) return ctx.prisma.updateResponseRequest({ data, where })
+  if(!!isOwner.length) return ctx.prisma.responseRequest.update({ data, where })
   else throw new Error("You are not the task creator");
 }
 

@@ -1,8 +1,7 @@
 import { arg, intArg, stringArg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { where, ...args }, ctx, user }: any) => {
-  console.log('TASKS')
+const resolve = async ({ args: { where, first: take, after: cursor, ...args }, ctx, user }: any) => {
   if(user) {
     // const organizationWhere = {
     //   OR: [
@@ -14,7 +13,7 @@ const resolve = async ({ args: { where, ...args }, ctx, user }: any) => {
     // //@ts-ignore
     // const organizationIds = organizations.map(organization => organization.id) || []
     // const tasks = await prisma.tasks({where: { ...where, organization: { id_in: organizationIds }}, ...args })
-    const tasks = await ctx.prisma.tasks.aggregate({
+    const tasks = await ctx.prisma.task.findMany({
       where: {
         ...where,
         OR: [
@@ -22,6 +21,9 @@ const resolve = async ({ args: { where, ...args }, ctx, user }: any) => {
           { assignedTo: {id: user.id } }
         ]
       },
+      cursor,
+      take,
+      skip: (!!cursor && !!cursor.id) ? 1 : 0,
       ...args
     })
     return tasks

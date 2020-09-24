@@ -4,7 +4,14 @@ import { stringArg, booleanArg } from '@nexus/schema'
 
 //@ts-ignore
 const resolve = async (_, { email, password, staySignedIn }, ctx) => {
-  const user = await ctx.prisma.user({ email }, '{ id, hash, emailVerifiedAt }')
+  const user = await ctx.prisma.user.findOne({
+    where: { email },
+    select: {
+      id: true,
+      hash: true,
+      emailVerifiedAt: true
+    }
+  })
   if(!user) throw new Error("Email not found")
   if(!user.hash) throw new Error("No Password set")
   if(!user.emailVerifiedAt) throw new Error("'You have to confirm your Email")

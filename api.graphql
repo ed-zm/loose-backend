@@ -174,6 +174,13 @@ input CommentWhereUniqueInput {
   id: String
 }
 
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format
+outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for
+representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
 scalar DateTime
 
 input DateTimeFieldUpdateOperationsInput {
@@ -200,6 +207,63 @@ input DateTimeNullableFilter {
   lte: DateTime
   not: NestedDateTimeNullableFilter
   notIn: [DateTime!]
+}
+
+type GithubCard {
+  archived: Boolean!
+  createdAt: Date!
+  id: String!
+  note: String!
+  updatedAt: Date!
+}
+
+type GithubColumn {
+  createdAt: Date!
+  id: String!
+  name: String!
+  updatedAt: Date!
+}
+
+type GithubIssue {
+  body: String!
+  closedAt: Date!
+  comments: Int!
+  createdAt: Date!
+  id: String!
+  number: Int!
+  state: String!
+  title: String!
+  updatedAt: Date!
+  url: String!
+}
+
+type GithubOrganization {
+  description: String!
+  id: String!
+  login: String!
+}
+
+type GithubProject {
+  body: String!
+  createdAt: Date!
+  id: String!
+  name: String!
+  number: Int!
+  updatedAt: Date!
+  url: String!
+}
+
+type GithubRepository {
+  description: String!
+  forksCount: Int!
+  fullName: String!
+  id: String!
+  language: String!
+  name: String!
+  openIssuesCount: Int!
+  private: Boolean!
+  stargazersCount: Int!
+  updatedAt: Date!
 }
 
 input IntFieldUpdateOperationsInput {
@@ -613,6 +677,7 @@ type Mutation {
   githubLogin(code: String!, organizationId: ID!): String!
   importGithubCards(columnId: String!, organizationId: ID!, projectId: String!): [Task!]!
   importGithubIssues(open: Boolean, organizationId: ID!, repository: String!): [Task!]!
+  inviteToOrganization: Invite!
   resendVerificationEmail(email: String!): Boolean!
   resetPassword(email: String!): Boolean!
   signIn(email: String!, password: String!, staySignedIn: Boolean): String!
@@ -721,7 +786,7 @@ type Organization {
   tasks(after: TaskWhereUniqueInput, before: TaskWhereUniqueInput, first: Int, last: Int): [Task!]!
   teams(after: TeamWhereUniqueInput, before: TeamWhereUniqueInput, first: Int, last: Int): [Team!]!
   updatedAt: DateTime!
-  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
+  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, where: UserWhereInput): [User!]!
 }
 
 input OrganizationCreateInput {
@@ -1059,6 +1124,14 @@ input OrganizationWhereUniqueInput {
 type Query {
   comments(after: CommentWhereUniqueInput, before: CommentWhereUniqueInput, first: Int, last: Int, orderBy: [CommentOrderByInput!], where: CommentWhereInput): [Comment!]!
   getS3SignedUrl(fileType: String!, folder: String, id: ID!, operation: String!, random: Boolean): String!
+  githubCards(columnId: ID!, organizationId: ID!): [GithubCard!]!
+  githubColumns(organizationId: ID!, projectId: ID!): [GithubColumn!]!
+  githubIssues(organizationId: ID!, repository: String!): [GithubIssue!]!
+  githubOrganizations(organizationId: ID!): [GithubOrganization!]!
+  githubProjects(organizationId: ID!): [GithubProject!]!
+  githubRepositories(organizationId: ID!): [GithubRepository!]!
+  invite(where: InviteWhereUniqueInput!): Invite
+  label(where: LabelWhereUniqueInput!): Label
   labels(after: LabelWhereUniqueInput, before: LabelWhereUniqueInput, first: Int, last: Int): [Label!]!
   loggedIn: User
   organization(where: OrganizationWhereUniqueInput!): Organization

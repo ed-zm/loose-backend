@@ -2,12 +2,20 @@ import { stringArg } from '@nexus/schema'
 import { hashSync } from 'bcrypt'
 
 const resolve = async (_, { resetPasswordCode, password }, ctx) => {
-  const user = await ctx.prisma.users({ where: {
-    resetPasswordCode
-  } }, '{ id, email, resetPasswordCode, resetPasswordCodeIssuedAt }')
+  const user = await ctx.prisma.users.findMany({
+    where: {
+      resetPasswordCode
+    },
+    select: {
+      id: true,
+      email: true,
+      resetPasswordCode: true,
+      resetPasswordCodeIssuedAt: true
+    }
+  })
   if(user && !!user.length && user.length === 1) {
     const hash = hashSync(password, 10)
-    const updatedUser = await ctx.prisma.updateUser({
+    const updatedUser = await ctx.prisma.user.update({
       where: {
         id: user[0].id
       },

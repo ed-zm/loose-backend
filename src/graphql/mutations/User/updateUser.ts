@@ -1,10 +1,15 @@
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { data, where }, ctx, user }: any) => {
-  const isUser = await ctx.prisma.$exists.user({
-    id: user.id
+  const isUser = await ctx.prisma.user.findMany({
+    where: {
+      id: user.id
+    },
+    select: {
+      id: true
+    }
   })
-  if(isUser) return ctx.prisma.updateUser({ data, where })
+  if(!!isUser.length) return ctx.prisma.updateUser({ data, where })
   else throw new Error("You are not the user");
 }
 

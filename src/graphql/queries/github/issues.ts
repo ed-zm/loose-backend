@@ -3,7 +3,7 @@ import { idArg, stringArg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { organizationId, repository }, ctx, user }) => {
-  const organizations = await ctx.prisma.organizations({
+  const organizations = await ctx.prisma.organization.findMany({
     where: {
       id: organizationId,
       owner: {

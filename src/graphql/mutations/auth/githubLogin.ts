@@ -11,7 +11,7 @@ const resolve = async ({ args: { organizationId, code }, ctx, user }) => {
   if(response && response.data && response.status === 200) {
     const [ _, rawToken ] = response.data.split('=')
     const [ token ] = rawToken.split('&')
-    await ctx.prisma.updateOrganization({ where: { id: organizationId }, data: { githubToken: token }})
+    await ctx.prisma.organization.update({ where: { id: organizationId }, data: { githubToken: token }})
     return token
   }
   throw new Error("Error Github")

@@ -1,12 +1,17 @@
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { data, where }, ctx, user }: any) => {
-  const isCreator = await ctx.prisma.$exists.comment({
-    user: {
-      id: user.id
+  const isCreator = await ctx.prisma.comment.findMany({
+    where: {
+      user: {
+        id: user.id
+      }
+    },
+    select: {
+      id: true
     }
   })
-  if(isCreator) return ctx.prisma.updateComment({ data, where })
+  if(!!isCreator.length) return ctx.prisma.comment.update({ data, where })
   else throw new Error("You are not the comment creator");
 }
 

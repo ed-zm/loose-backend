@@ -6,7 +6,7 @@ const resolve = async ({ args: { data, where }, ctx, user }: any) => {
       id: user.id
     }
   })
-  if(isOwner) return ctx.prisma.updateOrganization({ data, where })
+  if(isOwner) return ctx.prisma.organization.update({ data, where })
   else throw new Error("You are not the organization owner");
 }
 
