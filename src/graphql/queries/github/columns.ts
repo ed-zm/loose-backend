@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { idArg } from 'nexus'
+import { idArg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { organizationId, projectId }, ctx, user }) => {
-  const organizations = await ctx.prisma.organizations({
+  const organizations = await ctx.prisma.organization.findMany({
     where: {
       id: organizationId,
       owner: {
@@ -25,8 +25,8 @@ const resolve = async ({ args: { organizationId, projectId }, ctx, user }) => {
     const projects = response.data.map(project => ({
       id: project.id,
       name: project.name,
-      updatedAt: project.updated_at,
-      createdAt: project.created_at
+      updatedAt: new Date(project.updated_at),
+      createdAt: new Date(project.created_at)
     }))
     return projects
   } else {
@@ -42,5 +42,5 @@ export default {
     projectId: idArg({ nullable: false })
   },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

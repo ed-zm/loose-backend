@@ -1,19 +1,19 @@
-import { arg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { where }, ctx, user }) => {
-  const isUser = await ctx.prisma.$exists.user({
-    id: user.id
+const resolve = async ({ args: { where }, ctx, user }: any) => {
+  const isUser = await ctx.prisma.user.findMany({
+    where: {
+      id: user.id
+    },
+    select: {
+      id: true
+    }
   })
-  if(isUser) return ctx.prisma.deleteUser(where)
+  if(!!isUser.length) return ctx.prisma.deleteUser({ where })
   else throw new Error("You are not the user");
 }
 
 export default {
-  type: "User",
-  args: {
-    where: arg({ type: 'UserWhereUniqueInput'})
-  },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

@@ -1,21 +1,19 @@
-import { arg, intArg, stringArg } from 'nexus'
+import { arg, intArg, stringArg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args, ctx, user }) => {
-  return ctx.prisma.commentsConnection(args)
+const resolve = async ({ args: { first: take, after: cursor, ...args }, ctx, user }: any) => {
+  return ctx.prisma.comment.findMany({
+    ...args,
+    take,
+    cursor,
+    skip: (!!cursor && !!cursor.id) ? 1 : 0
+  })
 }
 
 export default {
-  type: "CommentConnection",
-  args: {
-    where: arg({ type: 'CommentWhereInput' }),
-    orderBy: arg({ type: 'CommentOrderByInput' }),
-    skip: intArg(),
-    after: stringArg(),
-    before: stringArg(),
-    first: intArg(),
-    last: intArg()
-  },
+  filtering: true,
+  ordering: true,
+  paginating: true,
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

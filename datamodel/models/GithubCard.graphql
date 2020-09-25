@@ -1,7 +1,0 @@
-type GithubCard {
-  id: ID! @id
-  note: String
-  archived: Boolean
-  createdAt: DateTime
-  updatedAt: DateTime
-}

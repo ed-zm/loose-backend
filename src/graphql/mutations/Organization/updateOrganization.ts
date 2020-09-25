@@ -1,22 +1,21 @@
-import { arg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { data, where }, ctx, user }) => {
-  const isOwner = await ctx.prisma.$exists.organization({
-    owner: {
-      id: user.id
+const resolve = async ({ args: { data, where }, ctx, user }: any) => {
+  const isOwner = await ctx.prisma.organization.findMany({
+    where: {
+      owner: {
+        id: user.id
+      }
+    },
+    select: {
+      id: true
     }
   })
-  if(isOwner) return ctx.prisma.updateOrganization({ data, where })
+  if(!!isOwner.length) return ctx.prisma.organization.update({ data, where })
   else throw new Error("You are not the organization owner");
 }
 
 export default {
-  type: "Organization",
-  args: {
-    data: arg({ type: 'OrganizationUpdateInput' }),
-    where: arg({ type: 'OrganizationWhereUniqueInput'})
-  },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

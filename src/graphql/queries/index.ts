@@ -1,4 +1,4 @@
-import { prismaObjectType } from "nexus-prisma";
+import { queryType } from '@nexus/schema'
 import getS3SignedUrl from './aws/getS3SignedUrl'
 import organizations from './Organization/organizations'
 import loggedIn from './auth/loggedIn'
@@ -16,48 +16,29 @@ import githubRepositories from './github/repositories'
 import githubIssues from './github/issues'
 import invite from './Invite/invite'
 
-// Use "*" to use all fields
-export default prismaObjectType({
-  name: "Query",
+export default queryType({
   definition(t) {
-    t.prismaFields([
-      "labels",
-      "organization",
-      "task",
-      "team",
-      "user",
-    ]);
-    //@ts-ignore
-    t.field("invite", invite)
-    //@ts-ignore
+    t.crud.user()
+    t.crud.team()
+    t.crud.task()
+    t.crud.organization()
+    t.crud.labels()
+    t.crud.label()
+    t.crud.invite(invite)
     t.field("getS3SignedUrl", getS3SignedUrl)
-    //@ts-ignore
     t.field("loggedIn", loggedIn)
-    //@ts-ignore
-    t.field('organizations', organizations)
-    //@ts-ignore
-    t.field('teams', teams)
-    //@ts-ignore
-    t.field('comments', comments)
-    //@ts-ignore
-    t.field('users', users)
-    //@ts-ignore
+    t.crud.organizations(organizations)
+    t.crud.teams(teams)
+    t.crud.comments(comments)
+    t.crud.users(users)
     t.field('githubCards', githubCards)
-    //@ts-ignore
     t.field('githubColumns', githubColumns)
-    //@ts-ignore
     t.field('githubOrganizations', githubOrganizations)
-    //@ts-ignore
     t.field('githubProjects', githubProjects)
-    //@ts-ignore
     t.field('githubRepositories', githubRepositories)
-    //@ts-ignore
     t.field('githubIssues', githubIssues)
-    //@ts-ignore
-    t.field('responseRequests', responseRequests)
-    //@ts-ignore
-    t.field('tasks', tasks)
-    //@ts-ignore
-    t.field('task', task)
+    t.crud.responseRequests(responseRequests)
+    t.crud.tasks(tasks)
+    t.crud.task(task)
   }
 })

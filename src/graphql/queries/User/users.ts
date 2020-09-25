@@ -1,27 +1,22 @@
-import { arg, intArg, stringArg } from 'nexus'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args, ctx, user }) => {
-  return ctx.prisma.usersConnection({
+const resolve = async ({ args: { first: take, after: cursor, ...args }, ctx, user }: any) => {
+  return ctx.prisma.user.findMany({
     ...args,
     where: {
       ...args.where,
-      emailVerifiedAt_not: null
-    }
+      emailVerifiedAt: { not: null }
+    },
+    take,
+    cursor,
+    skip: (!!cursor && !!cursor.id) ? 1 : 0
   })
 }
 
 export default {
-  type: "UserConnection",
-  args: {
-    where: arg({ type: 'UserWhereInput' }),
-    orderBy: arg({ type: 'UserOrderByInput' }),
-    skip: intArg(),
-    after: stringArg(),
-    before: stringArg(),
-    first: intArg(),
-    last: intArg()
-  },
+  filtering: true,
+  ordering: true,
+  paginating: true,
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

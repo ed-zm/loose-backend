@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { stringArg, booleanArg, idArg } from 'nexus'
+import { stringArg, booleanArg, idArg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { organizationId, code }, ctx, user }) => {
@@ -11,7 +11,7 @@ const resolve = async ({ args: { organizationId, code }, ctx, user }) => {
   if(response && response.data && response.status === 200) {
     const [ _, rawToken ] = response.data.split('=')
     const [ token ] = rawToken.split('&')
-    await ctx.prisma.updateOrganization({ where: { id: organizationId }, data: { githubToken: token }})
+    await ctx.prisma.organization.update({ where: { id: organizationId }, data: { githubToken: token }})
     return token
   }
   throw new Error("Error Github")
@@ -24,5 +24,5 @@ export default {
     code: stringArg({ nullable: false })
   },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

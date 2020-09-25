@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { idArg } from 'nexus'
+import { idArg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { organizationId, githubOrg }, ctx, user }) => {
-  const organizations = await ctx.prisma.organizations({
+  const organizations = await ctx.prisma.organization.findMany({
     where: {
       id: organizationId,
       owner: {
@@ -27,7 +27,7 @@ const resolve = async ({ args: { organizationId, githubOrg }, ctx, user }) => {
       name: repo.name,
       fullName: repo.full_name,
       private: repo.private,
-      updatedAt: repo.updated_at,
+      updatedAt: new Date(repo.updated_at),
       language: repo.language,
       openIssuesCount: repo.open_issues_count,
       description: repo.description,
@@ -47,5 +47,5 @@ export default {
     organizationId: idArg({ nullable: false })
   },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

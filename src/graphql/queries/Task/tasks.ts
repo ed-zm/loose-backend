@@ -1,8 +1,7 @@
-import { arg, intArg, stringArg } from 'nexus'
-import prisma from '../../../prisma'
+import { arg, intArg, stringArg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 
-const resolve = async ({ args: { where, ...args }, ctx, info, user }) => {
+const resolve = async ({ args: { where, first: take, after: cursor, ...args }, ctx, user }: any) => {
   if(user) {
     // const organizationWhere = {
     //   OR: [
@@ -14,7 +13,7 @@ const resolve = async ({ args: { where, ...args }, ctx, info, user }) => {
     // //@ts-ignore
     // const organizationIds = organizations.map(organization => organization.id) || []
     // const tasks = await prisma.tasks({where: { ...where, organization: { id_in: organizationIds }}, ...args })
-    const tasks = await ctx.prisma.tasksConnection({
+    const tasks = await ctx.prisma.task.findMany({
       where: {
         ...where,
         OR: [
@@ -22,8 +21,11 @@ const resolve = async ({ args: { where, ...args }, ctx, info, user }) => {
           { assignedTo: {id: user.id } }
         ]
       },
+      cursor,
+      take,
+      skip: (!!cursor && !!cursor.id) ? 1 : 0,
       ...args
-    }, info)
+    })
     return tasks
   } else {
     return []
@@ -32,16 +34,9 @@ const resolve = async ({ args: { where, ...args }, ctx, info, user }) => {
 
 
 export default {
-  type: "TaskConnection",
-  args: {
-    where: arg({ type: 'TaskWhereInput' }),
-    orderBy: arg({ type: 'TaskOrderByInput' }),
-    skip: intArg(),
-    after: stringArg(),
-    before: stringArg(),
-    first: intArg(),
-    last: intArg()
-  },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  filtering: true,
+  ordering: true,
+  paginating: true,
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

@@ -1,4 +1,4 @@
-import { prismaObjectType } from "nexus-prisma";
+import { mutationType } from '@nexus/schema'
 import createOrganization from './Organization/createOrganization'
 import updateOrganization from './Organization/updateOrganization'
 import deleteOrganization from './Organization/deleteOrganization'
@@ -27,111 +27,50 @@ import importGithubIssues from './github/importIssues'
 import importGithubCards from './github/importCards'
 import inviteToOrganization from './Invite/inviteToOrganization'
 
-// Use "*" to use all fields
-export default prismaObjectType({
-  name: "Mutation",
+export default mutationType({
   definition(t) {
-    t.prismaFields([]);
-
     /* ------------------ USER ------------------ */
-    //@ts-ignore
-    t.field("updateUser", updateUser);
-    //@ts-ignore
-    t.field("deleteUser", deleteUser);
+    t.crud.updateOneUser(updateUser);
+    t.crud.deleteOneUser(deleteUser);
 
     /* ------------------ ORGANIZATION ------------------ */
-    //@ts-ignore
-    t.field("createOrganization", createOrganization);
-    //@ts-ignore
-    t.field("updateOrganization", updateOrganization);
-    //@ts-ignore
-    t.field("deleteOrganization", deleteOrganization);
+    t.crud.createOneOrganization(createOrganization);
+    t.crud.updateOneOrganization(updateOrganization);
+    t.crud.deleteOneOrganization(deleteOrganization);
 
     /* ------------------ TASK ------------------ */
-    //@ts-ignore
-    t.field("createTask", createTask);
-    //@ts-ignore
-    t.field("updateTask", updateTask);
-    //@ts-ignore
-    t.field("deleteTask", deleteTask);
+    t.crud.createOneTask(createTask);
+    t.crud.updateOneTask(updateTask);
+    t.crud.deleteOneTask(deleteTask);
 
     /* ------------------ RESPONSE REQUEST ------------------ */
 
-    //@ts-ignore
-    t.field("updateResponseRequest", updateResponseRequest);
+    t.crud.updateOneResponseRequest(updateResponseRequest);
 
     /* ------------------ TEAM ------------------ */
-    //@ts-ignore
-    t.field("createTeam", createTeam);
-    //@ts-ignore
-    t.field("updateTeam", updateTeam);
-    //@ts-ignore
-    t.field("deleteTeam", deleteTeam);
+    t.crud.createOneTeam(createTeam);
+    t.crud.updateOneTeam(updateTeam);
+    t.crud.deleteOneTeam(deleteTeam);
 
     /* ------------------ LABEL ------------------ */
-    //@ts-ignore
-    t.field("createLabel", createLabel);
-    //@ts-ignore
-    t.field("updateLabel", updateLabel);
+    t.crud.createOneLabel(createLabel);
+    t.crud.updateOneLabel(updateLabel);
 
     /* ------------------ COMMENT ------------------ */
-    //@ts-ignore
-    t.field("createComment", createComment);
-    //@ts-ignore
-    t.field("updateComment", updateComment);
-    // //@ts-ignore
-    t.field("deleteComment", deleteComment);
+    t.crud.createOneComment(createComment);
+    t.crud.updateOneComment(updateComment);
+    t.crud.deleteOneComment(deleteComment);
 
     /* ------------------ CUSTOM ------------------ */
-    //@ts-ignore
-    t.field("confirmEmail", confirmEmail);
-    //@ts-ignore
-    t.field("confirmResetPassword", confirmResetPassword);
-    //@ts-ignore
-    t.field('importGithubCards', importGithubCards)
-    //@ts-ignore
-    t.field('importGithubIssues', importGithubIssues)
-    //@ts-ignore
-    t.field("resendVerificationEmail", resendVerificationEmail)
-    //@ts-ignore
-    t.field("resetPassword", resetPassword);
-    //@ts-ignore
-    t.field("signIn", signIn);
-    //@ts-ignore
-    t.field("githubLogin", githubLogin);
-    //@ts-ignore
-    t.field("signUp", signUp);
-    //@ts-ignore
     t.field("inviteToOrganization", inviteToOrganization);
+    t.field("confirmEmail", confirmEmail);
+    t.field("confirmResetPassword", confirmResetPassword);
+    t.field('importGithubCards', importGithubCards)
+    t.field('importGithubIssues', importGithubIssues)
+    t.field("resendVerificationEmail", resendVerificationEmail)
+    t.field("resetPassword", resetPassword);
+    t.field("signIn", signIn);
+    t.field("githubLogin", githubLogin);
+    t.field("signUp", signUp);
   },
 });
-
-// import prisma from '../../prisma'
-// import signIn from './signIn'
-// import signUp from './signUp'
-// import publicResolvers from '../../helpers/publicResolvers'
-// import authenticate from '../../helpers/authenticate'
-
-// const Mutation = {
-//   signIn,
-//   signUp
-// }
-// const mutationResolvers = Object.keys(prisma.mutation)
-
-// mutationResolvers.forEach(key => {
-//   Mutation[key] = async (_, args, ctx, info) => {
-//     const isPublic = publicResolvers.find(p => p === key)
-//     if(isPublic) {
-//       return prisma.mutation[key](args, info)
-//     } else {
-//       const authenticated = await authenticate(ctx)
-//       if(authenticated) {
-//         return prisma.mutation[key](args, info)
-//       } else {
-//         throw new Error("Unauthenticated")
-//       }
-//     }
-//   }
-// })
-
-// export default Mutation

@@ -1,9 +1,0 @@
-input SignInInput {
-  email: String!
-  password: String!
-  staySignedIn: Boolean
-}
-
-extend type Mutation {
-  signIn(data: SignInInput!): String!
-}

@@ -1,5 +1,0 @@
-type GithubOrganization {
-  id: ID! @id
-  login: String!
-  description: String
-}

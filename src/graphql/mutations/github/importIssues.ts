@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { idArg, stringArg, booleanArg } from 'nexus'
+import { idArg, stringArg, booleanArg } from '@nexus/schema'
 import authenticate from '../../../helpers/authenticate'
 import randomString from '../../../helpers/randomString'
 
 const resolve = async ({ args: { organizationId, repository, open }, ctx, user }) => {
-  const organizations = await ctx.prisma.organizations({
+  const organizations = await ctx.prisma.organization.findMany({
     where: {
       id: organizationId,
       owner: {
@@ -29,7 +29,7 @@ const resolve = async ({ args: { organizationId, repository, open }, ctx, user }
       body: issue.body
     }))
     const issuesIds = issues.map(issue => issue.id)
-    const tasksCreated = await ctx.prisma.tasks({
+    const tasksCreated = await ctx.prisma.task.findMany({
       where: {
         id_in: issuesIds
       }
@@ -37,15 +37,17 @@ const resolve = async ({ args: { organizationId, repository, open }, ctx, user }
     const issuesToCreate = issues.filter(issue => !tasksCreated.find(task => task.id === issue.id))
     const promises = await Promise.all(
       issuesToCreate.map(issue => {
-        return ctx.prisma.createTask({
-          id: issue.id,
-          title: issue.title,
-          state: issue.state === 'open' ? 0 : 1,
-          description: issue.body,
-          code: randomString(4).toLowerCase(),
-          createdBy: {
-            connect: {
-              id: user.id
+        return ctx.prisma.task.create({
+          data: {
+            id: issue.id,
+            title: issue.title,
+            state: issue.state === 'open' ? 0 : 1,
+            description: issue.body,
+            code: randomString(4).toLowerCase(),
+            createdBy: {
+              connect: {
+                id: user.id
+              }
             }
           }
         })
@@ -67,5 +69,5 @@ export default {
     open: booleanArg({ nullable: true })
   },
   nullable: false,
-  resolve: async (_, args, ctx, info) => await authenticate({ args, ctx, info, resolve })
+  resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

@@ -1,17 +1,24 @@
-import { stringArg } from 'nexus'
+import { stringArg } from '@nexus/schema'
 import moment from 'moment'
 
 const resolve = async (_, { emailVerificationCode, password }, ctx) => {
-  const user = await ctx.prisma.users({ where: {
-    emailVerificationCode
-  } }, '{ id, email, emailVerificationCodeIssuedAt }')
+  const user = await ctx.prisma.users.findMany({
+    where: {
+      emailVerificationCode
+    },
+    select: {
+      id: true,
+      email: true,
+      emailVerificationCodeIssuedAt: true
+    }
+  },)
   if(user && !!user.length && user.length === 1) {
-    const updatedUser = await ctx.prisma.updateUser({
+    const updatedUser = await ctx.prisma.user.update({
       where: {
         id: user[0].id
       },
       data: {
-        emailVerifiedAt: moment(),
+        emailVerifiedAt: moment().toISOString(),
         emailVerificationCode: null,
         emailVerificationCodeIssuedAt: null,
       }
