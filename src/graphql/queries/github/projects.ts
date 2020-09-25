@@ -27,8 +27,8 @@ const resolve = async ({ args: { organizationId, repository }, ctx, user }) => {
       id: project.id,
       name: project.name,
       number: project.number,
-      updatedAt: project.updated_at,
-      createdAt: project.created_at,
+      updatedAt: new Date(project.updated_at),
+      createdAt: new Date(project.created_at),
       url: project.url,
       body: project.body,
     }))

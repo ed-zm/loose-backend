@@ -15,6 +15,7 @@ export default objectType({
     t.model.comments()
     t.model.team()
     t.model.labels()
+    t.model.responseRequests()
     t.model.createdAt()
     t.model.updatedAt()
   }

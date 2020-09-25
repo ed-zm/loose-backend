@@ -26,8 +26,8 @@ const resolve = async ({ args: { organizationId, columnId }, ctx, user }) => {
       id: project.id,
       note: project.note,
       archived: project.archived,
-      updatedAt: project.updated_at,
-      createdAt: project.created_at
+      updatedAt: new Date(project.updated_at),
+      createdAt: new Date(project.created_at)
     }))
     return projects
   } else {

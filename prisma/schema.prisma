@@ -97,6 +97,7 @@ model Task {
   organization Organization? @relation("OrganizationTasks", fields: [organizationId], references: [id])
   organizationId String?
   comments Comment[] @relation("TaskComments")
+  responseRequests ResponseRequest[] @relation("TaskResponseRequests")
   team Team? @relation("TeamTasks", fields: [teamId], references: [id])
   teamId String?
   labels Label[] @relation("TaskLabels")

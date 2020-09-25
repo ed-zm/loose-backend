@@ -8,9 +8,9 @@ export default objectType({
     t.string('fullName')
     t.boolean('private')
     t.date('updatedAt')
-    t.string('language')
+    t.string('language', { nullable: true })
     t.int('openIssuesCount')
-    t.string('description')
+    t.string('description', { nullable: true })
     t.int('stargazersCount')
     t.int('forksCount')
   }

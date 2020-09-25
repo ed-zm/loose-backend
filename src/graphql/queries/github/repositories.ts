@@ -27,7 +27,7 @@ const resolve = async ({ args: { organizationId, githubOrg }, ctx, user }) => {
       name: repo.name,
       fullName: repo.full_name,
       private: repo.private,
-      updatedAt: repo.updated_at,
+      updatedAt: new Date(repo.updated_at),
       language: repo.language,
       openIssuesCount: repo.open_issues_count,
       description: repo.description,

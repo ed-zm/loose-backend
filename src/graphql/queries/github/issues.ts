@@ -26,9 +26,9 @@ const resolve = async ({ args: { organizationId, repository }, ctx, user }) => {
       title: issue.title,
       state: issue.state,
       number: issue.number,
-      updatedAt: issue.updated_at,
-      createdAt: issue.created_at,
-      closedAt: issue.closed_at,
+      updatedAt: new Date(issue.updated_at),
+      createdAt: new Date(issue.created_at),
+      closedAt: new Date(issue.closed_at),
       url: issue.url,
       body: issue.body,
       comments: issue.comments

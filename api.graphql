@@ -254,11 +254,11 @@ type GithubProject {
 }
 
 type GithubRepository {
-  description: String!
+  description: String
   forksCount: Int!
   fullName: String!
   id: String!
-  language: String!
+  language: String
   name: String!
   openIssuesCount: Int!
   private: Boolean!
@@ -1178,7 +1178,7 @@ input ResponseRequestCreateWithoutAssignedToInput {
   description: String!
   id: String
   state: Int
-  task: TaskCreateOneWithoutResponseRequestInput!
+  task: TaskCreateOneWithoutResponseRequestsInput!
   title: String!
   updatedAt: DateTime
 }
@@ -1189,7 +1189,7 @@ input ResponseRequestCreateWithoutCreatedByInput {
   description: String!
   id: String
   state: Int
-  task: TaskCreateOneWithoutResponseRequestInput!
+  task: TaskCreateOneWithoutResponseRequestsInput!
   title: String!
   updatedAt: DateTime
 }
@@ -1245,7 +1245,7 @@ input ResponseRequestUpdateInput {
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   state: NullableIntFieldUpdateOperationsInput
-  task: TaskUpdateOneRequiredWithoutResponseRequestInput
+  task: TaskUpdateOneRequiredWithoutResponseRequestsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -1306,7 +1306,7 @@ input ResponseRequestUpdateWithoutAssignedToDataInput {
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   state: NullableIntFieldUpdateOperationsInput
-  task: TaskUpdateOneRequiredWithoutResponseRequestInput
+  task: TaskUpdateOneRequiredWithoutResponseRequestsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -1317,7 +1317,7 @@ input ResponseRequestUpdateWithoutCreatedByDataInput {
   description: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   state: NullableIntFieldUpdateOperationsInput
-  task: TaskUpdateOneRequiredWithoutResponseRequestInput
+  task: TaskUpdateOneRequiredWithoutResponseRequestsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -1436,6 +1436,7 @@ type Task {
   id: String!
   labels(after: LabelWhereUniqueInput, before: LabelWhereUniqueInput, first: Int, last: Int): [Label!]!
   organization: Organization
+  responseRequests(after: ResponseRequestWhereUniqueInput, before: ResponseRequestWhereUniqueInput, first: Int, last: Int): [ResponseRequest!]!
   state: Int
   team: Team
   title: String!
@@ -1453,7 +1454,7 @@ input TaskCreateInput {
   id: String
   labels: LabelCreateManyWithoutTasksInput
   organization: OrganizationCreateOneWithoutTasksInput
-  ResponseRequest: ResponseRequestCreateManyWithoutTaskInput
+  responseRequests: ResponseRequestCreateManyWithoutTaskInput
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
@@ -1490,9 +1491,9 @@ input TaskCreateOneWithoutCommentsInput {
   create: TaskCreateWithoutCommentsInput
 }
 
-input TaskCreateOneWithoutResponseRequestInput {
+input TaskCreateOneWithoutResponseRequestsInput {
   connect: TaskWhereUniqueInput
-  create: TaskCreateWithoutResponseRequestInput
+  create: TaskCreateWithoutResponseRequestsInput
 }
 
 input TaskCreateWithoutAssignedToInput {
@@ -1505,7 +1506,7 @@ input TaskCreateWithoutAssignedToInput {
   id: String
   labels: LabelCreateManyWithoutTasksInput
   organization: OrganizationCreateOneWithoutTasksInput
-  ResponseRequest: ResponseRequestCreateManyWithoutTaskInput
+  responseRequests: ResponseRequestCreateManyWithoutTaskInput
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
@@ -1522,7 +1523,7 @@ input TaskCreateWithoutCommentsInput {
   id: String
   labels: LabelCreateManyWithoutTasksInput
   organization: OrganizationCreateOneWithoutTasksInput
-  ResponseRequest: ResponseRequestCreateManyWithoutTaskInput
+  responseRequests: ResponseRequestCreateManyWithoutTaskInput
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
@@ -1539,7 +1540,7 @@ input TaskCreateWithoutCreatedByInput {
   id: String
   labels: LabelCreateManyWithoutTasksInput
   organization: OrganizationCreateOneWithoutTasksInput
-  ResponseRequest: ResponseRequestCreateManyWithoutTaskInput
+  responseRequests: ResponseRequestCreateManyWithoutTaskInput
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
@@ -1556,7 +1557,7 @@ input TaskCreateWithoutLabelsInput {
   estimated: Int
   id: String
   organization: OrganizationCreateOneWithoutTasksInput
-  ResponseRequest: ResponseRequestCreateManyWithoutTaskInput
+  responseRequests: ResponseRequestCreateManyWithoutTaskInput
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
@@ -1573,14 +1574,14 @@ input TaskCreateWithoutOrganizationInput {
   estimated: Int
   id: String
   labels: LabelCreateManyWithoutTasksInput
-  ResponseRequest: ResponseRequestCreateManyWithoutTaskInput
+  responseRequests: ResponseRequestCreateManyWithoutTaskInput
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
   updatedAt: DateTime
 }
 
-input TaskCreateWithoutResponseRequestInput {
+input TaskCreateWithoutResponseRequestsInput {
   assignedTo: UserCreateOneWithoutTasksAssignedInput
   code: String
   comments: CommentCreateManyWithoutTaskInput
@@ -1608,7 +1609,7 @@ input TaskCreateWithoutTeamInput {
   id: String
   labels: LabelCreateManyWithoutTasksInput
   organization: OrganizationCreateOneWithoutTasksInput
-  ResponseRequest: ResponseRequestCreateManyWithoutTaskInput
+  responseRequests: ResponseRequestCreateManyWithoutTaskInput
   state: Int
   title: String!
   updatedAt: DateTime
@@ -1664,7 +1665,7 @@ input TaskUpdateInput {
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
   organization: OrganizationUpdateOneWithoutTasksInput
-  ResponseRequest: ResponseRequestUpdateManyWithoutTaskInput
+  responseRequests: ResponseRequestUpdateManyWithoutTaskInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
@@ -1754,11 +1755,11 @@ input TaskUpdateOneRequiredWithoutCommentsInput {
   upsert: TaskUpsertWithoutCommentsInput
 }
 
-input TaskUpdateOneRequiredWithoutResponseRequestInput {
+input TaskUpdateOneRequiredWithoutResponseRequestsInput {
   connect: TaskWhereUniqueInput
-  create: TaskCreateWithoutResponseRequestInput
-  update: TaskUpdateWithoutResponseRequestDataInput
-  upsert: TaskUpsertWithoutResponseRequestInput
+  create: TaskCreateWithoutResponseRequestsInput
+  update: TaskUpdateWithoutResponseRequestsDataInput
+  upsert: TaskUpsertWithoutResponseRequestsInput
 }
 
 input TaskUpdateWithoutAssignedToDataInput {
@@ -1771,7 +1772,7 @@ input TaskUpdateWithoutAssignedToDataInput {
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
   organization: OrganizationUpdateOneWithoutTasksInput
-  ResponseRequest: ResponseRequestUpdateManyWithoutTaskInput
+  responseRequests: ResponseRequestUpdateManyWithoutTaskInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
@@ -1788,7 +1789,7 @@ input TaskUpdateWithoutCommentsDataInput {
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
   organization: OrganizationUpdateOneWithoutTasksInput
-  ResponseRequest: ResponseRequestUpdateManyWithoutTaskInput
+  responseRequests: ResponseRequestUpdateManyWithoutTaskInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
@@ -1805,7 +1806,7 @@ input TaskUpdateWithoutCreatedByDataInput {
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
   organization: OrganizationUpdateOneWithoutTasksInput
-  ResponseRequest: ResponseRequestUpdateManyWithoutTaskInput
+  responseRequests: ResponseRequestUpdateManyWithoutTaskInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
@@ -1822,7 +1823,7 @@ input TaskUpdateWithoutLabelsDataInput {
   estimated: IntFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   organization: OrganizationUpdateOneWithoutTasksInput
-  ResponseRequest: ResponseRequestUpdateManyWithoutTaskInput
+  responseRequests: ResponseRequestUpdateManyWithoutTaskInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
@@ -1839,14 +1840,14 @@ input TaskUpdateWithoutOrganizationDataInput {
   estimated: IntFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
-  ResponseRequest: ResponseRequestUpdateManyWithoutTaskInput
+  responseRequests: ResponseRequestUpdateManyWithoutTaskInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
-input TaskUpdateWithoutResponseRequestDataInput {
+input TaskUpdateWithoutResponseRequestsDataInput {
   assignedTo: UserUpdateOneWithoutTasksAssignedInput
   code: NullableStringFieldUpdateOperationsInput
   comments: CommentUpdateManyWithoutTaskInput
@@ -1874,7 +1875,7 @@ input TaskUpdateWithoutTeamDataInput {
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
   organization: OrganizationUpdateOneWithoutTasksInput
-  ResponseRequest: ResponseRequestUpdateManyWithoutTaskInput
+  responseRequests: ResponseRequestUpdateManyWithoutTaskInput
   state: NullableIntFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -1910,9 +1911,9 @@ input TaskUpsertWithoutCommentsInput {
   update: TaskUpdateWithoutCommentsDataInput!
 }
 
-input TaskUpsertWithoutResponseRequestInput {
-  create: TaskCreateWithoutResponseRequestInput!
-  update: TaskUpdateWithoutResponseRequestDataInput!
+input TaskUpsertWithoutResponseRequestsInput {
+  create: TaskCreateWithoutResponseRequestsInput!
+  update: TaskUpdateWithoutResponseRequestsDataInput!
 }
 
 input TaskUpsertWithWhereUniqueWithoutAssignedToInput {
@@ -1962,7 +1963,7 @@ input TaskWhereInput {
   OR: [TaskWhereInput!]
   organization: OrganizationWhereInput
   organizationId: StringNullableFilter
-  ResponseRequest: ResponseRequestListRelationFilter
+  responseRequests: ResponseRequestListRelationFilter
   state: IntNullableFilter
   team: TeamWhereInput
   teamId: StringNullableFilter
