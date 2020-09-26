@@ -2,7 +2,7 @@ import { stringArg } from '@nexus/schema'
 import moment from 'moment'
 
 const resolve = async (_, { emailVerificationCode, password }, ctx) => {
-  const user = await ctx.prisma.users.findMany({
+  const user = await ctx.prisma.user.findMany({
     where: {
       emailVerificationCode
     },
