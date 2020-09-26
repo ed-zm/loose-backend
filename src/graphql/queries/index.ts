@@ -22,7 +22,9 @@ export default queryType({
     t.crud.team()
     t.crud.task()
     t.crud.organization()
-    t.crud.labels()
+    t.crud.labels({
+      filtering: true
+    })
     t.crud.label()
     t.crud.invite(invite)
     t.field("getS3SignedUrl", getS3SignedUrl)

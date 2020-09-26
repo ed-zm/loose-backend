@@ -1,7 +1,7 @@
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { data }, ctx, user }: any) => {
-  const label = await ctx.prisma.label({ where: { text: data.text } })
+  const label = await ctx.prisma.label.findOne({ where: { text: data.text } })
   if(!!label) {
     return ctx.prisma.label.update({
       where: { id: label.id },
