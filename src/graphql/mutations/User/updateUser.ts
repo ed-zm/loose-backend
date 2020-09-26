@@ -9,7 +9,7 @@ const resolve = async ({ args: { data, where }, ctx, user }: any) => {
       id: true
     }
   })
-  if(!!isUser.length) return ctx.prisma.updateUser({ data, where })
+  if(!!isUser.length) return ctx.prisma.user.update({ data, where })
   else throw new Error("You are not the user");
 }
 
