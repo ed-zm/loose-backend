@@ -118,6 +118,8 @@ model Team {
 
 model User {
   id String @default(cuid()) @id
+  stripeId String @default("")
+  stripeSubscriptionId String @default("")
   username String @unique
   firstName String
   lastName String?
