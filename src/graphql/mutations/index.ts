@@ -60,6 +60,10 @@ export default mutationType({
     t.crud.createOneComment(createComment);
     t.crud.updateOneComment(updateComment);
     t.crud.deleteOneComment(deleteComment);
+    t.crud.createOneInvite({
+      nullable: true,
+      resolve: () => {}
+    })
 
     /* ------------------ CUSTOM ------------------ */
     t.field("inviteToOrganization", inviteToOrganization);

@@ -54,12 +54,12 @@ const resolve = async ({ args: { data }, ctx, user }: any) => {
     const response = await ctx.prisma.invite.create({
       data: {
         ...data,
-        to: to ? to : null,
+        to: to ? { connect: { id: to } } : undefined,
         type: 'ORGANIZATION',
         code,
         title,
         text,
-        expireAt: moment().add(1, 'day'),
+        expireAt: moment().add(1, 'day').toISOString(),
         from: {
           connect: { id: user.id }
         }
@@ -82,6 +82,9 @@ const resolve = async ({ args: { data }, ctx, user }: any) => {
 
 export default {
   type: 'Invite',
+  args: {
+    data: 'InviteCreateInput'
+  },
   nullable: false,
   resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }

@@ -306,6 +306,21 @@ type Invite {
   updatedAt: DateTime!
 }
 
+input InviteCreateInput {
+  code: String!
+  createdAt: DateTime
+  email: String
+  expireAt: DateTime
+  from: UserCreateOneWithoutSentInvitesInput!
+  id: String
+  text: String
+  title: String
+  to: UserCreateOneWithoutReceivedInvitesInput
+  type: InviteType!
+  typeId: String!
+  updatedAt: DateTime
+}
+
 input InviteCreateManyWithoutFromInput {
   connect: [InviteWhereUniqueInput!]
   create: [InviteCreateWithoutFromInput!]
@@ -665,6 +680,7 @@ type Mutation {
   confirmEmail(emailVerificationCode: String!): Boolean!
   confirmResetPassword(password: String!, resetPasswordCode: String!): Boolean!
   createOneComment(data: CommentCreateInput!): Comment!
+  createOneInvite(data: InviteCreateInput!): Invite!
   createOneLabel(data: LabelCreateInput!): Label!
   createOneOrganization(data: OrganizationCreateInput!): Organization!
   createOneTask(data: TaskCreateInput!): Task!
@@ -677,7 +693,7 @@ type Mutation {
   githubLogin(code: String!, organizationId: ID!): String!
   importGithubCards(columnId: String!, organizationId: ID!, projectId: String!): [Task!]!
   importGithubIssues(open: Boolean, organizationId: ID!, repository: String!): [Task!]!
-  inviteToOrganization: Invite!
+  inviteToOrganization(data: InviteCreateInput): Invite!
   resendVerificationEmail(email: String!): Boolean!
   resetPassword(email: String!): Boolean!
   signIn(email: String!, password: String!, staySignedIn: Boolean): String!
