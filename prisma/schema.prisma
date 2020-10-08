@@ -90,6 +90,8 @@ model Task {
   description String?
   estimated Int @default(0)
   state Int? @default(value: 0)
+  priority Int? @default(value: 0)
+  snoozedUntil DateTime? @default(now())
   createdBy User @relation("TasksCreatedBy", fields: [createdById], references: [id])
   createdById String
   assignedTo User? @relation("TasksAssignedTo", fields: [assignedToId], references: [id])

@@ -238,7 +238,7 @@ type GithubIssue {
 }
 
 type GithubOrganization {
-  description: String!
+  description: String
   id: String!
   login: String!
 }
@@ -1452,7 +1452,9 @@ type Task {
   id: String!
   labels(after: LabelWhereUniqueInput, before: LabelWhereUniqueInput, first: Int, last: Int): [Label!]!
   organization: Organization
+  priority: Int
   responseRequests(after: ResponseRequestWhereUniqueInput, before: ResponseRequestWhereUniqueInput, first: Int, last: Int): [ResponseRequest!]!
+  snoozedUntil: DateTime
   state: Int
   team: Team
   title: String!
@@ -1470,7 +1472,9 @@ input TaskCreateInput {
   id: String
   labels: LabelCreateManyWithoutTasksInput
   organization: OrganizationCreateOneWithoutTasksInput
+  priority: Int
   responseRequests: ResponseRequestCreateManyWithoutTaskInput
+  snoozedUntil: DateTime
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
@@ -1522,7 +1526,9 @@ input TaskCreateWithoutAssignedToInput {
   id: String
   labels: LabelCreateManyWithoutTasksInput
   organization: OrganizationCreateOneWithoutTasksInput
+  priority: Int
   responseRequests: ResponseRequestCreateManyWithoutTaskInput
+  snoozedUntil: DateTime
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
@@ -1539,7 +1545,9 @@ input TaskCreateWithoutCommentsInput {
   id: String
   labels: LabelCreateManyWithoutTasksInput
   organization: OrganizationCreateOneWithoutTasksInput
+  priority: Int
   responseRequests: ResponseRequestCreateManyWithoutTaskInput
+  snoozedUntil: DateTime
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
@@ -1556,7 +1564,9 @@ input TaskCreateWithoutCreatedByInput {
   id: String
   labels: LabelCreateManyWithoutTasksInput
   organization: OrganizationCreateOneWithoutTasksInput
+  priority: Int
   responseRequests: ResponseRequestCreateManyWithoutTaskInput
+  snoozedUntil: DateTime
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
@@ -1573,7 +1583,9 @@ input TaskCreateWithoutLabelsInput {
   estimated: Int
   id: String
   organization: OrganizationCreateOneWithoutTasksInput
+  priority: Int
   responseRequests: ResponseRequestCreateManyWithoutTaskInput
+  snoozedUntil: DateTime
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
@@ -1590,7 +1602,9 @@ input TaskCreateWithoutOrganizationInput {
   estimated: Int
   id: String
   labels: LabelCreateManyWithoutTasksInput
+  priority: Int
   responseRequests: ResponseRequestCreateManyWithoutTaskInput
+  snoozedUntil: DateTime
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
@@ -1608,6 +1622,8 @@ input TaskCreateWithoutResponseRequestsInput {
   id: String
   labels: LabelCreateManyWithoutTasksInput
   organization: OrganizationCreateOneWithoutTasksInput
+  priority: Int
+  snoozedUntil: DateTime
   state: Int
   team: TeamCreateOneWithoutTasksInput
   title: String!
@@ -1625,7 +1641,9 @@ input TaskCreateWithoutTeamInput {
   id: String
   labels: LabelCreateManyWithoutTasksInput
   organization: OrganizationCreateOneWithoutTasksInput
+  priority: Int
   responseRequests: ResponseRequestCreateManyWithoutTaskInput
+  snoozedUntil: DateTime
   state: Int
   title: String!
   updatedAt: DateTime
@@ -1646,6 +1664,8 @@ input TaskOrderByInput {
   estimated: SortOrder
   id: SortOrder
   organizationId: SortOrder
+  priority: SortOrder
+  snoozedUntil: SortOrder
   state: SortOrder
   teamId: SortOrder
   title: SortOrder
@@ -1664,6 +1684,8 @@ input TaskScalarWhereInput {
   NOT: [TaskScalarWhereInput!]
   OR: [TaskScalarWhereInput!]
   organizationId: StringNullableFilter
+  priority: IntNullableFilter
+  snoozedUntil: DateTimeNullableFilter
   state: IntNullableFilter
   teamId: StringNullableFilter
   title: StringFilter
@@ -1681,7 +1703,9 @@ input TaskUpdateInput {
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
   organization: OrganizationUpdateOneWithoutTasksInput
+  priority: NullableIntFieldUpdateOperationsInput
   responseRequests: ResponseRequestUpdateManyWithoutTaskInput
+  snoozedUntil: NullableDateTimeFieldUpdateOperationsInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
@@ -1694,6 +1718,8 @@ input TaskUpdateManyDataInput {
   description: NullableStringFieldUpdateOperationsInput
   estimated: IntFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
+  priority: NullableIntFieldUpdateOperationsInput
+  snoozedUntil: NullableDateTimeFieldUpdateOperationsInput
   state: NullableIntFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -1788,7 +1814,9 @@ input TaskUpdateWithoutAssignedToDataInput {
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
   organization: OrganizationUpdateOneWithoutTasksInput
+  priority: NullableIntFieldUpdateOperationsInput
   responseRequests: ResponseRequestUpdateManyWithoutTaskInput
+  snoozedUntil: NullableDateTimeFieldUpdateOperationsInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
@@ -1805,7 +1833,9 @@ input TaskUpdateWithoutCommentsDataInput {
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
   organization: OrganizationUpdateOneWithoutTasksInput
+  priority: NullableIntFieldUpdateOperationsInput
   responseRequests: ResponseRequestUpdateManyWithoutTaskInput
+  snoozedUntil: NullableDateTimeFieldUpdateOperationsInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
@@ -1822,7 +1852,9 @@ input TaskUpdateWithoutCreatedByDataInput {
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
   organization: OrganizationUpdateOneWithoutTasksInput
+  priority: NullableIntFieldUpdateOperationsInput
   responseRequests: ResponseRequestUpdateManyWithoutTaskInput
+  snoozedUntil: NullableDateTimeFieldUpdateOperationsInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
@@ -1839,7 +1871,9 @@ input TaskUpdateWithoutLabelsDataInput {
   estimated: IntFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   organization: OrganizationUpdateOneWithoutTasksInput
+  priority: NullableIntFieldUpdateOperationsInput
   responseRequests: ResponseRequestUpdateManyWithoutTaskInput
+  snoozedUntil: NullableDateTimeFieldUpdateOperationsInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
@@ -1856,7 +1890,9 @@ input TaskUpdateWithoutOrganizationDataInput {
   estimated: IntFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
+  priority: NullableIntFieldUpdateOperationsInput
   responseRequests: ResponseRequestUpdateManyWithoutTaskInput
+  snoozedUntil: NullableDateTimeFieldUpdateOperationsInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
@@ -1874,6 +1910,8 @@ input TaskUpdateWithoutResponseRequestsDataInput {
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
   organization: OrganizationUpdateOneWithoutTasksInput
+  priority: NullableIntFieldUpdateOperationsInput
+  snoozedUntil: NullableDateTimeFieldUpdateOperationsInput
   state: NullableIntFieldUpdateOperationsInput
   team: TeamUpdateOneWithoutTasksInput
   title: StringFieldUpdateOperationsInput
@@ -1891,7 +1929,9 @@ input TaskUpdateWithoutTeamDataInput {
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutTasksInput
   organization: OrganizationUpdateOneWithoutTasksInput
+  priority: NullableIntFieldUpdateOperationsInput
   responseRequests: ResponseRequestUpdateManyWithoutTaskInput
+  snoozedUntil: NullableDateTimeFieldUpdateOperationsInput
   state: NullableIntFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -1979,7 +2019,9 @@ input TaskWhereInput {
   OR: [TaskWhereInput!]
   organization: OrganizationWhereInput
   organizationId: StringNullableFilter
+  priority: IntNullableFilter
   responseRequests: ResponseRequestListRelationFilter
+  snoozedUntil: DateTimeNullableFilter
   state: IntNullableFilter
   team: TeamWhereInput
   teamId: StringNullableFilter

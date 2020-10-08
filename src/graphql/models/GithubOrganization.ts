@@ -5,6 +5,6 @@ export default objectType({
   definition(t) {
     t.string('id')
     t.string('login')
-    t.string('description')
+    t.string('description', { nullable: true })
   }
 })

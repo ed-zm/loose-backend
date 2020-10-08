@@ -12,7 +12,7 @@ const resolve = async ({ args: { data, where }, ctx, user }: any) => {
     }
   })
   if(!!isCreator.length) return ctx.prisma.task.update({ data, where })
-  else throw new Error("You are not the task creator");
+  throw new Error("You are not the task creator");
 }
 
 export default {

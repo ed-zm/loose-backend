@@ -8,6 +8,8 @@ export default objectType({
     t.model.title()
     t.model.description()
     t.model.estimated()
+    t.model.priority()
+    t.model.snoozedUntil()
     t.model.state()
     t.model.createdBy()
     t.model.assignedTo()
