@@ -1146,7 +1146,7 @@ type Query {
   githubOrganizations(organizationId: ID!): [GithubOrganization!]!
   githubProjects(organizationId: ID!): [GithubProject!]!
   githubRepositories(organizationId: ID!): [GithubRepository!]!
-  invite(where: InviteWhereUniqueInput!): Invite
+  invite(where: InviteWhereUniqueInput): String!
   label(where: LabelWhereUniqueInput!): Label
   labels(after: LabelWhereUniqueInput, before: LabelWhereUniqueInput, first: Int, last: Int, where: LabelWhereInput): [Label!]!
   loggedIn: User

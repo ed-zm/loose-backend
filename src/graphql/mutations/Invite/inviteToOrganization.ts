@@ -19,8 +19,14 @@ const resolve = async ({ args: { data }, ctx, user }: any) => {
       }
     })
   }
-  const invitedUser = await ctx.prisma.user.findOne({
-    where: { id: to || '' },
+  console.log('TO EMAIL', to, data.email)
+  const invitedUser = await ctx.prisma.user.findMany({
+    where: {
+      AND: [
+        { id: { equals: to } },
+        { email: { equals: data.email } }
+      ]
+    },
     select: {
       id: true,
       email: true,
@@ -28,7 +34,7 @@ const resolve = async ({ args: { data }, ctx, user }: any) => {
       lastName: true
     }
   })
-  if(!!isOwner.length && (!!invitedUser || data.email)) {
+  if(!!isOwner.length && (!!invitedUser.length || data.email)) {
     const organization = await ctx.prisma.organization.findOne({
       where: { id: data.typeId }
     })
@@ -44,10 +50,10 @@ const resolve = async ({ args: { data }, ctx, user }: any) => {
     })
     const code = uid(16)
     let url = `https://alpha.loose.dev/sign-up?inviteCode=${code}`
-    if(invitedUser) url = `https://alpha.loose.dev/dashboard/invite/${code}`
+    if(invitedUser.length) url = `https://alpha.loose.dev/dashboard/invite/${code}`
     const title = `
     ${currentUser.firstName} ${currentUser.lastName} has invited you to join ${organization.name}`
-    const text = `Hi ${!!invitedUser ? invitedUser.firstName : ''} ${!!invitedUser ? invitedUser.lastName : ''},
+    const text = `Hi ${!!invitedUser.length ? invitedUser[0].firstName : ''} ${!!invitedUser.length ? invitedUser[0].lastName : ''},
     ${currentUser.firstName} ${currentUser.lastName} has invited you to join the ${organization.name} Organization.
     Please go to ${url} to join.
     `
@@ -66,8 +72,8 @@ const resolve = async ({ args: { data }, ctx, user }: any) => {
       }
     })
     let ses = {}
-    if(invitedUser) ses = await sendEmail([invitedUser.email], title, text)
-    if(!invitedUser && data.email) {
+    if(invitedUser.length) ses = await sendEmail([invitedUser[0].email], title, text)
+    if(!invitedUser.length && data.email) {
       ses = await sendEmail([data.email], title, text)
     }
     //@ts-ignore

@@ -3,25 +3,37 @@ import moment from 'moment'
 import authenticate from '../../../helpers/authenticate'
 
 const resolve = async ({ args: { where }, ctx, user }: any) => {
-  const currentUser = await ctx.prisma.user({ id: user.id })
-  const exists = await ctx.prisma.$exists.invite({
-    code: where.code,
-    expireAt_gt: moment(),
-    OR: [
-      {
-        to: {
-          id: currentUser.id
+  const currentUser = await ctx.prisma.user.findOne({ where: { id: user.id } })
+  const exists = await ctx.prisma.invite.findMany({
+    where: {
+      code: { equals: where.code },
+      expireAt: { gt: moment().toISOString() },
+      OR: [
+        {
+          to: {
+            id: { equals: currentUser.id }
+          }
+        },
+        {
+          email: { equals: currentUser.email }
         }
-      },
-      {
-        email: currentUser.email
-      }
-    ]
+      ]
+    },
+    select: {
+      id: true
+    }
   })
-  if(exists) {
-    const invite = await ctx.prisma.invite(where, '{ id, type, typeId }')
+  if(!!exists.length) {
+    const invite = await ctx.prisma.invite.findOne({
+      where,
+      select: {
+        id: true,
+        type: true,
+        typeId: true
+      }
+    })
     if(invite.type === 'ORGANIZATION') {
-      const organization = await ctx.prisma.updateOrganization({
+      const organization = await ctx.prisma.organization.update({
         where: {
           id: invite.typeId
         },
@@ -31,9 +43,13 @@ const resolve = async ({ args: { where }, ctx, user }: any) => {
               { id: user.id }
             ]
           }
+        },
+        select: {
+          id: true,
+          name: true
         }
-      }, '{ id, name }')
-      await ctx.prisma.updateInvite({
+      })
+      await ctx.prisma.invite.update({
         where,
         data: {
           expireAt: null
@@ -53,6 +69,10 @@ const resolve = async ({ args: { where }, ctx, user }: any) => {
 
 
 export default {
+  type: 'String',
+  args: {
+    where: arg({ type: 'InviteWhereUniqueInput' })
+  },
   nullable: false,
   resolve: async (_: any, args: any, ctx: any) => await authenticate({ args, ctx, resolve })
 }
