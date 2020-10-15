@@ -4,6 +4,8 @@ export default objectType({
   name: "Organization",
   definition(t) {
     t.model.id()
+    t.model.stripeId()
+    t.model.plan()
     t.model.name()
     t.model.githubToken()
     t.model.githubOrganization()

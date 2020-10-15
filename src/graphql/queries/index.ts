@@ -33,6 +33,9 @@ export default queryType({
     t.crud.comments(comments)
     t.crud.users(users)
     t.field('invite', invite)
+    t.crud.invites({
+      filtering: true
+    })
     t.field('githubCards', githubCards)
     t.field('githubColumns', githubColumns)
     t.field('githubOrganizations', githubOrganizations)

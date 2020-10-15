@@ -697,7 +697,7 @@ type Mutation {
   resendVerificationEmail(email: String!): Boolean!
   resetPassword(email: String!): Boolean!
   signIn(email: String!, password: String!, staySignedIn: Boolean): String!
-  signUp(email: String!, firstName: String!, inviteCode: String, lastName: String, password: String!, stripeToken: String!, subscription: String!, username: String!): String!
+  signUp(email: String!, firstName: String!, inviteCode: String, lastName: String, password: String!, username: String!): String!
   updateOneComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
   updateOneLabel(data: LabelUpdateInput!, where: LabelWhereUniqueInput!): Label
   updateOneOrganization(data: OrganizationUpdateInput!, where: OrganizationWhereUniqueInput!): Organization
@@ -799,6 +799,8 @@ type Organization {
   labels(after: LabelWhereUniqueInput, before: LabelWhereUniqueInput, first: Int, last: Int): [Label!]!
   name: String!
   owner: User!
+  plan: OrganizationPlan!
+  stripeId: String!
   tasks(after: TaskWhereUniqueInput, before: TaskWhereUniqueInput, first: Int, last: Int): [Task!]!
   teams(after: TeamWhereUniqueInput, before: TeamWhereUniqueInput, first: Int, last: Int): [Team!]!
   updatedAt: DateTime!
@@ -813,6 +815,8 @@ input OrganizationCreateInput {
   labels: LabelCreateManyWithoutOrganizationInput
   name: String!
   owner: UserCreateOneWithoutOwnOrganizationsInput!
+  plan: OrganizationPlan
+  stripeId: String
   tasks: TaskCreateManyWithoutOrganizationInput
   teams: TeamCreateManyWithoutOrganizationInput
   updatedAt: DateTime
@@ -851,6 +855,8 @@ input OrganizationCreateWithoutLabelsInput {
   id: String
   name: String!
   owner: UserCreateOneWithoutOwnOrganizationsInput!
+  plan: OrganizationPlan
+  stripeId: String
   tasks: TaskCreateManyWithoutOrganizationInput
   teams: TeamCreateManyWithoutOrganizationInput
   updatedAt: DateTime
@@ -864,6 +870,8 @@ input OrganizationCreateWithoutOwnerInput {
   id: String
   labels: LabelCreateManyWithoutOrganizationInput
   name: String!
+  plan: OrganizationPlan
+  stripeId: String
   tasks: TaskCreateManyWithoutOrganizationInput
   teams: TeamCreateManyWithoutOrganizationInput
   updatedAt: DateTime
@@ -878,6 +886,8 @@ input OrganizationCreateWithoutTasksInput {
   labels: LabelCreateManyWithoutOrganizationInput
   name: String!
   owner: UserCreateOneWithoutOwnOrganizationsInput!
+  plan: OrganizationPlan
+  stripeId: String
   teams: TeamCreateManyWithoutOrganizationInput
   updatedAt: DateTime
   users: UserCreateManyWithoutOrganizationsInput
@@ -891,6 +901,8 @@ input OrganizationCreateWithoutTeamsInput {
   labels: LabelCreateManyWithoutOrganizationInput
   name: String!
   owner: UserCreateOneWithoutOwnOrganizationsInput!
+  plan: OrganizationPlan
+  stripeId: String
   tasks: TaskCreateManyWithoutOrganizationInput
   updatedAt: DateTime
   users: UserCreateManyWithoutOrganizationsInput
@@ -904,6 +916,8 @@ input OrganizationCreateWithoutUsersInput {
   labels: LabelCreateManyWithoutOrganizationInput
   name: String!
   owner: UserCreateOneWithoutOwnOrganizationsInput!
+  plan: OrganizationPlan
+  stripeId: String
   tasks: TaskCreateManyWithoutOrganizationInput
   teams: TeamCreateManyWithoutOrganizationInput
   updatedAt: DateTime
@@ -922,7 +936,13 @@ input OrganizationOrderByInput {
   id: SortOrder
   name: SortOrder
   ownerId: SortOrder
+  plan: SortOrder
+  stripeId: SortOrder
   updatedAt: SortOrder
+}
+
+enum OrganizationPlan {
+  STANDARD
 }
 
 input OrganizationScalarWhereInput {
@@ -935,6 +955,8 @@ input OrganizationScalarWhereInput {
   NOT: [OrganizationScalarWhereInput!]
   OR: [OrganizationScalarWhereInput!]
   ownerId: StringFilter
+  plan: OrganizationPlan
+  stripeId: StringFilter
   updatedAt: DateTimeFilter
 }
 
@@ -946,6 +968,8 @@ input OrganizationUpdateInput {
   labels: LabelUpdateManyWithoutOrganizationInput
   name: StringFieldUpdateOperationsInput
   owner: UserUpdateOneRequiredWithoutOwnOrganizationsInput
+  plan: OrganizationPlan
+  stripeId: StringFieldUpdateOperationsInput
   tasks: TaskUpdateManyWithoutOrganizationInput
   teams: TeamUpdateManyWithoutOrganizationInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -958,6 +982,8 @@ input OrganizationUpdateManyDataInput {
   githubToken: NullableStringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  plan: OrganizationPlan
+  stripeId: StringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
@@ -1020,6 +1046,8 @@ input OrganizationUpdateWithoutLabelsDataInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   owner: UserUpdateOneRequiredWithoutOwnOrganizationsInput
+  plan: OrganizationPlan
+  stripeId: StringFieldUpdateOperationsInput
   tasks: TaskUpdateManyWithoutOrganizationInput
   teams: TeamUpdateManyWithoutOrganizationInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -1033,6 +1061,8 @@ input OrganizationUpdateWithoutOwnerDataInput {
   id: StringFieldUpdateOperationsInput
   labels: LabelUpdateManyWithoutOrganizationInput
   name: StringFieldUpdateOperationsInput
+  plan: OrganizationPlan
+  stripeId: StringFieldUpdateOperationsInput
   tasks: TaskUpdateManyWithoutOrganizationInput
   teams: TeamUpdateManyWithoutOrganizationInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -1047,6 +1077,8 @@ input OrganizationUpdateWithoutTasksDataInput {
   labels: LabelUpdateManyWithoutOrganizationInput
   name: StringFieldUpdateOperationsInput
   owner: UserUpdateOneRequiredWithoutOwnOrganizationsInput
+  plan: OrganizationPlan
+  stripeId: StringFieldUpdateOperationsInput
   teams: TeamUpdateManyWithoutOrganizationInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   users: UserUpdateManyWithoutOrganizationsInput
@@ -1060,6 +1092,8 @@ input OrganizationUpdateWithoutTeamsDataInput {
   labels: LabelUpdateManyWithoutOrganizationInput
   name: StringFieldUpdateOperationsInput
   owner: UserUpdateOneRequiredWithoutOwnOrganizationsInput
+  plan: OrganizationPlan
+  stripeId: StringFieldUpdateOperationsInput
   tasks: TaskUpdateManyWithoutOrganizationInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   users: UserUpdateManyWithoutOrganizationsInput
@@ -1073,6 +1107,8 @@ input OrganizationUpdateWithoutUsersDataInput {
   labels: LabelUpdateManyWithoutOrganizationInput
   name: StringFieldUpdateOperationsInput
   owner: UserUpdateOneRequiredWithoutOwnOrganizationsInput
+  plan: OrganizationPlan
+  stripeId: StringFieldUpdateOperationsInput
   tasks: TaskUpdateManyWithoutOrganizationInput
   teams: TeamUpdateManyWithoutOrganizationInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -1127,6 +1163,8 @@ input OrganizationWhereInput {
   OR: [OrganizationWhereInput!]
   owner: UserWhereInput
   ownerId: StringFilter
+  plan: OrganizationPlan
+  stripeId: StringFilter
   tasks: TaskListRelationFilter
   teams: TeamListRelationFilter
   updatedAt: DateTimeFilter
@@ -1147,6 +1185,7 @@ type Query {
   githubProjects(organizationId: ID!): [GithubProject!]!
   githubRepositories(organizationId: ID!): [GithubRepository!]!
   invite(where: InviteWhereUniqueInput): String!
+  invites(after: InviteWhereUniqueInput, before: InviteWhereUniqueInput, first: Int, last: Int, where: InviteWhereInput): [Invite!]!
   label(where: LabelWhereUniqueInput!): Label
   labels(after: LabelWhereUniqueInput, before: LabelWhereUniqueInput, first: Int, last: Int, where: LabelWhereInput): [Label!]!
   loggedIn: User
@@ -2266,6 +2305,7 @@ type User {
   resetPasswordCode: String
   resetPasswordCodeIssuedAt: DateTime
   sentInvites(after: InviteWhereUniqueInput, before: InviteWhereUniqueInput, first: Int, last: Int): [Invite!]!
+  stripeSubscriptionId: String
   tasksAssigned(after: TaskWhereUniqueInput, before: TaskWhereUniqueInput, first: Int, last: Int): [Task!]!
   tasksCreated(after: TaskWhereUniqueInput, before: TaskWhereUniqueInput, first: Int, last: Int): [Task!]!
   teams(after: TeamWhereUniqueInput, before: TeamWhereUniqueInput, first: Int, last: Int): [Team!]!
@@ -2343,7 +2383,6 @@ input UserCreateWithoutAssignedResponseRequestInput {
   resetPasswordCode: String
   resetPasswordCodeIssuedAt: DateTime
   sentInvites: InviteCreateManyWithoutFromInput
-  stripeId: String
   stripeSubscriptionId: String
   tasksAssigned: TaskCreateManyWithoutAssignedToInput
   tasksCreated: TaskCreateManyWithoutCreatedByInput
@@ -2372,7 +2411,6 @@ input UserCreateWithoutCommentInput {
   resetPasswordCode: String
   resetPasswordCodeIssuedAt: DateTime
   sentInvites: InviteCreateManyWithoutFromInput
-  stripeId: String
   stripeSubscriptionId: String
   tasksAssigned: TaskCreateManyWithoutAssignedToInput
   tasksCreated: TaskCreateManyWithoutCreatedByInput
@@ -2401,7 +2439,6 @@ input UserCreateWithoutCreatedResponseRequestInput {
   resetPasswordCode: String
   resetPasswordCodeIssuedAt: DateTime
   sentInvites: InviteCreateManyWithoutFromInput
-  stripeId: String
   stripeSubscriptionId: String
   tasksAssigned: TaskCreateManyWithoutAssignedToInput
   tasksCreated: TaskCreateManyWithoutCreatedByInput
@@ -2430,7 +2467,6 @@ input UserCreateWithoutOrganizationsInput {
   resetPasswordCode: String
   resetPasswordCodeIssuedAt: DateTime
   sentInvites: InviteCreateManyWithoutFromInput
-  stripeId: String
   stripeSubscriptionId: String
   tasksAssigned: TaskCreateManyWithoutAssignedToInput
   tasksCreated: TaskCreateManyWithoutCreatedByInput
@@ -2459,7 +2495,6 @@ input UserCreateWithoutOwnOrganizationsInput {
   resetPasswordCode: String
   resetPasswordCodeIssuedAt: DateTime
   sentInvites: InviteCreateManyWithoutFromInput
-  stripeId: String
   stripeSubscriptionId: String
   tasksAssigned: TaskCreateManyWithoutAssignedToInput
   tasksCreated: TaskCreateManyWithoutCreatedByInput
@@ -2488,7 +2523,6 @@ input UserCreateWithoutReceivedInvitesInput {
   resetPasswordCode: String
   resetPasswordCodeIssuedAt: DateTime
   sentInvites: InviteCreateManyWithoutFromInput
-  stripeId: String
   stripeSubscriptionId: String
   tasksAssigned: TaskCreateManyWithoutAssignedToInput
   tasksCreated: TaskCreateManyWithoutCreatedByInput
@@ -2517,7 +2551,6 @@ input UserCreateWithoutSentInvitesInput {
   receivedInvites: InviteCreateManyWithoutToInput
   resetPasswordCode: String
   resetPasswordCodeIssuedAt: DateTime
-  stripeId: String
   stripeSubscriptionId: String
   tasksAssigned: TaskCreateManyWithoutAssignedToInput
   tasksCreated: TaskCreateManyWithoutCreatedByInput
@@ -2547,7 +2580,6 @@ input UserCreateWithoutTasksAssignedInput {
   resetPasswordCode: String
   resetPasswordCodeIssuedAt: DateTime
   sentInvites: InviteCreateManyWithoutFromInput
-  stripeId: String
   stripeSubscriptionId: String
   tasksCreated: TaskCreateManyWithoutCreatedByInput
   teams: TeamCreateManyWithoutUsersInput
@@ -2576,7 +2608,6 @@ input UserCreateWithoutTasksCreatedInput {
   resetPasswordCode: String
   resetPasswordCodeIssuedAt: DateTime
   sentInvites: InviteCreateManyWithoutFromInput
-  stripeId: String
   stripeSubscriptionId: String
   tasksAssigned: TaskCreateManyWithoutAssignedToInput
   teams: TeamCreateManyWithoutUsersInput
@@ -2605,7 +2636,6 @@ input UserCreateWithoutTeamsInput {
   resetPasswordCode: String
   resetPasswordCodeIssuedAt: DateTime
   sentInvites: InviteCreateManyWithoutFromInput
-  stripeId: String
   stripeSubscriptionId: String
   tasksAssigned: TaskCreateManyWithoutAssignedToInput
   tasksCreated: TaskCreateManyWithoutCreatedByInput
@@ -2633,7 +2663,6 @@ input UserOrderByInput {
   lastName: SortOrder
   resetPasswordCode: SortOrder
   resetPasswordCodeIssuedAt: SortOrder
-  stripeId: SortOrder
   stripeSubscriptionId: SortOrder
   updatedAt: SortOrder
   username: SortOrder
@@ -2656,8 +2685,7 @@ input UserScalarWhereInput {
   OR: [UserScalarWhereInput!]
   resetPasswordCode: StringNullableFilter
   resetPasswordCodeIssuedAt: DateTimeNullableFilter
-  stripeId: StringFilter
-  stripeSubscriptionId: StringFilter
+  stripeSubscriptionId: StringNullableFilter
   updatedAt: DateTimeFilter
   username: StringFilter
 }
@@ -2683,8 +2711,7 @@ input UserUpdateInput {
   resetPasswordCode: NullableStringFieldUpdateOperationsInput
   resetPasswordCodeIssuedAt: NullableDateTimeFieldUpdateOperationsInput
   sentInvites: InviteUpdateManyWithoutFromInput
-  stripeId: StringFieldUpdateOperationsInput
-  stripeSubscriptionId: StringFieldUpdateOperationsInput
+  stripeSubscriptionId: NullableStringFieldUpdateOperationsInput
   tasksAssigned: TaskUpdateManyWithoutAssignedToInput
   tasksCreated: TaskUpdateManyWithoutCreatedByInput
   teams: TeamUpdateManyWithoutUsersInput
@@ -2706,8 +2733,7 @@ input UserUpdateManyDataInput {
   lastName: NullableStringFieldUpdateOperationsInput
   resetPasswordCode: NullableStringFieldUpdateOperationsInput
   resetPasswordCodeIssuedAt: NullableDateTimeFieldUpdateOperationsInput
-  stripeId: StringFieldUpdateOperationsInput
-  stripeSubscriptionId: StringFieldUpdateOperationsInput
+  stripeSubscriptionId: NullableStringFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   username: StringFieldUpdateOperationsInput
 }
@@ -2821,8 +2847,7 @@ input UserUpdateWithoutAssignedResponseRequestDataInput {
   resetPasswordCode: NullableStringFieldUpdateOperationsInput
   resetPasswordCodeIssuedAt: NullableDateTimeFieldUpdateOperationsInput
   sentInvites: InviteUpdateManyWithoutFromInput
-  stripeId: StringFieldUpdateOperationsInput
-  stripeSubscriptionId: StringFieldUpdateOperationsInput
+  stripeSubscriptionId: NullableStringFieldUpdateOperationsInput
   tasksAssigned: TaskUpdateManyWithoutAssignedToInput
   tasksCreated: TaskUpdateManyWithoutCreatedByInput
   teams: TeamUpdateManyWithoutUsersInput
@@ -2850,8 +2875,7 @@ input UserUpdateWithoutCommentDataInput {
   resetPasswordCode: NullableStringFieldUpdateOperationsInput
   resetPasswordCodeIssuedAt: NullableDateTimeFieldUpdateOperationsInput
   sentInvites: InviteUpdateManyWithoutFromInput
-  stripeId: StringFieldUpdateOperationsInput
-  stripeSubscriptionId: StringFieldUpdateOperationsInput
+  stripeSubscriptionId: NullableStringFieldUpdateOperationsInput
   tasksAssigned: TaskUpdateManyWithoutAssignedToInput
   tasksCreated: TaskUpdateManyWithoutCreatedByInput
   teams: TeamUpdateManyWithoutUsersInput
@@ -2879,8 +2903,7 @@ input UserUpdateWithoutCreatedResponseRequestDataInput {
   resetPasswordCode: NullableStringFieldUpdateOperationsInput
   resetPasswordCodeIssuedAt: NullableDateTimeFieldUpdateOperationsInput
   sentInvites: InviteUpdateManyWithoutFromInput
-  stripeId: StringFieldUpdateOperationsInput
-  stripeSubscriptionId: StringFieldUpdateOperationsInput
+  stripeSubscriptionId: NullableStringFieldUpdateOperationsInput
   tasksAssigned: TaskUpdateManyWithoutAssignedToInput
   tasksCreated: TaskUpdateManyWithoutCreatedByInput
   teams: TeamUpdateManyWithoutUsersInput
@@ -2908,8 +2931,7 @@ input UserUpdateWithoutOrganizationsDataInput {
   resetPasswordCode: NullableStringFieldUpdateOperationsInput
   resetPasswordCodeIssuedAt: NullableDateTimeFieldUpdateOperationsInput
   sentInvites: InviteUpdateManyWithoutFromInput
-  stripeId: StringFieldUpdateOperationsInput
-  stripeSubscriptionId: StringFieldUpdateOperationsInput
+  stripeSubscriptionId: NullableStringFieldUpdateOperationsInput
   tasksAssigned: TaskUpdateManyWithoutAssignedToInput
   tasksCreated: TaskUpdateManyWithoutCreatedByInput
   teams: TeamUpdateManyWithoutUsersInput
@@ -2937,8 +2959,7 @@ input UserUpdateWithoutOwnOrganizationsDataInput {
   resetPasswordCode: NullableStringFieldUpdateOperationsInput
   resetPasswordCodeIssuedAt: NullableDateTimeFieldUpdateOperationsInput
   sentInvites: InviteUpdateManyWithoutFromInput
-  stripeId: StringFieldUpdateOperationsInput
-  stripeSubscriptionId: StringFieldUpdateOperationsInput
+  stripeSubscriptionId: NullableStringFieldUpdateOperationsInput
   tasksAssigned: TaskUpdateManyWithoutAssignedToInput
   tasksCreated: TaskUpdateManyWithoutCreatedByInput
   teams: TeamUpdateManyWithoutUsersInput
@@ -2966,8 +2987,7 @@ input UserUpdateWithoutReceivedInvitesDataInput {
   resetPasswordCode: NullableStringFieldUpdateOperationsInput
   resetPasswordCodeIssuedAt: NullableDateTimeFieldUpdateOperationsInput
   sentInvites: InviteUpdateManyWithoutFromInput
-  stripeId: StringFieldUpdateOperationsInput
-  stripeSubscriptionId: StringFieldUpdateOperationsInput
+  stripeSubscriptionId: NullableStringFieldUpdateOperationsInput
   tasksAssigned: TaskUpdateManyWithoutAssignedToInput
   tasksCreated: TaskUpdateManyWithoutCreatedByInput
   teams: TeamUpdateManyWithoutUsersInput
@@ -2995,8 +3015,7 @@ input UserUpdateWithoutSentInvitesDataInput {
   receivedInvites: InviteUpdateManyWithoutToInput
   resetPasswordCode: NullableStringFieldUpdateOperationsInput
   resetPasswordCodeIssuedAt: NullableDateTimeFieldUpdateOperationsInput
-  stripeId: StringFieldUpdateOperationsInput
-  stripeSubscriptionId: StringFieldUpdateOperationsInput
+  stripeSubscriptionId: NullableStringFieldUpdateOperationsInput
   tasksAssigned: TaskUpdateManyWithoutAssignedToInput
   tasksCreated: TaskUpdateManyWithoutCreatedByInput
   teams: TeamUpdateManyWithoutUsersInput
@@ -3025,8 +3044,7 @@ input UserUpdateWithoutTasksAssignedDataInput {
   resetPasswordCode: NullableStringFieldUpdateOperationsInput
   resetPasswordCodeIssuedAt: NullableDateTimeFieldUpdateOperationsInput
   sentInvites: InviteUpdateManyWithoutFromInput
-  stripeId: StringFieldUpdateOperationsInput
-  stripeSubscriptionId: StringFieldUpdateOperationsInput
+  stripeSubscriptionId: NullableStringFieldUpdateOperationsInput
   tasksCreated: TaskUpdateManyWithoutCreatedByInput
   teams: TeamUpdateManyWithoutUsersInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -3054,8 +3072,7 @@ input UserUpdateWithoutTasksCreatedDataInput {
   resetPasswordCode: NullableStringFieldUpdateOperationsInput
   resetPasswordCodeIssuedAt: NullableDateTimeFieldUpdateOperationsInput
   sentInvites: InviteUpdateManyWithoutFromInput
-  stripeId: StringFieldUpdateOperationsInput
-  stripeSubscriptionId: StringFieldUpdateOperationsInput
+  stripeSubscriptionId: NullableStringFieldUpdateOperationsInput
   tasksAssigned: TaskUpdateManyWithoutAssignedToInput
   teams: TeamUpdateManyWithoutUsersInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -3083,8 +3100,7 @@ input UserUpdateWithoutTeamsDataInput {
   resetPasswordCode: NullableStringFieldUpdateOperationsInput
   resetPasswordCodeIssuedAt: NullableDateTimeFieldUpdateOperationsInput
   sentInvites: InviteUpdateManyWithoutFromInput
-  stripeId: StringFieldUpdateOperationsInput
-  stripeSubscriptionId: StringFieldUpdateOperationsInput
+  stripeSubscriptionId: NullableStringFieldUpdateOperationsInput
   tasksAssigned: TaskUpdateManyWithoutAssignedToInput
   tasksCreated: TaskUpdateManyWithoutCreatedByInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -3177,8 +3193,7 @@ input UserWhereInput {
   resetPasswordCode: StringNullableFilter
   resetPasswordCodeIssuedAt: DateTimeNullableFilter
   sentInvites: InviteListRelationFilter
-  stripeId: StringFilter
-  stripeSubscriptionId: StringFilter
+  stripeSubscriptionId: StringNullableFilter
   tasksAssigned: TaskListRelationFilter
   tasksCreated: TaskListRelationFilter
   teams: TeamListRelationFilter

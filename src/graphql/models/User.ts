@@ -4,6 +4,7 @@ export default objectType({
   name: "User",
   definition(t) {
     t.model.id()
+    t.model.stripeSubscriptionId()
     t.model.username()
     t.model.firstName()
     t.model.lastName()

@@ -1,4 +1,5 @@
 import { arg } from '@nexus/schema'
+import Stripe from 'stripe'
 import moment from 'moment'
 import authenticate from '../../../helpers/authenticate'
 
@@ -46,16 +47,40 @@ const resolve = async ({ args: { where }, ctx, user }: any) => {
         },
         select: {
           id: true,
+          plan: true,
+          stripeId: true,
           name: true
         }
       })
-      await ctx.prisma.invite.update({
-        where,
-        data: {
-          expireAt: null
-        }
-      })
       if(organization) {
+        const subscriptionType = process.env.STRIPE_STANDARD_SUBSCRIPTION
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+        const subscriptionObj = await stripe.subscriptions.create({
+          customer: organization.stripeId,
+          items: [{
+            price: subscriptionType
+          }],
+          metadata: {
+            organization_id: organization.id,
+            organization_name: organization.name,
+            user_id: currentUser.id,
+            first_name: currentUser.firstName,
+            last_name: currentUser.lastName,
+            email: currentUser.email
+          }
+        })
+        await ctx.prisma.invite.update({
+          where,
+          data: {
+            expireAt: null
+          }
+        })
+        await ctx.prisma.user.update({
+          where: { id: currentUser.id },
+          data: {
+            stripeSubscriptionId: subscriptionObj.id
+          }
+        })
         return(`/${invite.type.toLowerCase()}/${organization.id}`)
       } else {
         throw new Error('You cannot join the organization')

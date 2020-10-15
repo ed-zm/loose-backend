@@ -1,4 +1,5 @@
 import moment from 'moment'
+import Stripe from 'stripe'
 import authenticate from '../../../helpers/authenticate'
 import { sendEmail } from '../../../helpers/email'
 import uid from 'uid'
@@ -19,7 +20,6 @@ const resolve = async ({ args: { data }, ctx, user }: any) => {
       }
     })
   }
-  console.log('TO EMAIL', to, data.email)
   const invitedUser = await ctx.prisma.user.findMany({
     where: {
       AND: [

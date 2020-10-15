@@ -51,11 +51,17 @@ model Label {
   updatedAt DateTime @updatedAt
 }
 
+enum OrganizationPlan {
+  STANDARD
+}
+
 model Organization {
   id String @default(cuid()) @id
   name String
+  plan OrganizationPlan @default(STANDARD)
   githubToken String?
   githubOrganization String?
+  stripeId String @default("")
   owner User @relation("UserOrganizations", fields: [ownerId], references: [id])
   ownerId String
   users User[] @relation("OrganizationUsers")
@@ -120,8 +126,7 @@ model Team {
 
 model User {
   id String @default(cuid()) @id
-  stripeId String @default("")
-  stripeSubscriptionId String @default("")
+  stripeSubscriptionId String? @default("")
   username String @unique
   firstName String
   lastName String?
